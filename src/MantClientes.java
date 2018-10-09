@@ -295,6 +295,11 @@ public class MantClientes extends javax.swing.JFrame {
 
         btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/eliminar.png"))); // NOI18N
         btn_eliminar.setNextFocusableComponent(txt_consulta);
+        btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminarActionPerformed(evt);
+            }
+        });
 
         btn_consultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/consultar.png"))); // NOI18N
 
@@ -512,7 +517,28 @@ public class MantClientes extends javax.swing.JFrame {
             //lstClie.remove();
         llenarlst();
     }
-   
+
+        public void eliminar (String rut, String dv, String nom, String pater, String mater, String dir, String fono, String correo){
+     String upSQL="";
+        /*Mensaje message=new Mensaje();
+        message.windowClosed(e);*/
+        
+        try{
+            upSQL="DELETE FROM cliente WHERE run_cliente='"+ rut +"';";
+            sentencia.executeUpdate(upSQL);
+            msj="Datos Eliminados";
+            JOptionPane.showMessageDialog(null, msj, "ELIMINACIÓN DE DATOS",JOptionPane.INFORMATION_MESSAGE);
+       
+        }
+       catch(SQLException e){
+           msj="No eliminado";
+           JOptionPane.showMessageDialog(null, msj, "ALERTA",JOptionPane.INFORMATION_MESSAGE);
+       }   
+        modelolista.setNumRows(0);
+            //lstClie.remove();
+        llenarlst();
+    }
+    
     private void txt_correoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_correoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_correoActionPerformed
@@ -620,6 +646,27 @@ public class MantClientes extends javax.swing.JFrame {
         txt_correo.setText(lstClie.getValueAt(lstClie.getSelectedRow(), 6).toString());
         } 
     }//GEN-LAST:event_lstClieMouseClicked
+
+    private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
+    String rut,dv,nom,apepar,apemat,direccion,fono,correo;
+        
+        rut=txt_rut.getText();
+        dv=txt_dv.getText();
+        nom=txt_nombre.getText();
+        apepar=txt_paterno.getText();
+        apemat=txt_materno.getText();
+        direccion=txt_direccion.getText();
+        fono=txt_telefono.getText();
+        correo=txt_correo.getText();
+        
+        if(JOptionPane.showConfirmDialog(rootPane, "Se eliminará el registro",
+                "Eliminar", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION)== JOptionPane.YES_OPTION){
+        
+                eliminar(rut,dv,nom,apepar,apemat,direccion,fono,correo);
+    }
+   
+                // TODO add your handling code here:
+    }//GEN-LAST:event_btn_eliminarActionPerformed
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
