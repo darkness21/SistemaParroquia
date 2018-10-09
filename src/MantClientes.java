@@ -188,6 +188,13 @@ public class MantClientes extends javax.swing.JFrame {
 
         txt_rut.setBackground(new java.awt.Color(255, 255, 204));
         txt_rut.setNextFocusableComponent(txt_dv);
+        txt_rut.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                txt_rutInputMethodTextChanged(evt);
+            }
+        });
         txt_rut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_rutActionPerformed(evt);
@@ -572,6 +579,11 @@ public class MantClientes extends javax.swing.JFrame {
     private void txt_consultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_consultaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_consultaActionPerformed
+
+    private void txt_rutInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txt_rutInputMethodTextChanged
+        // TODO add your handling code here:        
+                
+    }//GEN-LAST:event_txt_rutInputMethodTextChanged
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
