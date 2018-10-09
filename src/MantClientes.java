@@ -51,7 +51,7 @@ public class MantClientes extends javax.swing.JFrame {
     
     public void llenarlst(){
        String run,dv,nom,apet,amat,dir,fono,mail;
-       lstClie.setPreferredScrollableViewportSize(new Dimension());
+       lstClie.setPreferredScrollableViewportSize(new Dimension(500,70));
         RowSorter<TableModel> sorter=new TableRowSorter<TableModel>(modelolista);
         lstClie.setRowSorter(sorter);
         try{
@@ -470,16 +470,23 @@ public class MantClientes extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     public void insertar(String sql){
+        
         try{
             sentencia.executeUpdate(sql);
             msj="datos guardados";
             JOptionPane.showMessageDialog(null, msj, "Datos Guardados", JOptionPane.INFORMATION_MESSAGE);
+            
         }
         catch(SQLException e){
             msj="No ingresó";
             JOptionPane.showMessageDialog(null, msj, "---", JOptionPane.INFORMATION_MESSAGE);
             
         }
+        modelolista.setNumRows(0);
+            //lstClie.remove();
+        llenarlst();
+        
+        //modelolista.removeTableModelListener(lstClie);
     }
 
     public void actualizar (String rut, String dv, String nom, String pater, String mater, String dir, String fono, String correo){
