@@ -1,8 +1,17 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import java.awt.*;
+import javax.swing.RowSorter;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 
 
@@ -13,13 +22,17 @@ public class MantClientes extends javax.swing.JFrame {
     private String usuario ="root";
     private String password ="";
     private String msj;
+    Object[][] data = {};
+    String[] columnNames={"Run","Nombre","Apellido Paterno","Apellido Materno","Dirección","Teléfono","Correo"};
+    DefaultTableModel modelolista=new DefaultTableModel(data,columnNames);
   
     public MantClientes(){
         initComponents();
         this.setLocationRelativeTo(null);
         conectar();
         lbl_estado.setVisible(false);
-        
+        lstClie.setModel(modelolista);
+        llenarlst();  
     }
 
     public void conectar(){
@@ -34,7 +47,35 @@ public class MantClientes extends javax.swing.JFrame {
            
        }
     }  
-       
+
+    
+    public void llenarlst(){
+       String run,dv,nom,apet,amat,dir,fono,mail;
+       lstClie.setPreferredScrollableViewportSize(new Dimension());
+        RowSorter<TableModel> sorter=new TableRowSorter<TableModel>(modelolista);
+        lstClie.setRowSorter(sorter);
+        try{
+            sentencia=(Statement)conexion.createStatement();//permite ejecutar sentencias SQL
+            ResultSet lista=sentencia.executeQuery("SELECT * FROM cliente");
+            while(lista.next()){
+                nom=(lista.getString("nom_cliente"));//nombre del campo de la BD
+                run=(lista.getString("run_cliente"));
+                dv=(lista.getString("dv_cliente"));
+                apet=(lista.getString("ape_pat_cliente"));
+                amat=(lista.getString("ape_mat_cliente"));
+                dir=(lista.getString("dir_cliente"));
+                fono=(lista.getString("fono_cliente"));
+                mail=(lista.getString("correo_cliente"));
+                Object[] newRow={run+"-"+dv,nom,apet,amat,dir,fono,mail};
+                modelolista.addRow(newRow);
+            }
+        lstClie.getRowSorter().toggleSortOrder(0);
+        }catch (SQLException e){
+            msj="no tiene elementos";
+        }
+        
+    };
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -47,8 +88,8 @@ public class MantClientes extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        ScrollClie = new javax.swing.JScrollPane();
+        lstClie = new javax.swing.JTable();
         jSeparator2 = new javax.swing.JSeparator();
         txt_correo = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
@@ -71,7 +112,7 @@ public class MantClientes extends javax.swing.JFrame {
         btn_consultar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         lbl_estado = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txt_consulta = new javax.swing.JTextField();
 
         jButton1.setBackground(new java.awt.Color(102, 204, 0));
         jButton1.setFont(new java.awt.Font("Franklin Gothic Medium", 3, 13)); // NOI18N
@@ -109,7 +150,8 @@ public class MantClientes extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Nombre ");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        lstClie.setAutoCreateRowSorter(true);
+        lstClie.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"16658427-8", "Bastian", "Neira", "Moreno", "España 777", "976583420", "bastian.neira@gmail.com"},
                 {null, null, null, null, null, null, null},
@@ -123,9 +165,10 @@ public class MantClientes extends javax.swing.JFrame {
                 "Rut cliente", "Nombre", "Apellido Parterno", "Apellido Materno", "Dirección", "Telefono", "Correo"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        ScrollClie.setViewportView(lstClie);
 
         txt_correo.setBackground(new java.awt.Color(255, 255, 204));
+        txt_correo.setNextFocusableComponent(txt_telefono);
         txt_correo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_correoActionPerformed(evt);
@@ -136,6 +179,7 @@ public class MantClientes extends javax.swing.JFrame {
         jLabel11.setText("Correo Electronico (opcional)");
 
         txt_dv.setBackground(new java.awt.Color(255, 255, 204));
+        txt_dv.setNextFocusableComponent(txt_nombre);
         txt_dv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_dvActionPerformed(evt);
@@ -143,6 +187,7 @@ public class MantClientes extends javax.swing.JFrame {
         });
 
         txt_rut.setBackground(new java.awt.Color(255, 255, 204));
+        txt_rut.setNextFocusableComponent(txt_dv);
         txt_rut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_rutActionPerformed(evt);
@@ -150,6 +195,7 @@ public class MantClientes extends javax.swing.JFrame {
         });
 
         txt_paterno.setBackground(new java.awt.Color(255, 255, 204));
+        txt_paterno.setNextFocusableComponent(txt_materno);
         txt_paterno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_paternoActionPerformed(evt);
@@ -157,6 +203,7 @@ public class MantClientes extends javax.swing.JFrame {
         });
 
         txt_nombre.setBackground(new java.awt.Color(255, 255, 204));
+        txt_nombre.setNextFocusableComponent(txt_paterno);
         txt_nombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_nombreActionPerformed(evt);
@@ -167,6 +214,7 @@ public class MantClientes extends javax.swing.JFrame {
         jLabel10.setText("Apellido Paterno ");
 
         txt_materno.setBackground(new java.awt.Color(255, 255, 204));
+        txt_materno.setNextFocusableComponent(txt_direccion);
         txt_materno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_maternoActionPerformed(evt);
@@ -177,6 +225,7 @@ public class MantClientes extends javax.swing.JFrame {
         jLabel13.setText("Apellido Materno ");
 
         txt_telefono.setBackground(new java.awt.Color(255, 255, 204));
+        txt_telefono.setNextFocusableComponent(btn_agregar);
         txt_telefono.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_telefonoActionPerformed(evt);
@@ -187,6 +236,7 @@ public class MantClientes extends javax.swing.JFrame {
         jLabel14.setText("Telefono");
 
         txt_direccion.setBackground(new java.awt.Color(255, 255, 204));
+        txt_direccion.setNextFocusableComponent(txt_correo);
         txt_direccion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_direccionActionPerformed(evt);
@@ -210,6 +260,7 @@ public class MantClientes extends javax.swing.JFrame {
         jButton4.setFont(new java.awt.Font("Franklin Gothic Medium", 3, 13)); // NOI18N
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/cancelar.png"))); // NOI18N
         jButton4.setText("Cancelar");
+        jButton4.setNextFocusableComponent(txt_rut);
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -231,10 +282,16 @@ public class MantClientes extends javax.swing.JFrame {
         });
 
         btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/eliminar.png"))); // NOI18N
+        btn_eliminar.setNextFocusableComponent(txt_consulta);
 
         btn_consultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/consultar.png"))); // NOI18N
 
-        jTextField1.setBackground(new java.awt.Color(255, 255, 204));
+        txt_consulta.setBackground(new java.awt.Color(255, 255, 204));
+        txt_consulta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_consultaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout mainLayout = new javax.swing.GroupLayout(main);
         main.setLayout(mainLayout);
@@ -263,7 +320,7 @@ public class MantClientes extends javax.swing.JFrame {
                                             .addComponent(jLabel10)))
                                     .addComponent(jLabel13))
                                 .addGap(18, 18, 18)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 563, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(ScrollClie, javax.swing.GroupLayout.PREFERRED_SIZE, 563, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(mainLayout.createSequentialGroup()
                                 .addComponent(jLabel16)
                                 .addGap(83, 83, 83)
@@ -314,7 +371,7 @@ public class MantClientes extends javax.swing.JFrame {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainLayout.createSequentialGroup()
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(txt_consulta, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(9, 9, 9)))
                                         .addComponent(btn_consultar)))))))
                 .addContainerGap())
@@ -339,7 +396,7 @@ public class MantClientes extends javax.swing.JFrame {
                                     .addComponent(btn_modificar)
                                     .addComponent(btn_eliminar))
                                 .addGap(6, 6, 6)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txt_consulta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(mainLayout.createSequentialGroup()
                                 .addGap(48, 48, 48)
                                 .addComponent(btn_consultar)))))
@@ -364,7 +421,7 @@ public class MantClientes extends javax.swing.JFrame {
                         .addComponent(jLabel13))
                     .addGroup(mainLayout.createSequentialGroup()
                         .addGap(0, 8, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(ScrollClie, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(4, 4, 4)
                 .addComponent(txt_materno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
@@ -511,6 +568,10 @@ public class MantClientes extends javax.swing.JFrame {
         
         actualizar(rut,dv,nom,apepar,apemat,direccion,fono,correo);
     }//GEN-LAST:event_btn_modificarActionPerformed
+
+    private void txt_consultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_consultaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_consultaActionPerformed
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -545,6 +606,7 @@ public class MantClientes extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane ScrollClie;
     private javax.swing.JButton btn_agregar;
     private javax.swing.JButton btn_consultar;
     private javax.swing.JButton btn_eliminar;
@@ -563,13 +625,12 @@ public class MantClientes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lbl_estado;
+    private javax.swing.JTable lstClie;
     private javax.swing.JPanel main;
+    private javax.swing.JTextField txt_consulta;
     private javax.swing.JTextField txt_correo;
     private javax.swing.JTextField txt_direccion;
     private javax.swing.JTextField txt_dv;
