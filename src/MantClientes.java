@@ -163,6 +163,11 @@ public class MantClientes extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         main.setBackground(new java.awt.Color(51, 51, 51));
+        main.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                mainMouseClicked(evt);
+            }
+        });
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/cruzmini.png"))); // NOI18N
 
@@ -343,6 +348,14 @@ public class MantClientes extends javax.swing.JFrame {
         txt_consulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_consultaActionPerformed(evt);
+            }
+        });
+        txt_consulta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_consultaKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_consultaKeyTyped(evt);
             }
         });
 
@@ -725,6 +738,21 @@ public class MantClientes extends javax.swing.JFrame {
                 
                 
     }//GEN-LAST:event_btn_consultarActionPerformed
+
+    private void txt_consultaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyPressed
+            // TODO add your handling code here:
+    }//GEN-LAST:event_txt_consultaKeyPressed
+
+    private void txt_consultaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyTyped
+      // TODO add your handling code here:
+    }//GEN-LAST:event_txt_consultaKeyTyped
+
+    private void mainMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainMouseClicked
+         // TODO add your handling code here:
+        modelolista.setNumRows(0);
+        llenarlst();
+        txt_consulta.setText("");
+    }//GEN-LAST:event_mainMouseClicked
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
