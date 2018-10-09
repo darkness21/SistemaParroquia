@@ -75,7 +75,33 @@ public class MantClientes extends javax.swing.JFrame {
         }
         
     };
-    
+    public void llenarlst_consu(String consu){
+       String run,dv,nom,apet,amat,dir,fono,mail;
+       lstClie.setPreferredScrollableViewportSize(new Dimension(500,70));
+        RowSorter<TableModel> sorter=new TableRowSorter<TableModel>(modelolista);
+        lstClie.setRowSorter(sorter);
+        try{
+            sentencia=(Statement)conexion.createStatement();//permite ejecutar sentencias SQL
+            ResultSet lista=sentencia.executeQuery("SELECT * FROM cliente WHERE nom_cliente='"+consu+"'or run_cliente='"+consu+"'"
+                    + "or ape_pat_cliente='"+consu+"' or ape_mat_cliente='"+consu+"'or dir_cliente='"+consu+"'");
+            while(lista.next()){
+                nom=(lista.getString("nom_cliente"));//nombre del campo de la BD
+                run=(lista.getString("run_cliente"));
+                dv=(lista.getString("dv_cliente"));
+                apet=(lista.getString("ape_pat_cliente"));
+                amat=(lista.getString("ape_mat_cliente"));
+                dir=(lista.getString("dir_cliente"));
+                fono=(lista.getString("fono_cliente"));
+                mail=(lista.getString("correo_cliente"));
+                Object[] newRow={run+"-"+dv,nom,apet,amat,dir,fono,mail};
+                modelolista.addRow(newRow);
+            }
+        lstClie.getRowSorter().toggleSortOrder(0);
+        }catch (SQLException e){
+            msj="no tiene elementos";
+        }
+        
+    };
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -205,6 +231,11 @@ public class MantClientes extends javax.swing.JFrame {
                 txt_rutActionPerformed(evt);
             }
         });
+        txt_rut.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_rutKeyTyped(evt);
+            }
+        });
 
         txt_paterno.setBackground(new java.awt.Color(255, 255, 204));
         txt_paterno.setNextFocusableComponent(txt_materno);
@@ -302,6 +333,11 @@ public class MantClientes extends javax.swing.JFrame {
         });
 
         btn_consultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/consultar.png"))); // NOI18N
+        btn_consultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_consultarActionPerformed(evt);
+            }
+        });
 
         txt_consulta.setBackground(new java.awt.Color(255, 255, 204));
         txt_consulta.addActionListener(new java.awt.event.ActionListener() {
@@ -667,6 +703,28 @@ public class MantClientes extends javax.swing.JFrame {
    
                 // TODO add your handling code here:
     }//GEN-LAST:event_btn_eliminarActionPerformed
+
+    private void txt_rutKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_rutKeyTyped
+            // TODO add your handling code here:
+        char TipoTecla=evt.getKeyChar();
+        if(Character.isDigit(TipoTecla)){
+            
+        }else{
+               evt.consume();
+        }
+    }//GEN-LAST:event_txt_rutKeyTyped
+
+    private void btn_consultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_consultarActionPerformed
+        // TODO add your handling code here:
+        String consu;
+        consu=txt_consulta.getText();
+        
+        modelolista.setNumRows(0);
+            //lstClie.remove();
+        llenarlst_consu(consu);
+                
+                
+    }//GEN-LAST:event_btn_consultarActionPerformed
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
