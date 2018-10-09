@@ -498,7 +498,7 @@ public class MantClientes extends javax.swing.JFrame {
      String upSQL="";
         
         try{
-        upSQL="UPDATE cementerio SET nom_cliente='"+ nom + "',ape_pat_cliente=" + pater + "',ape_mat_cliente=" + mater + "',dir_cliente=" + dir + "',fono_cliente=" + fono + "',correo_cliente=" + correo + " WHERE run_cliente='"+ rut +"'";
+        upSQL="UPDATE cliente SET nom_cliente='"+ nom + "',ape_pat_cliente='" + pater + "',ape_mat_cliente='" + mater + "',dir_cliente='" + dir + "',fono_cliente='" + fono + "',correo_cliente='" + correo + "' WHERE run_cliente='"+ rut +"'";
         sentencia.executeUpdate(upSQL);
         msj="Datos actualizados";
         JOptionPane.showMessageDialog(null, msj, "Datos actualizados",JOptionPane.INFORMATION_MESSAGE);
@@ -506,7 +506,11 @@ public class MantClientes extends javax.swing.JFrame {
         }
        catch(SQLException e){
            msj="No actualizado";
+           JOptionPane.showMessageDialog(null, msj, "Datos actualizados",JOptionPane.INFORMATION_MESSAGE);
        }   
+        modelolista.setNumRows(0);
+            //lstClie.remove();
+        llenarlst();
     }
    
     private void txt_correoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_correoActionPerformed
