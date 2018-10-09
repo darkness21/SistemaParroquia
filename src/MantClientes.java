@@ -165,6 +165,11 @@ public class MantClientes extends javax.swing.JFrame {
                 "Rut cliente", "Nombre", "Apellido Parterno", "Apellido Materno", "Dirección", "Telefono", "Correo"
             }
         ));
+        lstClie.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lstClieMouseClicked(evt);
+            }
+        });
         ScrollClie.setViewportView(lstClie);
 
         txt_correo.setBackground(new java.awt.Color(255, 255, 204));
@@ -591,6 +596,26 @@ public class MantClientes extends javax.swing.JFrame {
         // TODO add your handling code here:        
                 
     }//GEN-LAST:event_txt_rutInputMethodTextChanged
+
+    private void lstClieMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstClieMouseClicked
+                // TODO add your handling code here:
+    String rut,dv,nom,apepar,apemat,direccion,fono,correo;
+    
+    if(lstClie.getSelectedRowCount()>0){
+        rut=lstClie.getValueAt(lstClie.getSelectedRow(), 0).toString();
+        rut=rut.substring(0, rut.length()-2);
+        txt_rut.setText(rut);
+        dv=lstClie.getValueAt(lstClie.getSelectedRow(), 0).toString();
+        dv=dv.substring(dv.length()-1, dv.length());
+        txt_dv.setText(dv);
+        txt_nombre.setText(lstClie.getValueAt(lstClie.getSelectedRow(), 1).toString());
+        txt_paterno.setText(lstClie.getValueAt(lstClie.getSelectedRow(), 2).toString());
+        txt_materno.setText(lstClie.getValueAt(lstClie.getSelectedRow(), 3).toString());
+        txt_direccion.setText(lstClie.getValueAt(lstClie.getSelectedRow(), 4).toString());
+        txt_telefono.setText(lstClie.getValueAt(lstClie.getSelectedRow(), 5).toString());
+        txt_correo.setText(lstClie.getValueAt(lstClie.getSelectedRow(), 6).toString());
+        } 
+    }//GEN-LAST:event_lstClieMouseClicked
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
