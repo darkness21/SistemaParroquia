@@ -134,7 +134,6 @@ public class MantClientes extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         txt_direccion = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         btn_agregar = new javax.swing.JButton();
         btn_modificar = new javax.swing.JButton();
@@ -212,6 +211,17 @@ public class MantClientes extends javax.swing.JFrame {
         lstClie.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 lstCliePropertyChange(evt);
+            }
+        });
+        lstClie.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                lstClieKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                lstClieKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                lstClieKeyTyped(evt);
             }
         });
         ScrollClie.setViewportView(lstClie);
@@ -307,16 +317,6 @@ public class MantClientes extends javax.swing.JFrame {
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("Dirección");
 
-        jButton3.setBackground(new java.awt.Color(102, 204, 0));
-        jButton3.setFont(new java.awt.Font("Franklin Gothic Medium", 3, 13)); // NOI18N
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/aceptar.png"))); // NOI18N
-        jButton3.setText("Aceptar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
         jButton4.setBackground(new java.awt.Color(102, 0, 0));
         jButton4.setFont(new java.awt.Font("Franklin Gothic Medium", 3, 13)); // NOI18N
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/cancelar.png"))); // NOI18N
@@ -380,26 +380,7 @@ public class MantClientes extends javax.swing.JFrame {
                 .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainLayout.createSequentialGroup()
                         .addGap(23, 23, 23)
-                        .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel6)
-                            .addGroup(mainLayout.createSequentialGroup()
-                                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(mainLayout.createSequentialGroup()
-                                        .addComponent(txt_rut, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txt_dv, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(mainLayout.createSequentialGroup()
-                                        .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(txt_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txt_materno, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txt_paterno, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel10)))
-                                    .addComponent(jLabel13))
-                                .addGap(18, 18, 18)
-                                .addComponent(ScrollClie, javax.swing.GroupLayout.PREFERRED_SIZE, 563, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(mainLayout.createSequentialGroup()
                                 .addComponent(jLabel16)
                                 .addGap(83, 83, 83)
@@ -415,11 +396,28 @@ public class MantClientes extends javax.swing.JFrame {
                                         .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(txt_telefono, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLabel14))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton3)
-                                        .addGap(18, 18, 18)
+                                        .addGap(475, 475, 475)
                                         .addComponent(jButton4)))
-                                .addGap(61, 61, 61))))
+                                .addGap(61, 61, 61))
+                            .addGroup(mainLayout.createSequentialGroup()
+                                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addGroup(mainLayout.createSequentialGroup()
+                                        .addComponent(txt_rut, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txt_dv, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(mainLayout.createSequentialGroup()
+                                        .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(txt_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txt_materno, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txt_paterno, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel10)))
+                                    .addComponent(jLabel13))
+                                .addGap(18, 18, 18)
+                                .addComponent(ScrollClie, javax.swing.GroupLayout.PREFERRED_SIZE, 563, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(mainLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -482,13 +480,13 @@ public class MantClientes extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel6)
                 .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainLayout.createSequentialGroup()
+                        .addComponent(jLabel6)
                         .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txt_dv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txt_rut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                         .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
                             .addComponent(jLabel10))
@@ -497,13 +495,13 @@ public class MantClientes extends javax.swing.JFrame {
                             .addComponent(txt_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txt_paterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel13))
+                        .addComponent(jLabel13)
+                        .addGap(4, 4, 4)
+                        .addComponent(txt_materno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10))
                     .addGroup(mainLayout.createSequentialGroup()
-                        .addGap(0, 8, Short.MAX_VALUE)
-                        .addComponent(ScrollClie, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(4, 4, 4)
-                .addComponent(txt_materno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
+                        .addComponent(ScrollClie, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(jLabel16))
@@ -520,9 +518,7 @@ public class MantClientes extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                        .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton3)
-                            .addComponent(jButton4))))
+                        .addComponent(jButton4)))
                 .addGap(39, 39, 39)
                 .addComponent(jLabel2)
                 .addContainerGap())
@@ -641,10 +637,6 @@ public class MantClientes extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
            System.exit(0);
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -697,9 +689,11 @@ public class MantClientes extends javax.swing.JFrame {
         rut=lstClie.getValueAt(lstClie.getSelectedRow(), 0).toString();
         rut=rut.substring(0, rut.length()-2);
         txt_rut.setText(rut);
+        txt_rut.disable();
         dv=lstClie.getValueAt(lstClie.getSelectedRow(), 0).toString();
         dv=dv.substring(dv.length()-1, dv.length());
         txt_dv.setText(dv);
+        txt_dv.disable();
         txt_nombre.setText(lstClie.getValueAt(lstClie.getSelectedRow(), 1).toString());
         txt_paterno.setText(lstClie.getValueAt(lstClie.getSelectedRow(), 2).toString());
         txt_materno.setText(lstClie.getValueAt(lstClie.getSelectedRow(), 3).toString());
@@ -773,6 +767,8 @@ public class MantClientes extends javax.swing.JFrame {
         txt_paterno.setText("");
         txt_rut.setText("");
         txt_telefono.setText("");
+        txt_rut.enable();
+        txt_dv.enable();
     }//GEN-LAST:event_mainMouseClicked
 
     private void lstCliePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_lstCliePropertyChange
@@ -783,6 +779,41 @@ public class MantClientes extends javax.swing.JFrame {
         // TODO add your handling code here:
         
     }//GEN-LAST:event_lstClieMouseEntered
+
+    private void lstClieKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lstClieKeyPressed
+        // TODO add your handling code here:    
+
+    }//GEN-LAST:event_lstClieKeyPressed
+
+    private void lstClieKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lstClieKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lstClieKeyTyped
+
+    private void lstClieKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lstClieKeyReleased
+        String rut,dv,nom,apepar,apemat,direccion,fono,correo;
+        if(lstClie.getSelectedRowCount()>0){
+            
+            if (evt.VK_DOWN==evt.getKeyCode()||evt.VK_UP==evt.getKeyCode()){    
+        
+            rut=lstClie.getValueAt(lstClie.getSelectedRow(), 0).toString();
+            rut=rut.substring(0, rut.length()-2);
+            txt_rut.setText(rut);
+            txt_rut.disable();
+            dv=lstClie.getValueAt(lstClie.getSelectedRow(), 0).toString();
+            dv=dv.substring(dv.length()-1, dv.length());
+            txt_dv.setText(dv);
+            txt_dv.disable();
+            txt_nombre.setText(lstClie.getValueAt(lstClie.getSelectedRow(), 1).toString());
+            txt_paterno.setText(lstClie.getValueAt(lstClie.getSelectedRow(), 2).toString());
+            txt_materno.setText(lstClie.getValueAt(lstClie.getSelectedRow(), 3).toString());
+            txt_direccion.setText(lstClie.getValueAt(lstClie.getSelectedRow(), 4).toString());
+            txt_telefono.setText(lstClie.getValueAt(lstClie.getSelectedRow(), 5).toString());
+            txt_correo.setText(lstClie.getValueAt(lstClie.getSelectedRow(), 6).toString());
+        } 
+    }
+    //JOptionPane.showMessageDialog(null, evt.getKeyCode(), "ALERTA",JOptionPane.INFORMATION_MESSAGE);
+    // TODO add your handling code here:
+    }//GEN-LAST:event_lstClieKeyReleased
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -824,7 +855,6 @@ public class MantClientes extends javax.swing.JFrame {
     private javax.swing.JButton btn_modificar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
