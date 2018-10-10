@@ -196,9 +196,18 @@ public class MantClientes extends javax.swing.JFrame {
                 "Rut cliente", "Nombre", "Apellido Parterno", "Apellido Materno", "Dirección", "Telefono", "Correo"
             }
         ));
+        lstClie.setCellSelectionEnabled(true);
         lstClie.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lstClieMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lstClieMouseEntered(evt);
+            }
+        });
+        lstClie.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                lstCliePropertyChange(evt);
             }
         });
         ScrollClie.setViewportView(lstClie);
@@ -752,7 +761,24 @@ public class MantClientes extends javax.swing.JFrame {
         modelolista.setNumRows(0);
         llenarlst();
         txt_consulta.setText("");
+        txt_correo.setText("");
+        txt_direccion.setText("");
+        txt_dv.setText("");
+        txt_materno.setText("");
+        txt_nombre.setText("");
+        txt_paterno.setText("");
+        txt_rut.setText("");
+        txt_telefono.setText("");
     }//GEN-LAST:event_mainMouseClicked
+
+    private void lstCliePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_lstCliePropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lstCliePropertyChange
+
+    private void lstClieMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstClieMouseEntered
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_lstClieMouseEntered
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
