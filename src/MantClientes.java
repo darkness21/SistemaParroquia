@@ -86,8 +86,8 @@ public class MantClientes extends javax.swing.JFrame {
         lstClie.setRowSorter(sorter);
         try{
             sentencia=(Statement)conexion.createStatement();//permite ejecutar sentencias SQL
-            ResultSet lista=sentencia.executeQuery("SELECT * FROM cliente WHERE nom_cliente='"+consu+"'or run_cliente='"+consu+"'"
-                    + "or ape_pat_cliente='"+consu+"' or ape_mat_cliente='"+consu+"'or dir_cliente='"+consu+"'");
+            ResultSet lista=sentencia.executeQuery("SELECT * FROM cliente WHERE nom_cliente like '%"+consu+"%'or run_cliente like '%"+consu+"%'"
+                    + "or ape_pat_cliente like '%"+consu+"%' or ape_mat_cliente like '%"+consu+"%' or dir_cliente like '%"+consu+"%'");
             while(lista.next()){
                 nom=(lista.getString("nom_cliente"));//nombre del campo de la BD
                 run=(lista.getString("run_cliente"));
@@ -358,6 +358,11 @@ public class MantClientes extends javax.swing.JFrame {
         });
 
         txt_consulta.setBackground(new java.awt.Color(255, 255, 204));
+        txt_consulta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txt_consultaMouseClicked(evt);
+            }
+        });
         txt_consulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_consultaActionPerformed(evt);
@@ -366,6 +371,9 @@ public class MantClientes extends javax.swing.JFrame {
         txt_consulta.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_consultaKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_consultaKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_consultaKeyTyped(evt);
@@ -576,7 +584,7 @@ public class MantClientes extends javax.swing.JFrame {
         llenarlst();
     }
 
-        public void eliminar (String rut, String dv, String nom, String pater, String mater, String dir, String fono, String correo){
+    public void eliminar (String rut, String dv, String nom, String pater, String mater, String dir, String fono, String correo){
      String upSQL="";
         /*Mensaje message=new Mensaje();
         message.windowClosed(e);*/
@@ -748,10 +756,14 @@ public class MantClientes extends javax.swing.JFrame {
 
     private void txt_consultaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyPressed
             // TODO add your handling code here:
+    if (evt.VK_ENTER==evt.getKeyCode()){ 
+        btn_consultar.doClick();
+    }
     }//GEN-LAST:event_txt_consultaKeyPressed
 
     private void txt_consultaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyTyped
       // TODO add your handling code here:
+      
     }//GEN-LAST:event_txt_consultaKeyTyped
 
     private void mainMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainMouseClicked
@@ -769,6 +781,7 @@ public class MantClientes extends javax.swing.JFrame {
         txt_telefono.setText("");
         txt_rut.enable();
         txt_dv.enable();
+        lstClie.clearSelection();
     }//GEN-LAST:event_mainMouseClicked
 
     private void lstCliePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_lstCliePropertyChange
@@ -814,6 +827,30 @@ public class MantClientes extends javax.swing.JFrame {
     //JOptionPane.showMessageDialog(null, evt.getKeyCode(), "ALERTA",JOptionPane.INFORMATION_MESSAGE);
     // TODO add your handling code here:
     }//GEN-LAST:event_lstClieKeyReleased
+
+    private void txt_consultaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyReleased
+              // TODO add your handling code here:
+    if ((evt.VK_BACK_SPACE==evt.getKeyCode()||evt.VK_DELETE==evt.getKeyCode())&&(txt_consulta.getText().isEmpty())){ 
+        modelolista.setNumRows(0);
+        llenarlst();
+    }
+    }//GEN-LAST:event_txt_consultaKeyReleased
+
+    private void txt_consultaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_consultaMouseClicked
+        // TODO add your handling code here:
+        txt_consulta.setText("");
+        txt_correo.setText("");
+        txt_direccion.setText("");
+        txt_dv.setText("");
+        txt_materno.setText("");
+        txt_nombre.setText("");
+        txt_paterno.setText("");
+        txt_rut.setText("");
+        txt_telefono.setText("");
+        txt_rut.enable();
+        txt_dv.enable();
+        lstClie.clearSelection();
+    }//GEN-LAST:event_txt_consultaMouseClicked
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
