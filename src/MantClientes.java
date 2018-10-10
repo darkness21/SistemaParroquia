@@ -164,6 +164,7 @@ public class MantClientes extends javax.swing.JFrame {
         });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         main.setBackground(new java.awt.Color(51, 51, 51));
         main.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -233,25 +234,42 @@ public class MantClientes extends javax.swing.JFrame {
                 txt_correoActionPerformed(evt);
             }
         });
+        txt_correo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_correoKeyTyped(evt);
+            }
+        });
 
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Correo Electronico (opcional)");
 
         txt_dv.setBackground(new java.awt.Color(255, 255, 204));
+        txt_dv.setEnabled(false);
+        txt_dv.setFocusable(false);
         txt_dv.setNextFocusableComponent(txt_nombre);
         txt_dv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_dvActionPerformed(evt);
             }
         });
+        txt_dv.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_dvKeyTyped(evt);
+            }
+        });
 
         txt_rut.setBackground(new java.awt.Color(255, 255, 204));
         txt_rut.setNextFocusableComponent(txt_dv);
-        txt_rut.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+        txt_rut.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_rutFocusLost(evt);
             }
+        });
+        txt_rut.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 txt_rutInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         txt_rut.addActionListener(new java.awt.event.ActionListener() {
@@ -260,6 +278,9 @@ public class MantClientes extends javax.swing.JFrame {
             }
         });
         txt_rut.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_rutKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_rutKeyTyped(evt);
             }
@@ -272,12 +293,22 @@ public class MantClientes extends javax.swing.JFrame {
                 txt_paternoActionPerformed(evt);
             }
         });
+        txt_paterno.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_paternoKeyTyped(evt);
+            }
+        });
 
         txt_nombre.setBackground(new java.awt.Color(255, 255, 204));
         txt_nombre.setNextFocusableComponent(txt_paterno);
         txt_nombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_nombreActionPerformed(evt);
+            }
+        });
+        txt_nombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_nombreKeyTyped(evt);
             }
         });
 
@@ -291,6 +322,11 @@ public class MantClientes extends javax.swing.JFrame {
                 txt_maternoActionPerformed(evt);
             }
         });
+        txt_materno.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_maternoKeyTyped(evt);
+            }
+        });
 
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("Apellido Materno ");
@@ -302,6 +338,11 @@ public class MantClientes extends javax.swing.JFrame {
                 txt_telefonoActionPerformed(evt);
             }
         });
+        txt_telefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_telefonoKeyTyped(evt);
+            }
+        });
 
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setText("Telefono");
@@ -311,6 +352,11 @@ public class MantClientes extends javax.swing.JFrame {
         txt_direccion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_direccionActionPerformed(evt);
+            }
+        });
+        txt_direccion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_direccionKeyTyped(evt);
             }
         });
 
@@ -358,6 +404,7 @@ public class MantClientes extends javax.swing.JFrame {
         });
 
         txt_consulta.setBackground(new java.awt.Color(255, 255, 204));
+        txt_consulta.setToolTipText("");
         txt_consulta.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 txt_consultaMouseClicked(evt);
@@ -413,7 +460,7 @@ public class MantClientes extends javax.swing.JFrame {
                                     .addGroup(mainLayout.createSequentialGroup()
                                         .addComponent(txt_rut, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txt_dv, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(txt_dv, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(mainLayout.createSequentialGroup()
                                         .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(txt_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -735,6 +782,9 @@ public class MantClientes extends javax.swing.JFrame {
     private void txt_rutKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_rutKeyTyped
             // TODO add your handling code here:
         char TipoTecla=evt.getKeyChar();
+        if(txt_rut.getText().length()>=8){
+            evt.consume();
+        }
         if(Character.isDigit(TipoTecla)){
             
         }else{
@@ -746,7 +796,9 @@ public class MantClientes extends javax.swing.JFrame {
         // TODO add your handling code here:
         String consu;
         consu=txt_consulta.getText();
-        
+        //if(txt_consulta.getText()>='0' && txt_consulta.getText()<='30000000' ){
+            
+        //}
         modelolista.setNumRows(0);
             //lstClie.remove();
         llenarlst_consu(consu);
@@ -762,7 +814,15 @@ public class MantClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_consultaKeyPressed
 
     private void txt_consultaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyTyped
-      // TODO add your handling code here:
+        char TipoTecla=evt.getKeyChar();
+        if(Character.isDigit(TipoTecla)){
+            if(txt_consulta.getText().length()>=8){
+                evt.consume();
+            }
+        }else{
+               evt.consume();
+        }        
+        
       
     }//GEN-LAST:event_txt_consultaKeyTyped
 
@@ -774,14 +834,16 @@ public class MantClientes extends javax.swing.JFrame {
         txt_correo.setText("");
         txt_direccion.setText("");
         txt_dv.setText("");
+        txt_dv.disable();
         txt_materno.setText("");
         txt_nombre.setText("");
         txt_paterno.setText("");
         txt_rut.setText("");
         txt_telefono.setText("");
         txt_rut.enable();
-        txt_dv.enable();
+        //txt_dv.enable();
         lstClie.clearSelection();
+        
     }//GEN-LAST:event_mainMouseClicked
 
     private void lstCliePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_lstCliePropertyChange
@@ -838,7 +900,7 @@ public class MantClientes extends javax.swing.JFrame {
 
     private void txt_consultaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_consultaMouseClicked
         // TODO add your handling code here:
-        txt_consulta.setText("");
+        //txt_consulta.setText("");
         txt_correo.setText("");
         txt_direccion.setText("");
         txt_dv.setText("");
@@ -851,6 +913,115 @@ public class MantClientes extends javax.swing.JFrame {
         txt_dv.enable();
         lstClie.clearSelection();
     }//GEN-LAST:event_txt_consultaMouseClicked
+
+    private void txt_dvKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_dvKeyTyped
+        // TODO add your handling code here:
+        char TipoTecla=evt.getKeyChar();
+        if(txt_dv.getText().length()>=1){
+            evt.consume();
+        }
+        if(Character.isDigit(TipoTecla)||evt.getKeyChar()=='k'||evt.getKeyChar()=='K'){
+            
+        }else{
+               evt.consume();
+        }
+    }//GEN-LAST:event_txt_dvKeyTyped
+
+    private void txt_nombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nombreKeyTyped
+        char TipoTecla=evt.getKeyChar();
+        if(txt_nombre.getText().length()>=45){
+            evt.consume();
+        }
+
+        if(Character.isDigit(TipoTecla)||!Character.isLetter(TipoTecla) &&!(TipoTecla == evt.VK_SPACE)&&!(TipoTecla==evt.VK_BACK_SPACE)){
+               evt.consume();
+        }else{
+            
+        }
+    }//GEN-LAST:event_txt_nombreKeyTyped
+
+    private void txt_paternoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_paternoKeyTyped
+        char TipoTecla=evt.getKeyChar();
+        if(txt_paterno.getText().length()>=45){
+            evt.consume();
+        }
+        if(Character.isDigit(TipoTecla)||!Character.isLetter(TipoTecla) &&!(TipoTecla == evt.VK_SPACE)&&!(TipoTecla==evt.VK_BACK_SPACE)){
+               evt.consume();
+        }else{
+            
+        }
+    }//GEN-LAST:event_txt_paternoKeyTyped
+
+    private void txt_maternoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_maternoKeyTyped
+        if(txt_materno.getText().length()>=45){
+            evt.consume();
+        }
+        char TipoTecla=evt.getKeyChar();
+        if(Character.isDigit(TipoTecla)||!Character.isLetter(TipoTecla) &&!(TipoTecla == evt.VK_SPACE)&&!(TipoTecla==evt.VK_BACK_SPACE)){
+               evt.consume();
+        }else{
+            
+        }
+    }//GEN-LAST:event_txt_maternoKeyTyped
+
+    private void txt_direccionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_direccionKeyTyped
+        if(txt_direccion.getText().length()>=45){
+            evt.consume();
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_direccionKeyTyped
+
+    private void txt_telefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_telefonoKeyTyped
+        char TipoTecla=evt.getKeyChar();
+        if(txt_telefono.getText().length()>=12){
+            evt.consume();
+        }
+        if(Character.isDigit(TipoTecla)){
+            
+        }else{
+               evt.consume();
+        }
+    }//GEN-LAST:event_txt_telefonoKeyTyped
+
+    private void txt_correoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_correoKeyTyped
+        if(txt_correo.getText().length()>=100){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_correoKeyTyped
+
+    private void txt_rutFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_rutFocusLost
+        // TODO add your handling code here:
+         String codigo;
+        int multiplo=2;
+        int cont=0;
+        for (int x=0;x<txt_rut.getText().length();x++){
+                cont=cont+(Integer.parseInt(txt_rut.getText().substring(txt_rut.getText().length()-x-1,txt_rut.getText().length()-x))*multiplo);
+                multiplo++;
+                if (multiplo==8){
+                    multiplo=2;
+                }
+            }
+            cont=11-(cont%11);
+            if(cont<=9){
+                codigo=""+cont;
+            }else if (cont==11){
+                codigo="0";
+            }else{
+                codigo="K";
+            }
+            
+            if(codigo!=null){
+                txt_dv.setText(codigo);
+            }
+            
+        
+    }//GEN-LAST:event_txt_rutFocusLost
+
+    private void txt_rutKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_rutKeyReleased
+        // TODO add your handling code here:
+    if ((evt.VK_BACK_SPACE==evt.getKeyCode()||evt.VK_DELETE==evt.getKeyCode())&&(txt_consulta.getText().isEmpty())){ 
+        txt_dv.setText("");
+    }
+    }//GEN-LAST:event_txt_rutKeyReleased
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
