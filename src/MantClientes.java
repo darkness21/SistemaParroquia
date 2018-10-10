@@ -24,7 +24,11 @@ public class MantClientes extends javax.swing.JFrame {
     private String msj;
     Object[][] data = {};
     String[] columnNames={"Run","Nombre","Apellido Paterno","Apellido Materno","Dirección","Teléfono","Correo"};
-    DefaultTableModel modelolista=new DefaultTableModel(data,columnNames);
+    DefaultTableModel modelolista=new DefaultTableModel(data,columnNames){
+        public boolean isCellEditable(int rowIndex, int vColIndex) {
+            return false;
+        }
+    };
   
     public MantClientes(){
         initComponents();
