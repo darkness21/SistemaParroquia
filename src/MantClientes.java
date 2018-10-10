@@ -36,7 +36,8 @@ public class MantClientes extends javax.swing.JFrame {
         conectar();
         lbl_estado.setVisible(false);
         lstClie.setModel(modelolista);
-        llenarlst();  
+        llenarlst(); 
+        transparenciaButton();
     }
 
     public void conectar(){
@@ -52,6 +53,20 @@ public class MantClientes extends javax.swing.JFrame {
        }
     }  
 
+    public void transparenciaButton(){
+        btn_agregar.setOpaque(false);
+        btn_agregar.setContentAreaFilled(false);
+        btn_agregar.setBorderPainted(false);
+        btn_modificar.setOpaque(false);
+        btn_modificar.setContentAreaFilled(false);
+        btn_modificar.setBorderPainted(false);
+        btn_eliminar.setOpaque(false);
+        btn_eliminar.setContentAreaFilled(false);
+        btn_eliminar.setBorderPainted(false);
+        btn_consultar.setOpaque(false);
+        btn_consultar.setContentAreaFilled(false);
+        btn_consultar.setBorderPainted(false);
+    }   
     
     public void llenarlst(){
        String run,dv,nom,apet,amat,dir,fono,mail;
@@ -799,13 +814,38 @@ public class MantClientes extends javax.swing.JFrame {
         String rut,dv,nom,apepar,apemat,direccion,fono,correo;
         
         rut=txt_rut.getText();
-        dv=txt_dv.getText();
-        nom=txt_nombre.getText();
-        apepar=txt_paterno.getText();
-        apemat=txt_materno.getText();
-        direccion=txt_direccion.getText();
+        dv=txt_dv.getText().toUpperCase();
+        nom=txt_nombre.getText().toUpperCase();
+        if(txt_nombre.getText().isEmpty()){
+            lb_err2.setText("OIGA, PONGA EL NOMBRE!");
+            txt_nombre.requestFocus();
+            return;
+        }
+        apepar=txt_paterno.getText().toUpperCase();
+        if(txt_paterno.getText().isEmpty()){
+            lb_err3.setText("OIGA, PONGA EL APELLIDO!");
+            txt_paterno.requestFocus();
+            return;
+        }
+        apemat=txt_materno.getText().toUpperCase();
+        if(txt_materno.getText().isEmpty()){
+            lb_err4.setText("OIGA, PONGA EL APELLIDO DE LA MAAAAMI!");
+            txt_materno.requestFocus();
+            return;
+        }
+        direccion=txt_direccion.getText().toUpperCase();
+        if(txt_direccion.getText().isEmpty()){
+            lb_err5.setText("OIGA, Y LA DIRECCIÓN?");
+            txt_direccion.requestFocus();
+            return;
+        }
         fono=txt_telefono.getText();
-        correo=txt_correo.getText();
+        if(txt_telefono.getText().isEmpty()){
+            lb_err6.setText("DEME EL NÚMERO PAL WASÁ!");
+            txt_telefono.requestFocus();
+            return;
+        }
+        correo=txt_correo.getText().toUpperCase();
         
         actualizar(rut,dv,nom,apepar,apemat,direccion,fono,correo);
     }//GEN-LAST:event_btn_modificarActionPerformed
@@ -872,6 +912,15 @@ public class MantClientes extends javax.swing.JFrame {
             
         }else{
                evt.consume();
+        }
+        if(txt_rut.getText().startsWith("0")){
+            lb_err1.setText("CERO NO ES PRIMER DIGITO!");
+            txt_rut.setText("");
+            evt.consume();
+            txt_rut.requestFocus();
+            return;
+        }else{
+            lb_err1.setText("");
         }
         
         lb_err1.setText("");
