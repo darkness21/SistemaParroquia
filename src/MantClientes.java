@@ -40,6 +40,7 @@ public class MantClientes extends javax.swing.JFrame {
         transparenciaButton();
     }
 
+    
     public void conectar(){
        try{
            Class.forName("com.mysql.jdbc.Driver"); 
@@ -96,6 +97,7 @@ public class MantClientes extends javax.swing.JFrame {
                 modelolista.addRow(newRow);
             }
         lstClie.getRowSorter().toggleSortOrder(0);
+        lstClie.getRowSorter().toggleSortOrder(0);
         limpiarlbl();
         }catch (SQLException e){
             msj="no tiene elementos";
@@ -123,7 +125,7 @@ public class MantClientes extends javax.swing.JFrame {
                 Object[] newRow={run+"-"+dv,nom,apet,amat,dir,fono,mail};
                 modelolista.addRow(newRow);
             }
-            if (modelolista.getRowCount()==0){
+            if (modelolista.getRowCount()==0 ||(txt_consulta.getText().startsWith(" "))){
                 msj="No se encontró lo solicitado";
                 JOptionPane.showMessageDialog(null, msj, "CONSULTA SIN DATOS",JOptionPane.INFORMATION_MESSAGE);
                 modelolista.setNumRows(0);
@@ -131,6 +133,7 @@ public class MantClientes extends javax.swing.JFrame {
                 txt_consulta.setText("");
                 txt_consulta.requestFocus();
             }
+        lstClie.getRowSorter().toggleSortOrder(0);
         lstClie.getRowSorter().toggleSortOrder(0);
         }catch (SQLException e){
             msj="consulta errónea";
@@ -453,6 +456,11 @@ public class MantClientes extends javax.swing.JFrame {
         main.add(btn_eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(378, 74, -1, -1));
 
         btn_consultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/consultar.png"))); // NOI18N
+        btn_consultar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_consultarMouseClicked(evt);
+            }
+        });
         btn_consultar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_consultarActionPerformed(evt);
@@ -675,8 +683,9 @@ public class MantClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_agregarActionPerformed
 
     private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
-        String rut,dv,nom,apepar,apemat,direccion,fono,correo;
-        
+     String rut,dv,nom,apepar,apemat,direccion,fono,correo;
+     if(lstClie.getSelectedRowCount()>0){
+         
         rut=txt_rut.getText();
         dv=txt_dv.getText().toUpperCase();
         nom=txt_nombre.getText().toUpperCase();
@@ -713,6 +722,10 @@ public class MantClientes extends javax.swing.JFrame {
         limpiarlbl();
         
         actualizar(rut,dv,nom,apepar,apemat,direccion,fono,correo);
+     }else{
+         msj="Seleccione una fila para modificar";
+            JOptionPane.showMessageDialog(null, msj, "MODIFICACIÓN DE DATOS",JOptionPane.INFORMATION_MESSAGE);
+     }
     }//GEN-LAST:event_btn_modificarActionPerformed
 
     private void txt_consultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_consultaActionPerformed
@@ -749,22 +762,25 @@ public class MantClientes extends javax.swing.JFrame {
 
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
     String rut,dv,nom,apepar,apemat,direccion,fono,correo;
-        
-        rut=txt_rut.getText();
-        dv=txt_dv.getText();
-        nom=txt_nombre.getText();
-        apepar=txt_paterno.getText();
-        apemat=txt_materno.getText();
-        direccion=txt_direccion.getText();
-        fono=txt_telefono.getText();
-        correo=txt_correo.getText();
+        if(lstClie.getSelectedRowCount()>0){
+            rut=txt_rut.getText();
+            dv=txt_dv.getText();
+            nom=txt_nombre.getText();
+            apepar=txt_paterno.getText();
+            apemat=txt_materno.getText();
+            direccion=txt_direccion.getText();
+            fono=txt_telefono.getText();
+            correo=txt_correo.getText();
         
         if(JOptionPane.showConfirmDialog(rootPane, "Se eliminará el registro",
                 "Eliminar", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION)== JOptionPane.YES_OPTION){
         
                 eliminar(rut,dv,nom,apepar,apemat,direccion,fono,correo);
-    }
-   
+            }
+        }else{
+            msj="NO SE PUEDEN ELIMINAR DATOS";
+            JOptionPane.showMessageDialog(null, msj, "ELIMINACIÓN DE DATOS",JOptionPane.INFORMATION_MESSAGE);
+        }
                 // TODO add your handling code here:
     }//GEN-LAST:event_btn_eliminarActionPerformed
 
@@ -799,6 +815,10 @@ public class MantClientes extends javax.swing.JFrame {
         //if(txt_consulta.getText()>='0' && txt_consulta.getText()<='30000000' ){
             
         //}
+        if(txt_consulta.getText().startsWith(" ")){
+            txt_consulta.setText("");
+            txt_consulta.requestFocus();
+        }
         modelolista.setNumRows(0);
             //lstClie.remove();
         llenarlst_consu(consu);
@@ -815,6 +835,11 @@ public class MantClientes extends javax.swing.JFrame {
 
     private void txt_consultaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyTyped
         char TipoTecla=evt.getKeyChar();
+
+        if(Character.isSpace(TipoTecla)){
+            txt_consulta.setText("");
+            txt_consulta.requestFocus();
+        }
         if(Character.isDigit(TipoTecla)){
             if(txt_consulta.getText().length()>=8){
                 evt.consume();
@@ -906,6 +931,7 @@ public class MantClientes extends javax.swing.JFrame {
     private void txt_consultaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_consultaMouseClicked
         // TODO add your handling code here:
         //txt_consulta.setText("");
+        limpiarlbl();
         txt_correo.setText("");
         txt_direccion.setText("");
         txt_dv.setText("");
@@ -1033,6 +1059,11 @@ public class MantClientes extends javax.swing.JFrame {
         txt_dv.setText("");
     }
     }//GEN-LAST:event_txt_rutKeyReleased
+
+    private void btn_consultarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_consultarMouseClicked
+        // TODO add your handling code here:
+        txt_consulta.setText("");
+    }//GEN-LAST:event_btn_consultarMouseClicked
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
