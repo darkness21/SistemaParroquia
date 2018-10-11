@@ -123,7 +123,7 @@ public class MantClientes extends javax.swing.JFrame {
                 Object[] newRow={run+"-"+dv,nom,apet,amat,dir,fono,mail};
                 modelolista.addRow(newRow);
             }
-            if (lista.getRow()==0){
+            if (modelolista.getRowCount()==0){
                 msj="No se encontró lo solicitado";
                 JOptionPane.showMessageDialog(null, msj, "CONSULTA SIN DATOS",JOptionPane.INFORMATION_MESSAGE);
                 modelolista.setNumRows(0);
@@ -1003,6 +1003,7 @@ public class MantClientes extends javax.swing.JFrame {
          String codigo;
         int multiplo=2;
         int cont=0;
+        //módulo 11 para cálculo de DV
         for (int x=0;x<txt_rut.getText().length();x++){
                 cont=cont+(Integer.parseInt(txt_rut.getText().substring(txt_rut.getText().length()-x-1,txt_rut.getText().length()-x))*multiplo);
                 multiplo++;
