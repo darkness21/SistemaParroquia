@@ -271,6 +271,11 @@ public class MantClientes extends javax.swing.JFrame {
 
         txt_correo.setBackground(new java.awt.Color(255, 255, 204));
         txt_correo.setNextFocusableComponent(txt_telefono);
+        txt_correo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_correoFocusLost(evt);
+            }
+        });
         txt_correo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_correoActionPerformed(evt);
@@ -306,15 +311,18 @@ public class MantClientes extends javax.swing.JFrame {
         txt_rut.setBackground(new java.awt.Color(255, 255, 204));
         txt_rut.setNextFocusableComponent(txt_dv);
         txt_rut.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_rutFocusGained(evt);
+            }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txt_rutFocusLost(evt);
             }
         });
         txt_rut.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 txt_rutInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         txt_rut.addActionListener(new java.awt.event.ActionListener() {
@@ -333,7 +341,13 @@ public class MantClientes extends javax.swing.JFrame {
         main.add(txt_rut, new org.netbeans.lib.awtextra.AbsoluteConstraints(23, 245, 137, -1));
 
         txt_paterno.setBackground(new java.awt.Color(255, 255, 204));
+        txt_paterno.setText("       ");
         txt_paterno.setNextFocusableComponent(txt_materno);
+        txt_paterno.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_paternoFocusLost(evt);
+            }
+        });
         txt_paterno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_paternoActionPerformed(evt);
@@ -348,6 +362,14 @@ public class MantClientes extends javax.swing.JFrame {
 
         txt_nombre.setBackground(new java.awt.Color(255, 255, 204));
         txt_nombre.setNextFocusableComponent(txt_paterno);
+        txt_nombre.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_nombreFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_nombreFocusLost(evt);
+            }
+        });
         txt_nombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_nombreActionPerformed(evt);
@@ -366,6 +388,11 @@ public class MantClientes extends javax.swing.JFrame {
 
         txt_materno.setBackground(new java.awt.Color(255, 255, 204));
         txt_materno.setNextFocusableComponent(txt_direccion);
+        txt_materno.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_maternoFocusLost(evt);
+            }
+        });
         txt_materno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_maternoActionPerformed(evt);
@@ -384,6 +411,11 @@ public class MantClientes extends javax.swing.JFrame {
 
         txt_telefono.setBackground(new java.awt.Color(255, 255, 204));
         txt_telefono.setNextFocusableComponent(btn_agregar);
+        txt_telefono.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_telefonoFocusLost(evt);
+            }
+        });
         txt_telefono.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_telefonoActionPerformed(evt);
@@ -401,7 +433,13 @@ public class MantClientes extends javax.swing.JFrame {
         main.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(23, 547, -1, -1));
 
         txt_direccion.setBackground(new java.awt.Color(255, 255, 204));
+        txt_direccion.setToolTipText("");
         txt_direccion.setNextFocusableComponent(txt_correo);
+        txt_direccion.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_direccionFocusLost(evt);
+            }
+        });
         txt_direccion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_direccionActionPerformed(evt);
@@ -617,7 +655,7 @@ public class MantClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_paternoActionPerformed
 
     private void txt_nombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_nombreActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_txt_nombreActionPerformed
 
     private void txt_maternoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_maternoActionPerformed
@@ -639,38 +677,38 @@ public class MantClientes extends javax.swing.JFrame {
     private void btn_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarActionPerformed
        String rut,dv,nom,apepar,apemat,direccion,fono,correo;
         rut=txt_rut.getText();
-        if(txt_rut.getText().isEmpty()){
+        if(txt_rut.getText().isEmpty()||txt_rut.getText().startsWith(" ")){
             lb_err1.setText("OIGA, PONGA EL RUT!");
             txt_rut.setFocusable(rootPaneCheckingEnabled);
             return;
         }
         dv=txt_dv.getText().toUpperCase();
         nom=txt_nombre.getText().toUpperCase();
-        if(txt_nombre.getText().isEmpty()){
+        if(txt_nombre.getText().isEmpty()||txt_nombre.getText().startsWith(" ")){
             lb_err2.setText("OIGA, PONGA EL NOMBRE!");
             txt_nombre.requestFocus();
             return;
         }
         apepar=txt_paterno.getText().toUpperCase();
-        if(txt_paterno.getText().isEmpty()){
+        if(txt_paterno.getText().isEmpty()||txt_paterno.getText().startsWith(" ")){
             lb_err2.setText("OIGA, PONGA EL APELLIDO!");
             txt_paterno.requestFocus();
             return;
         }
         apemat=txt_materno.getText().toUpperCase();
-        if(txt_materno.getText().isEmpty()){
+        if(txt_materno.getText().isEmpty()||txt_materno.getText().startsWith(" ")){
             lb_err4.setText("OIGA, PONGA EL APELLIDO DE LA MAAAAMI!");
             txt_materno.requestFocus();
             return;
         }
         direccion=txt_direccion.getText().toUpperCase();
-        if(txt_direccion.getText().isEmpty()){
+        if(txt_direccion.getText().isEmpty()||txt_direccion.getText().startsWith(" ")){
             lb_err5.setText("OIGA, Y LA DIRECCIÓN?");
             txt_direccion.requestFocus();
             return;
         }
         fono=txt_telefono.getText();
-        if(txt_telefono.getText().isEmpty()){
+        if(txt_telefono.getText().isEmpty()||txt_telefono.getText().startsWith(" ")){
             lb_err6.setText("DEME EL NÚMERO PAL WASÁ!");
             txt_telefono.requestFocus();
             return;
@@ -689,31 +727,31 @@ public class MantClientes extends javax.swing.JFrame {
         rut=txt_rut.getText();
         dv=txt_dv.getText().toUpperCase();
         nom=txt_nombre.getText().toUpperCase();
-        if(txt_nombre.getText().isEmpty()){
+        if(txt_nombre.getText().isEmpty()||txt_nombre.getText().startsWith(" ")){
             lb_err2.setText("OIGA, PONGA EL NOMBRE!");
             txt_nombre.requestFocus();
             return;
         }
         apepar=txt_paterno.getText().toUpperCase();
-        if(txt_paterno.getText().isEmpty()){
+        if(txt_paterno.getText().isEmpty()||txt_paterno.getText().startsWith(" ")){
             lb_err2.setText("OIGA, PONGA EL APELLIDO!");
             txt_paterno.requestFocus();
             return;
         }
         apemat=txt_materno.getText().toUpperCase();
-        if(txt_materno.getText().isEmpty()){
+        if(txt_materno.getText().isEmpty()||txt_materno.getText().startsWith(" ")){
             lb_err4.setText("OIGA, PONGA EL APELLIDO DE LA MAAAAMI!");
             txt_materno.requestFocus();
             return;
         }
         direccion=txt_direccion.getText().toUpperCase();
-        if(txt_direccion.getText().isEmpty()){
+        if(txt_direccion.getText().isEmpty()||txt_direccion.getText().startsWith(" ")){
             lb_err5.setText("OIGA, Y LA DIRECCIÓN?");
             txt_direccion.requestFocus();
             return;
         }
         fono=txt_telefono.getText();
-        if(txt_telefono.getText().isEmpty()){
+        if(txt_telefono.getText().isEmpty()||txt_telefono.getText().startsWith(" ")){
             lb_err6.setText("DEME EL NÚMERO PAL WASÁ!");
             txt_telefono.requestFocus();
             return;
@@ -733,7 +771,7 @@ public class MantClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_consultaActionPerformed
 
     private void txt_rutInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txt_rutInputMethodTextChanged
-        // TODO add your handling code here:        
+        // TODO add your handling code here:    
                 
     }//GEN-LAST:event_txt_rutInputMethodTextChanged
 
@@ -964,6 +1002,10 @@ public class MantClientes extends javax.swing.JFrame {
             evt.consume();
         }
         limpiarlbl();
+        if(txt_nombre.getText().startsWith(" ")){
+            txt_nombre.setText("");
+            txt_nombre.requestFocus();
+        }
         if(Character.isDigit(TipoTecla)||!Character.isLetter(TipoTecla) &&!(TipoTecla == evt.VK_SPACE)&&!(TipoTecla==evt.VK_BACK_SPACE)){
                evt.consume();
         }else{
@@ -977,6 +1019,10 @@ public class MantClientes extends javax.swing.JFrame {
             evt.consume();
         }
         limpiarlbl();
+        if(txt_paterno.getText().startsWith(" ")){
+            txt_paterno.setText("");
+            txt_paterno.requestFocus();
+        }
         if(Character.isDigit(TipoTecla)||!Character.isLetter(TipoTecla) &&!(TipoTecla == evt.VK_SPACE)&&!(TipoTecla==evt.VK_BACK_SPACE)){
                evt.consume();
         }else{
@@ -989,6 +1035,10 @@ public class MantClientes extends javax.swing.JFrame {
             evt.consume();
         }
         limpiarlbl();
+        if(txt_materno.getText().startsWith(" ")){
+            txt_materno.setText("");
+            txt_materno.requestFocus();
+        }
         char TipoTecla=evt.getKeyChar();
         if(Character.isDigit(TipoTecla)||!Character.isLetter(TipoTecla) &&!(TipoTecla == evt.VK_SPACE)&&!(TipoTecla==evt.VK_BACK_SPACE)){
                evt.consume();
@@ -999,6 +1049,10 @@ public class MantClientes extends javax.swing.JFrame {
 
     private void txt_direccionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_direccionKeyTyped
         limpiarlbl();
+        if(txt_direccion.getText().startsWith(" ")){
+            txt_direccion.setText("");
+            txt_direccion.requestFocus();
+        }
         if(txt_direccion.getText().length()>=45){
             evt.consume();
         }        // TODO add your handling code here:
@@ -1006,6 +1060,10 @@ public class MantClientes extends javax.swing.JFrame {
 
     private void txt_telefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_telefonoKeyTyped
         char TipoTecla=evt.getKeyChar();
+        if(txt_telefono.getText().startsWith(" ")){
+            txt_telefono.setText("");
+            txt_telefono.requestFocus();
+        }
         if(txt_telefono.getText().length()>=12){
             evt.consume();
         }
@@ -1018,6 +1076,10 @@ public class MantClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_telefonoKeyTyped
 
     private void txt_correoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_correoKeyTyped
+        if(txt_correo.getText().startsWith(" ")){
+            txt_correo.setText("");
+            txt_correo.requestFocus();
+        }
         limpiarlbl();
         if(txt_correo.getText().length()>=100){
             evt.consume();
@@ -1025,7 +1087,7 @@ public class MantClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_correoKeyTyped
 
     private void txt_rutFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_rutFocusLost
-        // TODO add your handling code here:
+          // TODO add your handling code here:
          String codigo;
         int multiplo=2;
         int cont=0;
@@ -1049,6 +1111,11 @@ public class MantClientes extends javax.swing.JFrame {
             if(codigo!=null){
                 txt_dv.setText(codigo);
             }
+        /*if(!txt_rut.getText().equals("")){
+        } else {
+            txt_rut.setForeground(Color.GRAY);
+            txt_rut.setText("12345678");
+        }*/
             
         
     }//GEN-LAST:event_txt_rutFocusLost
@@ -1057,6 +1124,8 @@ public class MantClientes extends javax.swing.JFrame {
         // TODO add your handling code here:
     if ((evt.VK_BACK_SPACE==evt.getKeyCode()||evt.VK_DELETE==evt.getKeyCode())&&(txt_consulta.getText().isEmpty())){ 
         txt_dv.setText("");
+        //txt_rut.setForeground(Color.GRAY);
+        //txt_rut.setText("12345678");
     }
     }//GEN-LAST:event_txt_rutKeyReleased
 
@@ -1064,6 +1133,74 @@ public class MantClientes extends javax.swing.JFrame {
         // TODO add your handling code here:
         txt_consulta.setText("");
     }//GEN-LAST:event_btn_consultarMouseClicked
+
+    private void txt_rutFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_rutFocusGained
+         // TODO add your handling code here:
+       /* if(txt_rut.getText().equals("12345678")){
+            txt_rut.setForeground(Color.BLACK);
+            txt_rut.setText("");
+        }
+         */
+    }//GEN-LAST:event_txt_rutFocusGained
+
+    private void txt_nombreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_nombreFocusLost
+    /*if(!txt_nombre.getText().equals("")){
+        } else {
+            txt_nombre.setForeground(Color.GRAY);
+            txt_nombre.setText("Juanitox Andrés");
+        }        // TODO add your handling code here:*/
+    }//GEN-LAST:event_txt_nombreFocusLost
+
+    private void txt_paternoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_paternoFocusLost
+         // TODO add your handling code here:
+         /*if(!txt_paterno.getText().equals("")){
+        } else {
+            txt_paterno.setForeground(Color.GRAY);
+            txt_paterno.setText("Pérez ");
+        }
+         */
+    }//GEN-LAST:event_txt_paternoFocusLost
+
+    private void txt_maternoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_maternoFocusLost
+        // TODO add your handling code here:
+      /*  if(!txt_materno.getText().equals("")){
+        } else {
+            txt_materno.setForeground(Color.GRAY);
+            txt_materno.setText("González");
+        }*/
+    }//GEN-LAST:event_txt_maternoFocusLost
+
+    private void txt_direccionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_direccionFocusLost
+        // TODO add your handling code here:
+     /*   if(!txt_direccion.getText().equals("")){
+        } else {
+            txt_direccion.setForeground(Color.GRAY);
+            txt_direccion.setText("Santa María 6090");
+        }*/
+    }//GEN-LAST:event_txt_direccionFocusLost
+
+    private void txt_correoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_correoFocusLost
+    /*    if(!txt_correo.getText().equals("")){
+        } else {
+            txt_correo.setForeground(Color.GRAY);
+            txt_correo.setText("correo@dominio.com");
+        }*/
+    }//GEN-LAST:event_txt_correoFocusLost
+
+    private void txt_telefonoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_telefonoFocusLost
+    /*    if(!txt_telefono.getText().equals("")){
+        } else {
+            txt_telefono.setForeground(Color.GRAY);
+            txt_telefono.setText("56912345678");
+        }*/
+    }//GEN-LAST:event_txt_telefonoFocusLost
+
+    private void txt_nombreFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_nombreFocusGained
+    /*if(txt_nombre.getText().equals("Juanitox Andrés")){
+            txt_rut.setForeground(Color.BLACK);
+            txt_rut.setText("");
+        }*/
+    }//GEN-LAST:event_txt_nombreFocusGained
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
