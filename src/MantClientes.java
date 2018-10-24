@@ -40,9 +40,7 @@ public class MantClientes extends javax.swing.JFrame {
         transparenciaButton();
     }
 
-    public void prueba(){
-        
-    }
+//haciendo prueba nuevamente
     
     public void conectar(){
        try{
