@@ -874,10 +874,10 @@ public class MantClientes extends javax.swing.JFrame {
     private void txt_consultaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyTyped
         char TipoTecla=evt.getKeyChar();
 
-        if(Character.isSpace(TipoTecla)){
+        /*if(Character.isSpace(TipoTecla)){
             txt_consulta.setText("");
             txt_consulta.requestFocus();
-        }
+        }*/
         if(Character.isDigit(TipoTecla)){
             if(txt_consulta.getText().length()>=8){
                 evt.consume();

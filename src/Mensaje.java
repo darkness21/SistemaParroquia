@@ -34,10 +34,10 @@ Mensaje(){
     f.setVisible(true);  
 }  
 public void windowClosing(WindowEvent e) {  
-    int a=JOptionPane.showConfirmDialog(f,"¿Esta seguro que quiere eliminar esta venta?");  
-if(a==JOptionPane.YES_OPTION){  
-    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
-}  
+    int a=JOptionPane.showConfirmDialog(f,"¿Esta seguro que quiere eliminar esta cliente?");  
+    if(a==JOptionPane.YES_OPTION){  
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
+    }  
 }  
 public static void main(String[] args) {  
     new  Mensaje();  
