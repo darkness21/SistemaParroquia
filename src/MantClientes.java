@@ -40,6 +40,15 @@ public class MantClientes extends javax.swing.JFrame {
         transparenciaButton();
     }
 
+        public MantClientes(int valor){
+        initComponents();
+        this.setLocationRelativeTo(null);
+        conectar();
+        lbl_estado.setVisible(false);
+        lstClie.setModel(modelolista);
+        llenarlst(); 
+        transparenciaButton();
+    }
     
     public void conectar(){
        try{
