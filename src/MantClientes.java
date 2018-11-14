@@ -290,13 +290,16 @@ public class MantClientes extends javax.swing.JFrame {
         main.add(txt_correo, new org.netbeans.lib.awtextra.AbsoluteConstraints(156, 491, 173, -1));
 
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setText("Correo Electronico (opcional)");
+        jLabel11.setText("Correo Electrónico (opcional)");
         main.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(156, 468, -1, -1));
 
         txt_dv.setBackground(new java.awt.Color(255, 255, 204));
-        txt_dv.setEnabled(false);
-        txt_dv.setFocusable(false);
         txt_dv.setNextFocusableComponent(txt_nombre);
+        txt_dv.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_dvFocusLost(evt);
+            }
+        });
         txt_dv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_dvActionPerformed(evt);
@@ -320,10 +323,10 @@ public class MantClientes extends javax.swing.JFrame {
             }
         });
         txt_rut.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 txt_rutInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         txt_rut.addActionListener(new java.awt.event.ActionListener() {
@@ -430,7 +433,7 @@ public class MantClientes extends javax.swing.JFrame {
         main.add(txt_telefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(23, 576, 121, -1));
 
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel14.setText("Telefono");
+        jLabel14.setText("Teléfono");
         main.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(23, 547, -1, -1));
 
         txt_direccion.setBackground(new java.awt.Color(255, 255, 204));
@@ -898,7 +901,7 @@ public class MantClientes extends javax.swing.JFrame {
         txt_correo.setText("");
         txt_direccion.setText("");
         txt_dv.setText("");
-        txt_dv.disable();
+        //txt_dv.disable();
         txt_materno.setText("");
         txt_nombre.setText("");
         txt_paterno.setText("");
@@ -942,7 +945,7 @@ public class MantClientes extends javax.swing.JFrame {
             dv=lstClie.getValueAt(lstClie.getSelectedRow(), 0).toString();
             dv=dv.substring(dv.length()-1, dv.length());
             txt_dv.setText(dv);
-            txt_dv.disable();
+            //txt_dv.disable();
             txt_nombre.setText(lstClie.getValueAt(lstClie.getSelectedRow(), 1).toString());
             txt_paterno.setText(lstClie.getValueAt(lstClie.getSelectedRow(), 2).toString());
             txt_materno.setText(lstClie.getValueAt(lstClie.getSelectedRow(), 3).toString());
@@ -1007,7 +1010,8 @@ public class MantClientes extends javax.swing.JFrame {
             txt_nombre.setText("");
             txt_nombre.requestFocus();
         }
-        if(Character.isDigit(TipoTecla)||!Character.isLetter(TipoTecla) &&!(TipoTecla == evt.VK_SPACE)&&!(TipoTecla==evt.VK_BACK_SPACE)){
+        if(Character.isDigit(TipoTecla)||!Character.isLetter(TipoTecla) &&!(TipoTecla == evt.VK_SPACE)
+                &&!(TipoTecla==evt.VK_BACK_SPACE)&&!(TipoTecla==evt.VK_MINUS)&&!(evt.getKeyChar()=='\'')){
                evt.consume();
         }else{
             
@@ -1088,35 +1092,6 @@ public class MantClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_correoKeyTyped
 
     private void txt_rutFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_rutFocusLost
-          // TODO add your handling code here:
-         String codigo;
-        int multiplo=2;
-        int cont=0;
-        //módulo 11 para cálculo de DV
-        for (int x=0;x<txt_rut.getText().length();x++){
-                cont=cont+(Integer.parseInt(txt_rut.getText().substring(txt_rut.getText().length()-x-1,txt_rut.getText().length()-x))*multiplo);
-                multiplo++;
-                if (multiplo==8){
-                    multiplo=2;
-                }
-            }
-            cont=11-(cont%11);
-            if(cont<=9){
-                codigo=""+cont;
-            }else if (cont==11){
-                codigo="0";
-            }else{
-                codigo="K";
-            }
-            
-            if(codigo!=null){
-                txt_dv.setText(codigo);
-            }
-        /*if(!txt_rut.getText().equals("")){
-        } else {
-            txt_rut.setForeground(Color.GRAY);
-            txt_rut.setText("12345678");
-        }*/
             
         
     }//GEN-LAST:event_txt_rutFocusLost
@@ -1202,6 +1177,38 @@ public class MantClientes extends javax.swing.JFrame {
             txt_rut.setText("");
         }*/
     }//GEN-LAST:event_txt_nombreFocusGained
+
+    private void txt_dvFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_dvFocusLost
+        String codigo;
+        int multiplo=2;
+        int cont=0;
+        //módulo 11 para cálculo de DV
+        for (int x=0;x<txt_rut.getText().length();x++){
+                cont=cont+(Integer.parseInt(txt_rut.getText().substring(txt_rut.getText().length()-x-1,txt_rut.getText().length()-x))*multiplo);
+                multiplo++;
+                if (multiplo==8){
+                    multiplo=2;
+                }
+            }
+            cont=11-(cont%11);
+            if(cont<=9){
+                codigo=""+cont;
+            }else if (cont==11){
+                codigo="0";
+            }else{
+                codigo="K";
+            }
+        if(!txt_dv.getText().equals(codigo)){
+            lb_err1.setText("Run inválido, ingrese nuevamente!");
+            txt_rut.setText("");
+            txt_dv.setText("");
+            txt_rut.requestFocus();
+        }
+            
+            /*if(codigo!=null){
+                txt_dv.setText(codigo);
+            }*/
+    }//GEN-LAST:event_txt_dvFocusLost
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
