@@ -77,6 +77,8 @@ public class MantSepultados extends javax.swing.JFrame {
         btn_consultar.setContentAreaFilled(false);
         btn_consultar.setBorderPainted(false);
     } 
+    
+    
     public void limpiarlbl(){
         lb_err1.setText("");
         lb_err2.setText("");
@@ -89,6 +91,7 @@ public class MantSepultados extends javax.swing.JFrame {
     }
     public void llenarlst(){
        String run,dv,nom,apet,amat,fechanac,fechadef,fechasep;
+       Date fech = null;
        lstsep.setPreferredScrollableViewportSize(new Dimension(500,70));
         RowSorter<TableModel> sorter=new TableRowSorter<TableModel>(modelolista);
         lstsep.setRowSorter(sorter);
@@ -101,7 +104,16 @@ public class MantSepultados extends javax.swing.JFrame {
                 dv=(lista.getString("dv_sepultado"));
                 apet=(lista.getString("ape_pat_sepultado"));
                 amat=(lista.getString("ape_mat_sepultado"));
-                fechanac=(lista.getString("fecha_nac_sepultado"));
+                //Código para transformar la fecha rescatada y formatearla como String 
+                fechanac=lista.getString("fecha_nac_sepultado");
+                SimpleDateFormat parseador=new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat format=new SimpleDateFormat("dd-MM-yyyy");
+                try {
+                    fech=parseador.parse(fechanac);
+                } catch (ParseException ex) {
+                    Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                fechanac=String.format(format.format(fech));
                 fechadef=(lista.getString("fecha_defun_sepultado"));
                 fechasep=(lista.getString("fecha_sepultacion"));
                 Object[] newRow={run+"-"+dv,nom,apet,amat,fechanac,fechadef,fechasep};
@@ -464,9 +476,6 @@ public class MantSepultados extends javax.swing.JFrame {
         lb_err7.setForeground(new java.awt.Color(255, 0, 51));
         lb_err7.setText("jLabel2");
 
-        txt_fechnac.setDateFormatString("yyyy-mm-dd");
-        txt_fechnac.setMinSelectableDate(new java.util.Date(-62135751510000L));
-
         javax.swing.GroupLayout mainLayout = new javax.swing.GroupLayout(main);
         main.setLayout(mainLayout);
         mainLayout.setHorizontalGroup(
@@ -521,9 +530,9 @@ public class MantSepultados extends javax.swing.JFrame {
                                     .addComponent(jLabel9)
                                     .addComponent(lb_err4)
                                     .addGroup(mainLayout.createSequentialGroup()
-                                        .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(txt_fechnac, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(txt_fecdef, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE))
+                                        .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txt_fecdef, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txt_fechnac, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(lb_err6)
@@ -612,7 +621,7 @@ public class MantSepultados extends javax.swing.JFrame {
                 .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lb_err2)
                     .addComponent(lb_err3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txt_materno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -623,20 +632,18 @@ public class MantSepultados extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainLayout.createSequentialGroup()
+                        .addGap(44, 44, 44)
+                        .addComponent(jButton2))
+                    .addGroup(mainLayout.createSequentialGroup()
                         .addComponent(txt_fechnac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(mainLayout.createSequentialGroup()
-                                .addGap(27, 27, 27)
-                                .addComponent(jButton2))
-                            .addGroup(mainLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(txt_fecdef, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lb_err6))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel14))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txt_fecdef, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lb_err6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel14))
                     .addComponent(lb_err5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -653,7 +660,7 @@ public class MantSepultados extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(main, javax.swing.GroupLayout.PREFERRED_SIZE, 733, Short.MAX_VALUE)
+            .addComponent(main, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -755,8 +762,8 @@ public class MantSepultados extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_consultaActionPerformed
 
     private void btn_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarActionPerformed
-        String rut,dv,nom,apepar,apemat,fechadef,fechasep;
-        Date fechanac,fechanac2;
+        String rut,dv,nom,apepar,apemat,fechanac2,fechadef,fechasep;
+        Date fechanac;
         rut=txt_rut.getText();
         if(txt_rut.getText().isEmpty()||txt_rut.getText().startsWith(" ")){
             lb_err1.setText("Ingrese el rut");
@@ -782,7 +789,11 @@ public class MantSepultados extends javax.swing.JFrame {
             txt_materno.requestFocus();
             return;
         }
+        txt_fechnac.setDateFormatString("yyyy-MM-dd");
+        fechanac2=txt_fechnac.getDateFormatString();
         fechanac= txt_fechnac.getDate();
+        SimpleDateFormat sdf=new SimpleDateFormat(fechanac2);
+        fechanac2=String.valueOf(sdf.format(fechanac));
         /*if(txt_fechnac.getDate().equals("")){
             lb_err5.setText("Ingrese la fecha de nacimiento");
             txt_fechnac.requestFocus();
@@ -801,7 +812,7 @@ public class MantSepultados extends javax.swing.JFrame {
             return;
         }
         String sql="INSERT INTO sepultados(run_sepultado,dv_sepultado,nom_sepultado,ape_pat_sepultado,ape_mat_sepultado,fecha_nac_sepultado,fecha_defun_sepultado,fecha_sepultacion) "
-                + "VALUES('" + rut + "','" + dv + "','" + nom + "','" + apepar + "','" + apemat + "','" + fechanac + "','" + fechadef + "','" + fechasep + "')";
+                + "VALUES('" + rut + "','" + dv + "','" + nom + "','" + apepar + "','" + apemat + "','" + fechanac2 + "','" + fechadef + "','" + fechasep + "')";
         msj=sql;
            JOptionPane.showMessageDialog(null, msj, "Datos Guardados", JOptionPane.INFORMATION_MESSAGE);
         insertar(sql);
