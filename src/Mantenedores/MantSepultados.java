@@ -1,6 +1,5 @@
 package Mantenedores;
 
-
 import com.toedter.calendar.JDateChooser;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,26 +19,26 @@ import java.util.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 
 public class MantSepultados extends javax.swing.JFrame {
 
     private Statement sentencia;
     private Connection conexion;
-    private String nomBD="cementerio";
-    private String usuario ="root";
-    private String password ="";
+    private String nomBD = "cementerio";
+    private String usuario = "root";
+    private String password = "";
     private String msj;
     Object[][] data = {};
-    String[] columnNames={"Run","Nombre","Apellido Paterno","Apellido Materno","Fecha Nacimiento","Fecha Defunción","Fecha Sepultación"};
-    DefaultTableModel modelolista=new DefaultTableModel(data,columnNames){
+    String[] columnNames = {"Run", "Nombre", "Apellido Paterno", "Apellido Materno", "Fecha Nacimiento", "Fecha Defunción", "Fecha Sepultación"};
+    DefaultTableModel modelolista = new DefaultTableModel(data, columnNames) {
         public boolean isCellEditable(int rowIndex, int vColIndex) {
             return false;
         }
     };
-    
+
     /**
      * Creates new form MantSepultados
      */
@@ -49,23 +48,24 @@ public class MantSepultados extends javax.swing.JFrame {
         conectar();
         lbl_estado.setVisible(false);
         lstsep.setModel(modelolista);
-        llenarlst(); 
+        llenarlst();
         transparenciaButton();
     }
 
-        public void conectar(){
-         try{
-           Class.forName("com.mysql.jdbc.Driver"); 
-           String url="jdbc:mysql://localhost:3306/"+this.nomBD;
-           this.conexion=DriverManager.getConnection(url,this.usuario,this.password);
-           this.sentencia=(Statement)this.conexion.createStatement();
-       }catch(Exception e){
-           msj="error al conectar";
-           JOptionPane.showMessageDialog(null, msj, "Datos Guardados", JOptionPane.INFORMATION_MESSAGE);
-           
-       }
+    public void conectar() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            String url = "jdbc:mysql://localhost:3306/" + this.nomBD;
+            this.conexion = DriverManager.getConnection(url, this.usuario, this.password);
+            this.sentencia = (Statement) this.conexion.createStatement();
+        } catch (Exception e) {
+            msj = "error al conectar";
+            JOptionPane.showMessageDialog(null, msj, "Datos Guardados", JOptionPane.INFORMATION_MESSAGE);
+
+        }
     }
-    public void transparenciaButton(){
+
+    public void transparenciaButton() {
         btn_agregar.setOpaque(false);
         btn_agregar.setContentAreaFilled(false);
         btn_agregar.setBorderPainted(false);
@@ -78,10 +78,9 @@ public class MantSepultados extends javax.swing.JFrame {
         btn_consultar.setOpaque(false);
         btn_consultar.setContentAreaFilled(false);
         btn_consultar.setBorderPainted(false);
-    } 
-    
-    
-    public void limpiarlbl(){
+    }
+
+    public void limpiarlbl() {
         lb_err1.setText("");
         lb_err2.setText("");
         lb_err3.setText("");
@@ -89,106 +88,135 @@ public class MantSepultados extends javax.swing.JFrame {
         lb_err5.setText("");
         lb_err6.setText("");
         lb_err7.setText("");
-        
+
     }
-    public void llenarlst(){
-       String run,dv,nom,apet,amat,fechanac,fechadef,fechasep;
-       Date fech = null;
-       lstsep.setPreferredScrollableViewportSize(new Dimension(500,70));
-        RowSorter<TableModel> sorter=new TableRowSorter<TableModel>(modelolista);
+
+    public void llenarlst() {
+        String run, dv, nom, apet, amat, fechanac, fechadef, fechasep;
+        Date fech = null;
+        lstsep.setPreferredScrollableViewportSize(new Dimension(500, 70));
+        RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(modelolista);
         lstsep.setRowSorter(sorter);
-        try{
-            sentencia=(Statement)conexion.createStatement();//permite ejecutar sentencias SQL
-            ResultSet lista=sentencia.executeQuery("SELECT * FROM sepultados");
-            while(lista.next()){
-                nom=(lista.getString("nom_sepultado"));//nombre del campo de la BD
-                run=(lista.getString("run_sepultado"));
-                dv=(lista.getString("dv_sepultado"));
-                apet=(lista.getString("ape_pat_sepultado"));
-                amat=(lista.getString("ape_mat_sepultado"));
+        try {
+            sentencia = (Statement) conexion.createStatement();//permite ejecutar sentencias SQL
+            ResultSet lista = sentencia.executeQuery("SELECT * FROM sepultados");
+            while (lista.next()) {
+                nom = (lista.getString("nom_sepultado"));//nombre del campo de la BD
+                run = (lista.getString("run_sepultado"));
+                dv = (lista.getString("dv_sepultado"));
+                apet = (lista.getString("ape_pat_sepultado"));
+                amat = (lista.getString("ape_mat_sepultado"));
                 //Código para transformar la fecha rescatada y formatearla como String 
-                fechanac=lista.getString("fecha_nac_sepultado");
-                SimpleDateFormat parseador=new SimpleDateFormat("yyyy-MM-dd");
-                SimpleDateFormat format=new SimpleDateFormat("dd-MM-yyyy");
+                fechanac = lista.getString("fecha_nac_sepultado");
+                SimpleDateFormat parseador = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
                 try {
-                    fech=parseador.parse(fechanac);
+                    fech = parseador.parse(fechanac);
                 } catch (ParseException ex) {
                     Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                fechanac=String.format(format.format(fech));
-                fechadef=(lista.getString("fecha_defun_sepultado"));
-                fechasep=(lista.getString("fecha_sepultacion"));
-                Object[] newRow={run+"-"+dv,nom,apet,amat,fechanac,fechadef,fechasep};
+                fechanac = String.format(format.format(fech));
+
+                fechadef = (lista.getString("fecha_defun_sepultado"));
+                parseador = new SimpleDateFormat("yyyy-MM-dd");
+                format = new SimpleDateFormat("dd-MM-yyyy");
+                try {
+                    fech = parseador.parse(fechadef);
+                } catch (ParseException ex) {
+                    Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                fechadef = String.format(format.format(fech));
+
+                fechasep = (lista.getString("fecha_sepultacion"));
+                parseador = new SimpleDateFormat("yyyy-MM-dd");
+                format = new SimpleDateFormat("dd-MM-yyyy");
+                try {
+                    fech = parseador.parse(fechasep);
+                } catch (ParseException ex) {
+                    Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                fechasep = String.format(format.format(fech));
+
+                Object[] newRow = {run + "-" + dv, nom, apet, amat, fechanac, fechadef, fechasep};
                 modelolista.addRow(newRow);
             }
-        lstsep.getRowSorter().toggleSortOrder(0);
-        lstsep.getRowSorter().toggleSortOrder(0);
-        limpiarlbl();
-        }catch (SQLException e){
-            msj="no tiene elementos";
+            lstsep.getRowSorter().toggleSortOrder(0);
+            lstsep.getRowSorter().toggleSortOrder(0);
+            limpiarlbl();
+        } catch (SQLException e) {
+            msj = "no tiene elementos";
         }
-        
-    };
+
+    }
+
+    ;
     
-    public void llenarlst_consu(String consu){
-       String run,dv,nom,apet,amat,fechadef,fechasep;
-       Date fechanac;
-       lstsep.setPreferredScrollableViewportSize(new Dimension(500,70));
-        RowSorter<TableModel> sorter=new TableRowSorter<TableModel>(modelolista);
+    public void llenarlst_consu(String consu) {
+        String run, dv, nom, apet, amat, fechadef, fechasep;
+        Date fechanac;
+        lstsep.setPreferredScrollableViewportSize(new Dimension(500, 70));
+        RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(modelolista);
         lstsep.setRowSorter(sorter);
-        try{
-            sentencia=(Statement)conexion.createStatement();//permite ejecutar sentencias SQL
-            ResultSet lista=sentencia.executeQuery("SELECT * FROM sepultados WHERE nom_sepultado like '%"+consu+"%'or run_sepultado like '%"+consu+"%'"
-                    + "or ape_pat_sepultado like '%"+consu+"%' or ape_mat_sepultado like '%"+consu+"%' or fecha_sepultacion like '%"+consu+"%'");
-            while(lista.next()){
-                nom=(lista.getString("nom_cliente"));//nombre del campo de la BD
-                run=(lista.getString("run_cliente"));
-                dv=(lista.getString("dv_cliente"));
-                apet=(lista.getString("ape_pat_cliente"));
-                amat=(lista.getString("ape_mat_cliente"));
-                fechanac=(lista.getDate("dir_cliente"));
-                fechadef=(lista.getString("fono_cliente"));
-                fechasep=(lista.getString("correo_cliente"));
-                Object[] newRow={run+"-"+dv,nom,apet,amat,fechanac,fechadef,fechasep};
+        try {
+            sentencia = (Statement) conexion.createStatement();//permite ejecutar sentencias SQL
+            ResultSet lista = sentencia.executeQuery("SELECT * FROM sepultados WHERE nom_sepultado like '%" + consu + "%'or run_sepultado like '%" + consu + "%'"
+                    + "or ape_pat_sepultado like '%" + consu + "%' or ape_mat_sepultado like '%" + consu + "%' or fecha_sepultacion like '%" + consu + "%'");
+            while (lista.next()) {
+                nom = (lista.getString("nom_sepultado"));//nombre del campo de la BD
+                run = (lista.getString("run_sepultado"));
+                dv = (lista.getString("dv_sepultado"));
+                apet = (lista.getString("ape_pat_sepultado"));
+                amat = (lista.getString("ape_mat_sepultado"));
+                fechanac = (lista.getDate("fecha_nac_sepultado"));
+                fechadef = (lista.getString("fecha_defun_sepultado"));
+                fechasep = (lista.getString("fecha_sepultacion"));
+                Object[] newRow = {run + "-" + dv, nom, apet, amat, fechanac, fechadef, fechasep};
                 modelolista.addRow(newRow);
             }
-            if (modelolista.getRowCount()==0 ||(txt_consulta.getText().startsWith(" "))){
-                msj="No se encontró lo solicitado";
-                JOptionPane.showMessageDialog(null, msj, "CONSULTA SIN DATOS",JOptionPane.INFORMATION_MESSAGE);
+            if (modelolista.getRowCount() == 0 || (txt_consulta.getText().startsWith(" "))) {
+                msj = "No se encontró lo solicitado";
+                JOptionPane.showMessageDialog(null, msj, "CONSULTA SIN DATOS", JOptionPane.INFORMATION_MESSAGE);
                 modelolista.setNumRows(0);
                 llenarlst();
                 txt_consulta.setText("");
                 txt_consulta.requestFocus();
             }
-        lstsep.getRowSorter().toggleSortOrder(0);
-        lstsep.getRowSorter().toggleSortOrder(0);
-        }catch (SQLException e){
-            msj="consulta errónea";
-            JOptionPane.showMessageDialog(null, msj, "Falla Consulta",JOptionPane.INFORMATION_MESSAGE);
+            lstsep.getRowSorter().toggleSortOrder(0);
+            lstsep.getRowSorter().toggleSortOrder(0);
+        } catch (SQLException e) {
+            msj = "consulta errónea";
+            JOptionPane.showMessageDialog(null, msj, "Falla Consulta", JOptionPane.INFORMATION_MESSAGE);
         }
-        
-    };
+
+    }
+
+    ;
     
-    public void limpiar(){
+    public void limpiar() {
         txt_consulta.setText("");
-        txt_fechnac.setDateFormatString("");
-        txt_fecdef.setText("");
+        dc_fechnac.setDate(null);
+        dc_fechadef.setDate(null);
         txt_dv.setText("");
         txt_materno.setText("");
         txt_nombre.setText("");
         txt_paterno.setText("");
         txt_rut.setText("");
-        txt_fecsep.setText("");
+        dc_fechasepul.setDate(null);
         txt_rut.enable();
         txt_dv.enable();
         lstsep.clearSelection();
     }
-    
+
+    public void formatearfecha() {
+        dc_fechnac.setDateFormatString("dd-MM-yyyy");
+        dc_fechadef.setDateFormatString("dd-MM-yyyy");
+        dc_fechasepul.setDateFormatString("dd-MM-yyyy");
+    }
+
     /*private JDateChooser dateChooser;
     dateChooser=new JDateChooser();
     dateChooser.setBounds(r);
     JPanel.add(calendar);*/
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -211,9 +239,7 @@ public class MantSepultados extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         txt_materno = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
-        txt_fecsep = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        txt_fecdef = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         txt_consulta = new javax.swing.JTextField();
         btn_agregar = new javax.swing.JButton();
@@ -228,7 +254,9 @@ public class MantSepultados extends javax.swing.JFrame {
         lb_err5 = new javax.swing.JLabel();
         lb_err6 = new javax.swing.JLabel();
         lb_err7 = new javax.swing.JLabel();
-        txt_fechnac = new com.toedter.calendar.JDateChooser();
+        dc_fechnac = new com.toedter.calendar.JDateChooser();
+        dc_fechadef = new com.toedter.calendar.JDateChooser();
+        dc_fechasepul = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -284,6 +312,11 @@ public class MantSepultados extends javax.swing.JFrame {
         jLabel11.setText("Fecha Nacimiento");
 
         txt_dv.setBackground(new java.awt.Color(255, 255, 204));
+        txt_dv.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_dvFocusLost(evt);
+            }
+        });
         txt_dv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_dvActionPerformed(evt);
@@ -357,32 +390,8 @@ public class MantSepultados extends javax.swing.JFrame {
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("Apellido Materno ");
 
-        txt_fecsep.setBackground(new java.awt.Color(255, 255, 204));
-        txt_fecsep.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_fecsepActionPerformed(evt);
-            }
-        });
-        txt_fecsep.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txt_fecsepKeyTyped(evt);
-            }
-        });
-
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setText("Fecha Sepultación");
-
-        txt_fecdef.setBackground(new java.awt.Color(255, 255, 204));
-        txt_fecdef.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_fecdefActionPerformed(evt);
-            }
-        });
-        txt_fecdef.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txt_fecdefKeyTyped(evt);
-            }
-        });
 
         jButton2.setBackground(new java.awt.Color(102, 0, 0));
         jButton2.setFont(new java.awt.Font("Franklin Gothic Medium", 3, 13)); // NOI18N
@@ -521,26 +530,6 @@ public class MantSepultados extends javax.swing.JFrame {
                         .addGap(23, 23, 23)
                         .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(mainLayout.createSequentialGroup()
-                                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(mainLayout.createSequentialGroup()
-                                        .addComponent(txt_fecsep, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(lb_err7))
-                                    .addComponent(jLabel13)
-                                    .addComponent(txt_materno, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel11)
-                                    .addComponent(jLabel9)
-                                    .addComponent(lb_err4)
-                                    .addGroup(mainLayout.createSequentialGroup()
-                                        .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txt_fecdef, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txt_fechnac, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lb_err6)
-                                            .addComponent(lb_err5, javax.swing.GroupLayout.Alignment.TRAILING))))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainLayout.createSequentialGroup()
                                 .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(mainLayout.createSequentialGroup()
                                         .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -573,7 +562,29 @@ public class MantSepultados extends javax.swing.JFrame {
                                         .addComponent(jLabel14)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jButton2)))
-                                .addGap(104, 104, 104)))))
+                                .addGap(104, 104, 104))
+                            .addGroup(mainLayout.createSequentialGroup()
+                                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel13)
+                                    .addComponent(txt_materno, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel11)
+                                    .addComponent(jLabel9)
+                                    .addComponent(lb_err4)
+                                    .addGroup(mainLayout.createSequentialGroup()
+                                        .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(dc_fechasepul, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
+                                            .addComponent(dc_fechnac, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(dc_fechadef, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(mainLayout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addComponent(lb_err5)
+                                                    .addComponent(lb_err6)))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainLayout.createSequentialGroup()
+                                                .addGap(12, 12, 12)
+                                                .addComponent(lb_err7)))))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         mainLayout.setVerticalGroup(
@@ -623,7 +634,7 @@ public class MantSepultados extends javax.swing.JFrame {
                 .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lb_err2)
                     .addComponent(lb_err3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txt_materno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -635,22 +646,23 @@ public class MantSepultados extends javax.swing.JFrame {
                 .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainLayout.createSequentialGroup()
                         .addGap(44, 44, 44)
-                        .addComponent(jButton2))
+                        .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton2)
+                            .addComponent(lb_err6)))
                     .addGroup(mainLayout.createSequentialGroup()
-                        .addComponent(txt_fechnac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dc_fechnac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lb_err5))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel9)
+                        .addGap(13, 13, 13)
+                        .addComponent(dc_fechadef, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txt_fecdef, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lb_err6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel14))
-                    .addComponent(lb_err5))
+                        .addComponent(jLabel14)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_fecsep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lb_err7))
+                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lb_err7)
+                    .addComponent(dc_fechasepul, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(100, 100, 100))
         );
 
@@ -662,68 +674,67 @@ public class MantSepultados extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(main, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(main, javax.swing.GroupLayout.PREFERRED_SIZE, 712, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void insertar(String sql){
-      try{
+    public void insertar(String sql) {
+        try {
             sentencia.executeUpdate(sql);
-            msj="datos guardados";
+            msj = "datos guardados";
             JOptionPane.showMessageDialog(null, msj, "Datos Guardados", JOptionPane.INFORMATION_MESSAGE);
-            
-        }
-        catch(SQLException e){
-            msj="No ingresó";
+
+        } catch (SQLException e) {
+            msj = "No ingresó";
             JOptionPane.showMessageDialog(null, msj, "---", JOptionPane.INFORMATION_MESSAGE);
-            
+
         }
         modelolista.setNumRows(0);
-            //lstClie.remove();
+        //lstClie.remove();
         llenarlst();
         limpiar();
     }
-    
-    public void actualizar (String rut, String dv, String nom, String pater, String mater, Date fechanac, String fechadef, String fechasep){
-     String upSQL="";
-        
-        try{
-        upSQL="UPDATE sepultados SET nom_sepultado='"+ nom + "',ape_pat_sepultado='" + pater + "',ape_mat_sepultado='" + mater + "',fecha_nac_sepultado='" + fechanac + "',fecha_defun_sepultado='" + fechadef + "',fecha_sepultacion='" + fechasep + "' WHERE run_sepultado='"+ rut +"'";
-        sentencia.executeUpdate(upSQL);
-        msj="Datos actualizados";
-        JOptionPane.showMessageDialog(null, msj, "Datos actualizados",JOptionPane.INFORMATION_MESSAGE);
-       
+
+    public void actualizar(String rut, String dv, String nom, String pater, String mater, String fechanac, String fechadef, String fechasep) {
+        String upSQL = "";
+
+        try {
+            upSQL = "UPDATE sepultados SET nom_sepultado='" + nom + "',ape_pat_sepultado='" + pater + "',ape_mat_sepultado='" + mater + "',fecha_nac_sepultado='" + fechanac + "',fecha_defun_sepultado='" + fechadef + "',fecha_sepultacion='" + fechasep + "' WHERE run_sepultado='" + rut + "'";
+            sentencia.executeUpdate(upSQL);
+            msj = "Datos actualizados";
+            JOptionPane.showMessageDialog(null, msj, "Datos actualizados", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (SQLException e) {
+            msj = "No actualizado";
+            JOptionPane.showMessageDialog(null, msj, "Datos actualizados", JOptionPane.INFORMATION_MESSAGE);
         }
-       catch(SQLException e){
-           msj="No actualizado";
-           JOptionPane.showMessageDialog(null, msj, "Datos actualizados",JOptionPane.INFORMATION_MESSAGE);
-       }   
         modelolista.setNumRows(0);
-            //lstClie.remove();
+        //lstClie.remove();
         llenarlst();
         limpiar();
     }
-    
-    public void eliminar (String rut, String dv, String nom, String pater, String mater, Date fechanac, String fechadef, String fechasep){
-     String upSQL="";
+
+    public void eliminar(String rut, String dv, String nom, String pater, String mater, Date fechanac, Date fechadef, Date fechasep) {
+        String upSQL = "";
         /*Mensaje message=new Mensaje();
         message.windowClosed(e);*/
-        
-        try{
-            upSQL="DELETE FROM sepultados WHERE run_sepultado='"+ rut +"';";
+
+        try {
+            upSQL = "DELETE FROM sepultados WHERE run_sepultado='" + rut + "';";
             sentencia.executeUpdate(upSQL);
-            msj="Datos Eliminados";
-            JOptionPane.showMessageDialog(null, msj, "ELIMINACIÓN DE DATOS",JOptionPane.INFORMATION_MESSAGE);
-       
+            msj = "Datos Eliminados";
+            JOptionPane.showMessageDialog(null, msj, "ELIMINACIÓN DE DATOS", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (SQLException e) {
+            msj = "No eliminado";
+            JOptionPane.showMessageDialog(null, msj, "ALERTA", JOptionPane.INFORMATION_MESSAGE);
         }
-       catch(SQLException e){
-           msj="No eliminado";
-           JOptionPane.showMessageDialog(null, msj, "ALERTA",JOptionPane.INFORMATION_MESSAGE);
-       }   
         modelolista.setNumRows(0);
-            //lstClie.remove();
+        //lstClie.remove();
         llenarlst();
         limpiar();
     }
@@ -747,14 +758,6 @@ public class MantSepultados extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_maternoActionPerformed
 
-    private void txt_fecsepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_fecsepActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_fecsepActionPerformed
-
-    private void txt_fecdefActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_fecdefActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_fecdefActionPerformed
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -764,220 +767,257 @@ public class MantSepultados extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_consultaActionPerformed
 
     private void btn_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarActionPerformed
-        String rut,dv,nom,apepar,apemat,fechanac2,fechadef,fechasep;
-        Date fechanac;
-        rut=txt_rut.getText();
-        if(txt_rut.getText().isEmpty()||txt_rut.getText().startsWith(" ")){
+        String rut, dv, nom, apepar, apemat, fechanac2, fechadef2, fechasep2;
+        Date fechanac, fechadef, fechasep;
+        rut = txt_rut.getText();
+        if (txt_rut.getText().isEmpty() || txt_rut.getText().startsWith(" ")) {
             lb_err1.setText("Ingrese el rut");
             txt_rut.setFocusable(rootPaneCheckingEnabled);
             return;
         }
-        dv=txt_dv.getText().toUpperCase();
-        nom=txt_nombre.getText().toUpperCase();
-        if(txt_nombre.getText().isEmpty()||txt_nombre.getText().startsWith(" ")){
+        dv = txt_dv.getText().toUpperCase();
+        nom = txt_nombre.getText().toUpperCase();
+        if (txt_nombre.getText().isEmpty() || txt_nombre.getText().startsWith(" ")) {
             lb_err2.setText("Ingrese el nombre");
             txt_nombre.requestFocus();
             return;
         }
-        apepar=txt_paterno.getText().toUpperCase();
-        if(txt_paterno.getText().isEmpty()||txt_paterno.getText().startsWith(" ")){
+        apepar = txt_paterno.getText().toUpperCase();
+        if (txt_paterno.getText().isEmpty() || txt_paterno.getText().startsWith(" ")) {
             lb_err3.setText("Ingrese el apellido");
             txt_paterno.requestFocus();
             return;
         }
-        apemat=txt_materno.getText().toUpperCase();
-        if(txt_materno.getText().isEmpty()||txt_materno.getText().startsWith(" ")){
+        apemat = txt_materno.getText().toUpperCase();
+        if (txt_materno.getText().isEmpty() || txt_materno.getText().startsWith(" ")) {
             lb_err4.setText("Ingrese el apellido materno");
             txt_materno.requestFocus();
             return;
         }
-        txt_fechnac.setDateFormatString("yyyy-MM-dd");
-        fechanac2=txt_fechnac.getDateFormatString();
-        fechanac= txt_fechnac.getDate();
-        SimpleDateFormat sdf=new SimpleDateFormat(fechanac2);
-        fechanac2=String.valueOf(sdf.format(fechanac));
+        dc_fechnac.setDateFormatString("yyyy-MM-dd");
+        fechanac2 = dc_fechnac.getDateFormatString();
+        fechanac = dc_fechnac.getDate();
+        SimpleDateFormat sdf = new SimpleDateFormat(fechanac2);
+        fechanac2 = String.valueOf(sdf.format(fechanac));
         /*if(txt_fechnac.getDate().equals("")){
             lb_err5.setText("Ingrese la fecha de nacimiento");
             txt_fechnac.requestFocus();
             return;
         }*/
-        fechadef=txt_fecdef.getText();
-        if(txt_fecdef.getText().isEmpty()||txt_fecdef.getText().startsWith(" ")){
-            lb_err6.setText("Ingrese la fecha de defunción");
-            txt_fechnac.requestFocus();
-            return;
-        }
-        fechasep=txt_fecsep.getText();
-        if(txt_fecsep.getText().isEmpty()||txt_fecsep.getText().startsWith(" ")){
-            lb_err7.setText("Ingrese la fecha de sepultacion");
-            txt_fecsep.requestFocus();
-            return;
-        }
-        String sql="INSERT INTO sepultados(run_sepultado,dv_sepultado,nom_sepultado,ape_pat_sepultado,ape_mat_sepultado,fecha_nac_sepultado,fecha_defun_sepultado,fecha_sepultacion) "
-                + "VALUES('" + rut + "','" + dv + "','" + nom + "','" + apepar + "','" + apemat + "','" + fechanac2 + "','" + fechadef + "','" + fechasep + "')";
-        msj=sql;
-           JOptionPane.showMessageDialog(null, msj, "Datos Guardados", JOptionPane.INFORMATION_MESSAGE);
+
+        dc_fechadef.setDateFormatString("yyyy-MM-dd");
+        fechadef2 = dc_fechadef.getDateFormatString();
+        fechadef = dc_fechadef.getDate();
+        sdf = new SimpleDateFormat(fechadef2);
+        fechadef2 = String.valueOf(sdf.format(fechadef));
+
+        dc_fechasepul.setDateFormatString("yyyy-MM-dd");
+        fechasep2 = dc_fechasepul.getDateFormatString();
+        fechasep = dc_fechasepul.getDate();
+        sdf = new SimpleDateFormat(fechasep2);
+        fechasep2 = String.valueOf(sdf.format(fechasep));
+
+        String sql = "INSERT INTO sepultados(run_sepultado,dv_sepultado,nom_sepultado,ape_pat_sepultado,ape_mat_sepultado,fecha_nac_sepultado,fecha_defun_sepultado,fecha_sepultacion) "
+                + "VALUES('" + rut + "','" + dv + "','" + nom + "','" + apepar + "','" + apemat + "','" + fechanac2 + "','" + fechadef2 + "','" + fechasep2 + "')";
+        msj = sql;
+        JOptionPane.showMessageDialog(null, msj, "Datos Guardados", JOptionPane.INFORMATION_MESSAGE);
         insertar(sql);
     }//GEN-LAST:event_btn_agregarActionPerformed
 
     private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
-        String rut,dv,nom,apepar,apemat,fechadef,fechasep;
-        Date fechanac;
-     if(lstsep.getSelectedRowCount()>0){
-         
-        rut=txt_rut.getText();
-        dv=txt_dv.getText().toUpperCase();
-        nom=txt_nombre.getText().toUpperCase();
-        if(txt_nombre.getText().isEmpty()||txt_nombre.getText().startsWith(" ")){
-            lb_err2.setText("Ingrese el nombre");
-            txt_nombre.requestFocus();
-            return;
+        String rut, dv, nom, apepar, apemat, fechanac2, fechadef2, fechasep2;
+        Date fechanac, fechadef, fechasep;
+        //java.text.SimpleDateFormat formato = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        if (lstsep.getSelectedRowCount() > 0) {
+
+            rut = txt_rut.getText();
+            dv = txt_dv.getText().toUpperCase();
+            nom = txt_nombre.getText().toUpperCase();
+            if (txt_nombre.getText().isEmpty() || txt_nombre.getText().startsWith(" ")) {
+                lb_err2.setText("Ingrese el nombre");
+                txt_nombre.requestFocus();
+                return;
+            }
+            apepar = txt_paterno.getText().toUpperCase();
+            if (txt_paterno.getText().isEmpty() || txt_paterno.getText().startsWith(" ")) {
+                lb_err3.setText("Ingrese el apellido");
+                txt_paterno.requestFocus();
+                return;
+            }
+            apemat = txt_materno.getText().toUpperCase();
+            if (txt_materno.getText().isEmpty() || txt_materno.getText().startsWith(" ")) {
+                lb_err4.setText("Ingrese el apellido materno");
+                txt_materno.requestFocus();
+                return;
+            }
+
+            dc_fechnac.setDateFormatString("yyyy-MM-dd");
+            fechanac2 = dc_fechnac.getDateFormatString();
+            fechanac = dc_fechnac.getDate();
+            SimpleDateFormat sdf = new SimpleDateFormat(fechanac2);
+            fechanac2 = String.valueOf(sdf.format(fechanac));
+
+            if (dc_fechnac.getDate().equals(null)) {
+                lb_err5.setText("Ingrese la fecha de nacimiento");
+
+                return;
+            }
+            dc_fechadef.setDateFormatString("yyyy-MM-dd");
+            fechadef2 = dc_fechadef.getDateFormatString();
+            fechadef = dc_fechadef.getDate();
+            sdf = new SimpleDateFormat(fechadef2);
+            fechadef2 = String.valueOf(sdf.format(fechadef));
+
+            if (dc_fechadef.getDate().equals(null)) {
+                lb_err6.setText("Ingrese la fecha de defunción");
+
+                return;
+            }
+            dc_fechasepul.setDateFormatString("yyyy-MM-dd");
+            fechasep2 = dc_fechasepul.getDateFormatString();
+            fechasep = dc_fechasepul.getDate();
+            sdf = new SimpleDateFormat(fechasep2);
+            fechasep2 = String.valueOf(sdf.format(fechasep));
+
+            if (dc_fechasepul.getDate().equals(null)) {
+                lb_err7.setText("Ingrese la fecha de sepultacion");
+
+                return;
+            }
+
+            limpiarlbl();
+
+            actualizar(rut, dv, nom, apepar, apemat, fechanac2, fechadef2, fechasep2);
+            formatearfecha();
+        } else {
+            msj = "Seleccione una fila para modificar";
+            JOptionPane.showMessageDialog(null, msj, "MODIFICACIÓN DE DATOS", JOptionPane.INFORMATION_MESSAGE);
         }
-        apepar=txt_paterno.getText().toUpperCase();
-        if(txt_paterno.getText().isEmpty()||txt_paterno.getText().startsWith(" ")){
-            lb_err3.setText("Ingrese el apellido");
-            txt_paterno.requestFocus();
-            return;
-        }
-        apemat=txt_materno.getText().toUpperCase();
-        if(txt_materno.getText().isEmpty()||txt_materno.getText().startsWith(" ")){
-            lb_err4.setText("Ingrese el apellido materno");
-            txt_materno.requestFocus();
-            return;
-        }
-        fechanac=txt_fechnac.getDate();
-        if(txt_fechnac.getDate().equals("")){
-            lb_err5.setText("Ingrese la fecha de nacimiento");
-            txt_fechnac.requestFocus();
-            return;
-        }
-        fechadef=txt_fecdef.getText();
-        if(txt_fecdef.getText().isEmpty()||txt_fecdef.getText().startsWith(" ")){
-            lb_err6.setText("Ingrese la fecha de defunción");
-            txt_fecdef.requestFocus();
-            return;
-        }
-        fechasep=txt_fecsep.getText();
-        if(txt_fecsep.getText().isEmpty()||txt_fecsep.getText().startsWith(" ")){
-            lb_err7.setText("Ingrese la fecha de sepultacion");
-            txt_fecsep.requestFocus();
-            return;
-        }
-        
-       limpiarlbl();
-        
-        actualizar(rut,dv,nom,apepar,apemat,fechanac,fechadef,fechasep);
-     }else{
-         msj="Seleccione una fila para modificar";
-            JOptionPane.showMessageDialog(null, msj, "MODIFICACIÓN DE DATOS",JOptionPane.INFORMATION_MESSAGE);
-     }
     }//GEN-LAST:event_btn_modificarActionPerformed
 
     private void lstsepMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstsepMouseClicked
-        String rut,dv,nom,apepar,apemat,fechadef,fechasep;
-        Date fechanac;
+        String rut, dv, nom, apepar, apemat, fechanac, fechadef, fechasep;
+        java.text.SimpleDateFormat formato = new java.text.SimpleDateFormat("dd-MM-yyyy");
 
-    
-    if(lstsep.getSelectedRowCount()>0){
-        rut=lstsep.getValueAt(lstsep.getSelectedRow(), 0).toString();
-        rut=rut.substring(0, rut.length()-2);
-        txt_rut.setText(rut);
-        txt_rut.disable();
-        dv=lstsep.getValueAt(lstsep.getSelectedRow(), 0).toString();
-        dv=dv.substring(dv.length()-1, dv.length());
-        txt_dv.setText(dv);
-        txt_dv.disable();
-        txt_nombre.setText(lstsep.getValueAt(lstsep.getSelectedRow(), 1).toString());
-        txt_paterno.setText(lstsep.getValueAt(lstsep.getSelectedRow(), 2).toString());
-        txt_materno.setText(lstsep.getValueAt(lstsep.getSelectedRow(), 3).toString());
-        txt_fechnac.setDateFormatString(lstsep.getValueAt(lstsep.getSelectedRow(), 4).toString());
-        txt_fecdef.setText(lstsep.getValueAt(lstsep.getSelectedRow(), 5).toString());
-        txt_fecsep.setText(lstsep.getValueAt(lstsep.getSelectedRow(), 6).toString());
-        limpiarlbl();
-        } 
+        if (lstsep.getSelectedRowCount() > 0) {
+            rut = lstsep.getValueAt(lstsep.getSelectedRow(), 0).toString();
+            rut = rut.substring(0, rut.length() - 2);
+            txt_rut.setText(rut);
+            txt_rut.disable();
+            dv = lstsep.getValueAt(lstsep.getSelectedRow(), 0).toString();
+            dv = dv.substring(dv.length() - 1, dv.length());
+            txt_dv.setText(dv);
+            txt_dv.disable();
+            txt_nombre.setText(lstsep.getValueAt(lstsep.getSelectedRow(), 1).toString());
+            txt_paterno.setText(lstsep.getValueAt(lstsep.getSelectedRow(), 2).toString());
+            txt_materno.setText(lstsep.getValueAt(lstsep.getSelectedRow(), 3).toString());
+            fechanac = lstsep.getValueAt(lstsep.getSelectedRow(), 4).toString();
+            try {
+                java.util.Date fechDate = formato.parse(fechanac);
+                dc_fechnac.setDate(fechDate);
+            } catch (ParseException ex) {
+                Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            fechadef = lstsep.getValueAt(lstsep.getSelectedRow(), 5).toString();
+            try {
+                java.util.Date fechDate = formato.parse(fechadef);
+                dc_fechadef.setDate(fechDate);
+            } catch (ParseException ex) {
+                Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            fechasep = lstsep.getValueAt(lstsep.getSelectedRow(), 6).toString();
+            try {
+                java.util.Date fechDate = formato.parse(fechasep);
+                dc_fechasepul.setDate(fechDate);
+            } catch (ParseException ex) {
+                Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            limpiarlbl();
+        }
     }//GEN-LAST:event_lstsepMouseClicked
 
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
-        String rut,dv,nom,apepar,apemat,fechadef,fechasep;
-        Date fechanac;
-        if(lstsep.getSelectedRowCount()>0){
-            rut=txt_rut.getText();
-            dv=txt_dv.getText();
-            nom=txt_nombre.getText();
-            apepar=txt_paterno.getText();
-            apemat=txt_materno.getText();
-            fechanac=txt_fechnac.getDate();
-            fechadef=txt_fecdef.getText();
-            fechasep=txt_fecsep.getText();
-        
-        if(JOptionPane.showConfirmDialog(rootPane, "Se eliminará el registro",
-                "Eliminar", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION)== JOptionPane.YES_OPTION){
-        
-                eliminar(rut,dv,nom,apepar,apemat,fechanac,fechadef,fechasep);
+        String rut, dv, nom, apepar, apemat;
+        Date fechanac, fechadef, fechasep;
+        if (lstsep.getSelectedRowCount() > 0) {
+            rut = txt_rut.getText();
+            dv = txt_dv.getText();
+            nom = txt_nombre.getText();
+            apepar = txt_paterno.getText();
+            apemat = txt_materno.getText();
+            fechanac = dc_fechnac.getDate();
+            fechadef = dc_fechadef.getDate();
+            fechasep = dc_fechasepul.getDate();
+
+            if (JOptionPane.showConfirmDialog(rootPane, "Se eliminará el registro",
+                    "Eliminar", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+
+                eliminar(rut, dv, nom, apepar, apemat, fechanac, fechadef, fechasep);
             }
-        }else{
-            msj="NO SE PUEDEN ELIMINAR DATOS";
-            JOptionPane.showMessageDialog(null, msj, "ELIMINACIÓN DE DATOS",JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            msj = "NO SE PUEDEN ELIMINAR DATOS";
+            JOptionPane.showMessageDialog(null, msj, "ELIMINACIÓN DE DATOS", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btn_eliminarActionPerformed
 
     private void txt_rutKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_rutKeyTyped
-        char TipoTecla=evt.getKeyChar();
-        if(txt_rut.getText().length()>=8){
+        char TipoTecla = evt.getKeyChar();
+        if (txt_rut.getText().length() >= 8) {
             evt.consume();
         }
-        if(Character.isDigit(TipoTecla)){
-            
-        }else{
-               evt.consume();
+        if (Character.isDigit(TipoTecla)) {
+
+        } else {
+            evt.consume();
         }
-        if(txt_rut.getText().startsWith("0")){
+        if (txt_rut.getText().startsWith("0")) {
             lb_err1.setText("CERO NO ES PRIMER DIGITO!");
             txt_rut.setText("");
             evt.consume();
             txt_rut.requestFocus();
             return;
-        }else{
+        } else {
             lb_err1.setText("");
         }
-        
+
         lb_err1.setText("");
     }//GEN-LAST:event_txt_rutKeyTyped
 
     private void btn_consultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_consultarActionPerformed
         String consu;
-        consu=txt_consulta.getText();
+        consu = txt_consulta.getText();
         //if(txt_consulta.getText()>='0' && txt_consulta.getText()<='30000000' ){
-            
+
         //}
-        if(txt_consulta.getText().startsWith(" ")){
+        if (txt_consulta.getText().startsWith(" ")) {
             txt_consulta.setText("");
             txt_consulta.requestFocus();
         }
         modelolista.setNumRows(0);
-            //lstClie.remove();
+        //lstClie.remove();
         llenarlst_consu(consu);
     }//GEN-LAST:event_btn_consultarActionPerformed
 
     private void txt_consultaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyPressed
-        if (evt.VK_ENTER==evt.getKeyCode()){ 
-        btn_consultar.doClick();
-    }
+        if (evt.VK_ENTER == evt.getKeyCode()) {
+            btn_consultar.doClick();
+        }
     }//GEN-LAST:event_txt_consultaKeyPressed
 
     private void txt_consultaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyTyped
-        char TipoTecla=evt.getKeyChar();
+        char TipoTecla = evt.getKeyChar();
 
         /*if(Character.isSpace(TipoTecla)){
             txt_consulta.setText("");
             txt_consulta.requestFocus();
         }*/
-        if(Character.isDigit(TipoTecla)){
-            if(txt_consulta.getText().length()>=8){
+        if (Character.isDigit(TipoTecla)) {
+            if (txt_consulta.getText().length() >= 8) {
                 evt.consume();
             }
-        }else{
-               //evt.consume();
+        } else {
+            //evt.consume();
         }
     }//GEN-LAST:event_txt_consultaKeyTyped
 
@@ -985,194 +1025,197 @@ public class MantSepultados extends javax.swing.JFrame {
         modelolista.setNumRows(0);
         llenarlst();
         txt_consulta.setText("");
-       // txt_fechnac.setDateFormatString("");
-        txt_fecdef.setText("");
+        dc_fechnac.setDate(null);
+        dc_fechadef.setDate(null);
         txt_dv.setText("");
-        txt_dv.disable();
+
         txt_materno.setText("");
         txt_nombre.setText("");
         txt_paterno.setText("");
         txt_rut.setText("");
-        txt_fecsep.setText("");
+        dc_fechasepul.setDate(null);
         txt_rut.enable();
-        //txt_dv.enable();
+        txt_dv.enable();
         lstsep.clearSelection();
     }//GEN-LAST:event_mainMouseClicked
 
     private void lstsepKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lstsepKeyReleased
-        String rut,dv,nom,apepar,apemat,fechadef,fechasep;
-        Date fechanac;
-        if(lstsep.getSelectedRowCount()>0){
-            
-            if (evt.VK_DOWN==evt.getKeyCode()||evt.VK_UP==evt.getKeyCode()){    
-        
-            rut=lstsep.getValueAt(lstsep.getSelectedRow(), 0).toString();
-            rut=rut.substring(0, rut.length()-2);
-            txt_rut.setText(rut);
-            txt_rut.disable();
-            dv=lstsep.getValueAt(lstsep.getSelectedRow(), 0).toString();
-            dv=dv.substring(dv.length()-1, dv.length());
-            txt_dv.setText(dv);
-            txt_dv.disable();
-            txt_nombre.setText(lstsep.getValueAt(lstsep.getSelectedRow(), 1).toString());
-            txt_paterno.setText(lstsep.getValueAt(lstsep.getSelectedRow(), 2).toString());
-            txt_materno.setText(lstsep.getValueAt(lstsep.getSelectedRow(), 3).toString());
-            txt_fechnac.setDateFormatString(lstsep.getValueAt(lstsep.getSelectedRow(), 4).toString());
-            txt_fecdef.setText(lstsep.getValueAt(lstsep.getSelectedRow(), 5).toString());
-            txt_fecsep.setText(lstsep.getValueAt(lstsep.getSelectedRow(), 6).toString());
-            limpiarlbl();
-        } 
-        if (evt.VK_DELETE==evt.getKeyCode()){
-            btn_eliminar.doClick();
+        String rut, dv, nom, apepar, apemat, fechanac, fechadef, fechasep;
+        java.text.SimpleDateFormat formato = new java.text.SimpleDateFormat("dd-MM-yyyy");
+        if (lstsep.getSelectedRowCount() > 0) {
+
+            if (evt.VK_DOWN == evt.getKeyCode() || evt.VK_UP == evt.getKeyCode()) {
+
+                rut = lstsep.getValueAt(lstsep.getSelectedRow(), 0).toString();
+                rut = rut.substring(0, rut.length() - 2);
+                txt_rut.setText(rut);
+                txt_rut.disable();
+                dv = lstsep.getValueAt(lstsep.getSelectedRow(), 0).toString();
+                dv = dv.substring(dv.length() - 1, dv.length());
+                txt_dv.setText(dv);
+                txt_dv.disable();
+                txt_nombre.setText(lstsep.getValueAt(lstsep.getSelectedRow(), 1).toString());
+                txt_paterno.setText(lstsep.getValueAt(lstsep.getSelectedRow(), 2).toString());
+                txt_materno.setText(lstsep.getValueAt(lstsep.getSelectedRow(), 3).toString());
+                fechanac = lstsep.getValueAt(lstsep.getSelectedRow(), 4).toString();
+                try {
+                    java.util.Date fechDate = formato.parse(fechanac);
+                    dc_fechnac.setDate(fechDate);
+                } catch (ParseException ex) {
+                    Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                fechadef = lstsep.getValueAt(lstsep.getSelectedRow(), 5).toString();
+                try {
+                    java.util.Date fechDate = formato.parse(fechadef);
+                    dc_fechadef.setDate(fechDate);
+                } catch (ParseException ex) {
+                    Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                fechasep = lstsep.getValueAt(lstsep.getSelectedRow(), 6).toString();
+                try {
+                    java.util.Date fechDate = formato.parse(fechasep);
+                    dc_fechasepul.setDate(fechDate);
+                } catch (ParseException ex) {
+                    Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                limpiarlbl();
+            }
+            if (evt.VK_DELETE == evt.getKeyCode()) {
+                btn_eliminar.doClick();
+            }
         }
-    }
     }//GEN-LAST:event_lstsepKeyReleased
 
     private void txt_consultaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyReleased
-         if ((evt.VK_BACK_SPACE==evt.getKeyCode()||evt.VK_DELETE==evt.getKeyCode())&&(txt_consulta.getText().isEmpty())){ 
-        modelolista.setNumRows(0);
-        llenarlst();
-    }
+        if ((evt.VK_BACK_SPACE == evt.getKeyCode() || evt.VK_DELETE == evt.getKeyCode()) && (txt_consulta.getText().isEmpty())) {
+            modelolista.setNumRows(0);
+            llenarlst();
+        }
     }//GEN-LAST:event_txt_consultaKeyReleased
 
     private void txt_consultaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_consultaMouseClicked
         limpiarlbl();
-        txt_fechnac.setDateFormatString("");
-        txt_fecdef.setText("");
+        dc_fechnac.setDate(null);
+        dc_fechasepul.setDate(null);
         txt_dv.setText("");
         txt_materno.setText("");
         txt_nombre.setText("");
         txt_paterno.setText("");
         txt_rut.setText("");
-        txt_fecsep.setText("");
+        dc_fechadef.setDate(null);
         txt_rut.enable();
         //txt_dv.enable();
         lstsep.clearSelection();
     }//GEN-LAST:event_txt_consultaMouseClicked
 
     private void txt_dvKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_dvKeyTyped
-        char TipoTecla=evt.getKeyChar();
-        if(txt_dv.getText().length()>=1){
+        char TipoTecla = evt.getKeyChar();
+        if (txt_dv.getText().length() >= 1) {
             evt.consume();
         }
-        if(Character.isDigit(TipoTecla)||evt.getKeyChar()=='k'||evt.getKeyChar()=='K'){
-            
-        }else{
-               evt.consume();
+        if (Character.isDigit(TipoTecla) || evt.getKeyChar() == 'k' || evt.getKeyChar() == 'K') {
+
+        } else {
+            evt.consume();
         }
     }//GEN-LAST:event_txt_dvKeyTyped
 
     private void txt_nombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nombreKeyTyped
-        char TipoTecla=evt.getKeyChar();
-        if(txt_nombre.getText().length()>=45){
+        char TipoTecla = evt.getKeyChar();
+        if (txt_nombre.getText().length() >= 45) {
             evt.consume();
         }
         limpiarlbl();
-        if(txt_nombre.getText().startsWith(" ")){
+        if (txt_nombre.getText().startsWith(" ")) {
             txt_nombre.setText("");
             txt_nombre.requestFocus();
         }
-        if(Character.isDigit(TipoTecla)||!Character.isLetter(TipoTecla) &&!(TipoTecla == evt.VK_SPACE)&&!(TipoTecla==evt.VK_BACK_SPACE)){
-               evt.consume();
-        }else{
-            
+        if (Character.isDigit(TipoTecla) || !Character.isLetter(TipoTecla) && !(TipoTecla == evt.VK_SPACE) && !(TipoTecla == evt.VK_BACK_SPACE)) {
+            evt.consume();
+        } else {
+
         }
     }//GEN-LAST:event_txt_nombreKeyTyped
 
     private void txt_paternoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_paternoKeyTyped
-        char TipoTecla=evt.getKeyChar();
-        if(txt_paterno.getText().length()>=45){
+        char TipoTecla = evt.getKeyChar();
+        if (txt_paterno.getText().length() >= 45) {
             evt.consume();
         }
         limpiarlbl();
-        if(txt_paterno.getText().startsWith(" ")){
+        if (txt_paterno.getText().startsWith(" ")) {
             txt_paterno.setText("");
             txt_paterno.requestFocus();
         }
-        if(Character.isDigit(TipoTecla)||!Character.isLetter(TipoTecla) &&!(TipoTecla == evt.VK_SPACE)&&!(TipoTecla==evt.VK_BACK_SPACE)){
-               evt.consume();
-        }else{
-            
+        if (Character.isDigit(TipoTecla) || !Character.isLetter(TipoTecla) && !(TipoTecla == evt.VK_SPACE) && !(TipoTecla == evt.VK_BACK_SPACE)) {
+            evt.consume();
+        } else {
+
         }
     }//GEN-LAST:event_txt_paternoKeyTyped
 
     private void txt_maternoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_maternoKeyTyped
-        if(txt_materno.getText().length()>=45){
+        if (txt_materno.getText().length() >= 45) {
             evt.consume();
         }
         limpiarlbl();
-        if(txt_materno.getText().startsWith(" ")){
+        if (txt_materno.getText().startsWith(" ")) {
             txt_materno.setText("");
             txt_materno.requestFocus();
         }
-        char TipoTecla=evt.getKeyChar();
-        if(Character.isDigit(TipoTecla)||!Character.isLetter(TipoTecla) &&!(TipoTecla == evt.VK_SPACE)&&!(TipoTecla==evt.VK_BACK_SPACE)){
-               evt.consume();
-        }else{
-            
+        char TipoTecla = evt.getKeyChar();
+        if (Character.isDigit(TipoTecla) || !Character.isLetter(TipoTecla) && !(TipoTecla == evt.VK_SPACE) && !(TipoTecla == evt.VK_BACK_SPACE)) {
+            evt.consume();
+        } else {
+
         }
     }//GEN-LAST:event_txt_maternoKeyTyped
 
-    private void txt_fecdefKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_fecdefKeyTyped
-        char TipoTecla=evt.getKeyChar();
-        if(txt_fecdef.getText().startsWith(" ")){
-            txt_fecdef.setText("");
-            txt_fecdef.requestFocus();
-        }
-        if(txt_fecdef.getText().length()>=10){
-            evt.consume();
-        }
-        limpiarlbl();
-        
-    }//GEN-LAST:event_txt_fecdefKeyTyped
-
-    private void txt_fecsepKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_fecsepKeyTyped
-        if(txt_fecsep.getText().startsWith(" ")){
-            txt_fecsep.setText("");
-            txt_fecsep.requestFocus();
-        }
-        if(txt_fecsep.getText().length()>=10){
-            evt.consume();
-        }
-    }//GEN-LAST:event_txt_fecsepKeyTyped
-
     private void txt_rutFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_rutFocusLost
-        String codigo;
-        int multiplo=2;
-        int cont=0;
-        //módulo 11 para cálculo de DV
-        for (int x=0;x<txt_rut.getText().length();x++){
-                cont=cont+(Integer.parseInt(txt_rut.getText().substring(txt_rut.getText().length()-x-1,txt_rut.getText().length()-x))*multiplo);
-                multiplo++;
-                if (multiplo==8){
-                    multiplo=2;
-                }
-            }
-            cont=11-(cont%11);
-            if(cont<=9){
-                codigo=""+cont;
-            }else if (cont==11){
-                codigo="0";
-            }else{
-                codigo="K";
-            }
-            
-            if(codigo!=null){
-                txt_dv.setText(codigo);
-            }
+
     }//GEN-LAST:event_txt_rutFocusLost
 
     private void txt_rutKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_rutKeyReleased
-        if ((evt.VK_BACK_SPACE==evt.getKeyCode()||evt.VK_DELETE==evt.getKeyCode())&&(txt_consulta.getText().isEmpty())){ 
-        txt_dv.setText("");
-        //txt_rut.setForeground(Color.GRAY);
-        //txt_rut.setText("12345678");
-    }
+        if ((evt.VK_BACK_SPACE == evt.getKeyCode() || evt.VK_DELETE == evt.getKeyCode()) && (txt_consulta.getText().isEmpty())) {
+            txt_dv.setText("");
+            //txt_rut.setForeground(Color.GRAY);
+            //txt_rut.setText("12345678");
+        }
     }//GEN-LAST:event_txt_rutKeyReleased
 
     private void btn_consultarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_consultarMouseClicked
-       txt_consulta.setText("");
+        txt_consulta.setText("");
     }//GEN-LAST:event_btn_consultarMouseClicked
+
+    private void txt_dvFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_dvFocusLost
+        String codigo;
+        int multiplo = 2;
+        int cont = 0;
+        //módulo 11 para cálculo de DV
+        for (int x = 0; x < txt_rut.getText().length(); x++) {
+            cont = cont + (Integer.parseInt(txt_rut.getText().substring(txt_rut.getText().length() - x - 1, txt_rut.getText().length() - x)) * multiplo);
+            multiplo++;
+            if (multiplo == 8) {
+                multiplo = 2;
+            }
+        }
+        cont = 11 - (cont % 11);
+        if (cont <= 9) {
+            codigo = "" + cont;
+        } else if (cont == 11) {
+            codigo = "0";
+        } else {
+            codigo = "K";
+        }
+        if (!txt_dv.getText().equals(codigo)) {
+            lb_err1.setText("Run inválido, ingrese nuevamente!");
+            txt_rut.setText("");
+            txt_dv.setText("");
+            txt_rut.requestFocus();
+        }
+
+    }//GEN-LAST:event_txt_dvFocusLost
 
     /**
      * @param args the command line arguments
@@ -1214,6 +1257,9 @@ public class MantSepultados extends javax.swing.JFrame {
     private javax.swing.JButton btn_consultar;
     private javax.swing.JButton btn_eliminar;
     private javax.swing.JButton btn_modificar;
+    private com.toedter.calendar.JDateChooser dc_fechadef;
+    private com.toedter.calendar.JDateChooser dc_fechasepul;
+    private com.toedter.calendar.JDateChooser dc_fechnac;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1239,9 +1285,6 @@ public class MantSepultados extends javax.swing.JFrame {
     private javax.swing.JPanel main;
     private javax.swing.JTextField txt_consulta;
     private javax.swing.JTextField txt_dv;
-    private javax.swing.JTextField txt_fecdef;
-    private com.toedter.calendar.JDateChooser txt_fechnac;
-    private javax.swing.JTextField txt_fecsep;
     private javax.swing.JTextField txt_materno;
     private javax.swing.JTextField txt_nombre;
     private javax.swing.JTextField txt_paterno;
