@@ -663,7 +663,7 @@ public class MantGastos extends javax.swing.JFrame {
         //cod=lb_cod.getText();
         nrofac = txt_factura.getText();
         if (txt_factura.getText().isEmpty() || txt_factura.getText().startsWith(" ")) {
-            lb_err4.setText("Ingrese un valor");
+            lb_err4.setText("Ingrese un n° de factura");
             txt_factura.setFocusable(rootPaneCheckingEnabled);
             return;
         }
@@ -711,8 +711,8 @@ public class MantGastos extends javax.swing.JFrame {
         }
         String sql = "INSERT INTO gastos(fecha_gasto,tipo_venta,valor_total,nro_factura,descripcion) "
                 + "VALUES('" + fecha2 + "','" + tipo + "'," + valor2 + "," + nrofact2 + ",'" + descripcion + "')";
-        msj = sql;
-        JOptionPane.showMessageDialog(null, msj, "Datos Guardados", JOptionPane.INFORMATION_MESSAGE);
+        //msj = sql;
+        //JOptionPane.showMessageDialog(null, msj, "Datos Guardados", JOptionPane.INFORMATION_MESSAGE);
         insertar(sql);
     }//GEN-LAST:event_btn_agregarActionPerformed
 

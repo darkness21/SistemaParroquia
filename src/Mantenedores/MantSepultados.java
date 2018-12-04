@@ -819,8 +819,8 @@ public class MantSepultados extends javax.swing.JFrame {
 
         String sql = "INSERT INTO sepultados(run_sepultado,dv_sepultado,nom_sepultado,ape_pat_sepultado,ape_mat_sepultado,fecha_nac_sepultado,fecha_defun_sepultado,fecha_sepultacion) "
                 + "VALUES('" + rut + "','" + dv + "','" + nom + "','" + apepar + "','" + apemat + "','" + fechanac2 + "','" + fechadef2 + "','" + fechasep2 + "')";
-        msj = sql;
-        JOptionPane.showMessageDialog(null, msj, "Datos Guardados", JOptionPane.INFORMATION_MESSAGE);
+        //msj = sql;
+        //JOptionPane.showMessageDialog(null, msj, "Datos Guardados", JOptionPane.INFORMATION_MESSAGE);
         insertar(sql);
     }//GEN-LAST:event_btn_agregarActionPerformed
 

@@ -11,6 +11,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import java.awt.*;
+import static java.lang.Integer.parseInt;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.RowSorter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -38,6 +44,7 @@ public class MantTrabajadores extends javax.swing.JFrame {
         lsttrab.setModel(modelolista);
         llenarlst(); 
         transparenciaButton();
+        limpiarlbl();
         
     }
     public void conectar(){
@@ -82,7 +89,8 @@ public class MantTrabajadores extends javax.swing.JFrame {
     }
 
      public void llenarlst(){
-       String run,dv,nom,apet,amat,cargo,fechanac,dir,fono,correo,contr,tipo;
+       String run,dv,nom,apet,amat,cargo,fechanac,tipo2="",dir,fono,correo,contr,tipo;
+       Date fech=null;
        lsttrab.setPreferredScrollableViewportSize(new Dimension(500,70));
         RowSorter<TableModel> sorter=new TableRowSorter<TableModel>(modelolista);
         lsttrab.setRowSorter(sorter);
@@ -96,13 +104,50 @@ public class MantTrabajadores extends javax.swing.JFrame {
                 apet=(lista.getString("ape_pat_trabajador"));
                 amat=(lista.getString("ape_mat_trabajador"));
                 cargo=(lista.getString("cargo_trabajador"));
-                fechanac=(lista.getString("fecha_nacimiento"));
+                
+                fechanac=(lista.getString("fecha_nac_trabajador"));
+                SimpleDateFormat parseador = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+                try {
+                    fech = parseador.parse(fechanac);
+                } catch (ParseException ex) {
+                    Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                fechanac = String.format(format.format(fech));
+                
+                
+                
+                
                 dir=(lista.getString("direccion"));
                 fono=(lista.getString("fono"));
-                correo=(lista.getString("correo"));
+                correo=(lista.getString("correo_trabajador"));
                 contr=(lista.getString("cod_contrato"));
+                
+                
                 tipo=(lista.getString("tipo_contrato"));
-                Object[] newRow={run+"-"+dv,nom,apet,amat,cargo,fechanac,dir,fono,correo,contr,tipo};
+                switch (tipo) {
+                    case "PF":
+                        tipo2 = "Plazo Fijo";
+                        break;
+                    case "PI":
+                        tipo2 = "Plazo Indefinido";
+                        break;
+                    case "PO":
+                        tipo2 = "Por Obra";
+                        break;
+                    case "TA":
+                        tipo2 = "Trabajo Atípico";
+                        break;  
+                    case "TE":
+                        tipo2 = "Trabajos Especiales";
+                        break;    
+                        
+                        
+                }
+                
+                
+                
+                Object[] newRow={run+"-"+dv,nom,apet,amat,cargo,fechanac,dir,fono,correo,contr,tipo2};
                 modelolista.addRow(newRow);
             }
         lsttrab.getRowSorter().toggleSortOrder(0);
@@ -115,14 +160,15 @@ public class MantTrabajadores extends javax.swing.JFrame {
     };
      
      public void llenarlst_consu(String consu){
-       String run,dv,nom,apet,amat,cargo,fechanac,dir,fono,correo,contr,tipo;
+       String run,dv,nom,apet,amat,cargo,fechanac,dir,fono,correo,contr,tipo,tipo2="";
+       Date fech=null;
        lsttrab.setPreferredScrollableViewportSize(new Dimension(500,70));
         RowSorter<TableModel> sorter=new TableRowSorter<TableModel>(modelolista);
         lsttrab.setRowSorter(sorter);
         try{
             sentencia=(Statement)conexion.createStatement();//permite ejecutar sentencias SQL
             ResultSet lista=sentencia.executeQuery("SELECT * FROM trabajadores WHERE nom_trabajador like '%"+consu+"%'or run_trabajador like '%"+consu+"%'"
-                    + "or ape_pat_trabajador like '%"+consu+"%' or ape_mat_trabajador like '%"+consu+"%' or cargo like '%"+consu+"%' or dir like '%"+consu+"%' or tipo like '%"+consu+"%'");
+                    + "or ape_pat_trabajador like '%"+consu+"%' or ape_mat_trabajador like '%"+consu+"%' or cargo_trabajador like '%"+consu+"%' or direccion like '%"+consu+"%' or tipo_contrato like '%"+consu+"%'");
            
             while(lista.next()){
                 nom=(lista.getString("nombre_trabajador"));//nombre del campo de la BD
@@ -131,13 +177,47 @@ public class MantTrabajadores extends javax.swing.JFrame {
                 apet=(lista.getString("ape_pat_trabajador"));
                 amat=(lista.getString("ape_mat_trabajador"));
                 cargo=(lista.getString("cargo_trabajador"));
-                fechanac=(lista.getString("fecha_nacimiento"));
+                
+                fechanac=(lista.getString("fecha_nac_trabajador"));
+                SimpleDateFormat parseador = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+                try {
+                    fech = parseador.parse(fechanac);
+                } catch (ParseException ex) {
+                    Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                fechanac = String.format(format.format(fech));
+                
                 dir=(lista.getString("direccion"));
                 fono=(lista.getString("fono"));
-                correo=(lista.getString("correo"));
+                correo=(lista.getString("correo_trabajador"));
                 contr=(lista.getString("cod_contrato"));
                 tipo=(lista.getString("tipo_contrato"));
-                Object[] newRow={run+"-"+dv,nom,apet,amat,cargo,fechanac,dir,fono,correo,contr,tipo};
+                switch (tipo) {
+                    case "PF":
+                        tipo2 = "Plazo Fijo";
+                        break;
+                    case "PI":
+                        tipo2 = "Plazo Indefinido";
+                        break;
+                    case "PO":
+                        tipo2 = "Por Obra";
+                        break;
+                    case "TA":
+                        tipo2 = "Trabajo Atípico";
+                        break;  
+                    case "TE":
+                        tipo2 = "Trabajos Especiales";
+                        break;    
+                        
+                        
+                }
+                
+                
+                
+                
+                
+                Object[] newRow={run+"-"+dv,nom,apet,amat,cargo,fech,dir,fono,correo,contr,tipo2};
                 modelolista.addRow(newRow);
             }
             if (modelolista.getRowCount()==0 ||(txt_consulta.getText().startsWith(" "))){
@@ -159,7 +239,7 @@ public class MantTrabajadores extends javax.swing.JFrame {
      
      public void limpiar(){
         txt_consulta.setText("");
-        txt_fechanac.setText("");
+        dc_fecha.setDate(null);
         txt_telefono.setText("");
         txt_dv.setText("");
         txt_materno.setText("");
@@ -172,7 +252,14 @@ public class MantTrabajadores extends javax.swing.JFrame {
         txt_contrato.setText("");
         txt_rut.enable();
         txt_dv.enable();
+        cmb_tipo.setSelectedIndex(0);
         lsttrab.clearSelection();
+        
+    }
+     
+      public void formatearfecha() {
+        dc_fecha.setDateFormatString("dd-MM-yyyy");
+
     }
     
     @SuppressWarnings("unchecked")
@@ -204,7 +291,6 @@ public class MantTrabajadores extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         txt_cargo = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        txt_fechanac = new javax.swing.JTextField();
         txt_direccion = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
@@ -229,6 +315,7 @@ public class MantTrabajadores extends javax.swing.JFrame {
         txt_contrato = new javax.swing.JTextField();
         lb_err9 = new javax.swing.JLabel();
         lb_err10 = new javax.swing.JLabel();
+        dc_fecha = new com.toedter.calendar.JDateChooser();
 
         jButton1.setText("jButton1");
 
@@ -239,6 +326,11 @@ public class MantTrabajadores extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel1MouseClicked(evt);
+            }
+        });
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/cruzmini.png"))); // NOI18N
 
@@ -287,6 +379,11 @@ public class MantTrabajadores extends javax.swing.JFrame {
         jLabel11.setText("Correo Electronico (opcional)");
 
         txt_dv.setBackground(new java.awt.Color(255, 255, 204));
+        txt_dv.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_dvFocusLost(evt);
+            }
+        });
         txt_dv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_dvActionPerformed(evt);
@@ -351,13 +448,6 @@ public class MantTrabajadores extends javax.swing.JFrame {
 
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setText("Fecha Nacimiento");
-
-        txt_fechanac.setBackground(new java.awt.Color(255, 255, 204));
-        txt_fechanac.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_fechanacActionPerformed(evt);
-            }
-        });
 
         txt_direccion.setBackground(new java.awt.Color(255, 255, 204));
         txt_direccion.addActionListener(new java.awt.event.ActionListener() {
@@ -532,7 +622,7 @@ public class MantTrabajadores extends javax.swing.JFrame {
                             .addComponent(txt_direccion, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lb_err6)
                             .addComponent(lb_err8))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
@@ -541,49 +631,46 @@ public class MantTrabajadores extends javax.swing.JFrame {
                                 .addComponent(jButton2))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txt_fechanac, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lb_err7))
+                                    .addComponent(lb_err7)
+                                    .addComponent(dc_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))))
+                    .addComponent(jLabel6)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(txt_rut, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_dv, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel8)
+                    .addComponent(lb_err1)
+                    .addComponent(txt_materno, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jLabel11)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel9)
+                                .addComponent(txt_cargo, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txt_correo, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel13)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
+                            .addComponent(jLabel14)
+                            .addComponent(lb_err4)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(txt_rut, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_dv, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel8)
-                            .addComponent(lb_err1)
-                            .addComponent(txt_materno, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jLabel11)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel9)
-                                        .addComponent(txt_cargo, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txt_correo, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabel13)
+                                .addComponent(jLabel16)
+                                .addGap(87, 87, 87)
+                                .addComponent(jLabel15))
+                            .addComponent(lb_err5)
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(txt_telefono, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel14)
-                                    .addComponent(lb_err4)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel16)
-                                        .addGap(87, 87, 87)
-                                        .addComponent(jLabel15))
-                                    .addComponent(lb_err5)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(txt_telefono, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lb_err9)
-                                            .addComponent(txt_contrato, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(28, 28, 28)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel19)
-                                    .addComponent(cmb_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lb_err10))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                    .addComponent(lb_err9)
+                                    .addComponent(txt_contrato, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel19)
+                            .addComponent(lb_err10)
+                            .addComponent(cmb_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(45, 45, 45))
         );
         jPanel1Layout.setVerticalGroup(
@@ -598,7 +685,7 @@ public class MantTrabajadores extends javax.swing.JFrame {
                                 .addComponent(jLabel5)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
                                         .addComponent(jLabel7))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(17, 17, 17)
@@ -636,7 +723,7 @@ public class MantTrabajadores extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lb_err2)
                     .addComponent(lb_err3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addComponent(jLabel13)
                 .addGap(5, 5, 5)
                 .addComponent(txt_materno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -656,10 +743,10 @@ public class MantTrabajadores extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
                     .addComponent(jLabel15))
-                .addGap(4, 4, 4)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txt_direccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_fechanac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dc_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(5, 5, 5)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lb_err6)
@@ -720,11 +807,11 @@ public class MantTrabajadores extends javax.swing.JFrame {
         limpiar();
     }
     
-     public void actualizar (String rut, String dv, String nom, String pater, String mater, String cargo, String fechanac, String dir, String fono, String correo, String contr, String tipo ){
+     public void actualizar (String rut, String dv, String nom, String pater, String mater, String cargo, String fechanac, String dir, String fono, String correo, int contr, String tipo ){
      String upSQL="";
         
         try{
-        upSQL="UPDATE trabajadores SET nombre_trabajador='"+ nom + "',ape_pat_trabajador='" + pater + "',ape_mat_trabajador='" + mater + "',cargo='" + cargo + "',fecha_nac_trabajador'" + fechanac + "',direccion='" + dir + "',fono='" + fono + "',correo_trabajador='" + correo + "',cod_contrato='"+ contr + "',tipo_contrato='" + tipo + "' WHERE run_trabajador='"+ rut +"'";
+        upSQL="UPDATE trabajadores SET nombre_trabajador='"+ nom + "',ape_pat_trabajador='" + pater + "',ape_mat_trabajador='" + mater + "',cargo_trabajador='" + cargo + "',fecha_nac_trabajador'" + fechanac + "',direccion='" + dir + "',fono='" + fono + "',correo_trabajador='" + correo + "',cod_contrato="+ contr + ",tipo_contrato='" + tipo + "' WHERE run_trabajador='"+ rut +"'";
         sentencia.executeUpdate(upSQL);
         msj="Datos actualizados";
         JOptionPane.showMessageDialog(null, msj, "Datos actualizados",JOptionPane.INFORMATION_MESSAGE);
@@ -738,9 +825,10 @@ public class MantTrabajadores extends javax.swing.JFrame {
             //lstClie.remove();
         llenarlst();
         limpiar();
+        
     }
     
-    public void eliminar (String rut, String dv, String nom, String pater, String mater, String cargo, String fechanac, String dir, String fono, String correo, String contr, String tipo){
+    public void eliminar (String rut, String dv, String nom, String pater, String mater, String cargo, Date fecha, String dir, String fono, String correo, String contr, String tipo){
      String upSQL="";
         /*Mensaje message=new Mensaje();
         message.windowClosed(e);*/
@@ -760,6 +848,7 @@ public class MantTrabajadores extends javax.swing.JFrame {
             //lstClie.remove();
         llenarlst();
         limpiar();
+        
     }
     
     
@@ -795,10 +884,6 @@ public class MantTrabajadores extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_cargoActionPerformed
 
-    private void txt_fechanacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_fechanacActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_fechanacActionPerformed
-
     private void txt_direccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_direccionActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_direccionActionPerformed
@@ -812,7 +897,9 @@ public class MantTrabajadores extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_consultaActionPerformed
 
     private void btn_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarActionPerformed
-        String rut,dv,nom,apepar,apemat,cargo,fechanac,dir,fono,correo,contr,tipo="";
+        String rut,dv,nom,apepar,apemat,cargo,dir,fono,correo,contr,tipo="",fecha2;
+        int contr2;
+        Date fecha;
         int index=cmb_tipo.getSelectedIndex();;
         
         switch(index){
@@ -861,12 +948,13 @@ public class MantTrabajadores extends javax.swing.JFrame {
             txt_cargo.requestFocus();
             return;
         }
-        fechanac=txt_fechanac.getText();
-        if(txt_fechanac.getText().isEmpty()||txt_fechanac.getText().startsWith(" ")){
-            lb_err6.setText("Ingrese la fecha de nacimiento");
-            txt_fechanac.requestFocus();
-            return;
-        }
+        dc_fecha.setDateFormatString("yyyy-MM-dd");
+        fecha2 = dc_fecha.getDateFormatString();
+        fecha = dc_fecha.getDate();
+        SimpleDateFormat sdf = new SimpleDateFormat(fecha2);
+        fecha2 = String.valueOf(sdf.format(fecha));
+        
+        
         fono=txt_telefono.getText();
         if(txt_telefono.getText().isEmpty()||txt_telefono.getText().startsWith(" ")){
             lb_err7.setText("Ingrese el telefono");
@@ -890,21 +978,28 @@ public class MantTrabajadores extends javax.swing.JFrame {
         contr=txt_contrato.getText();
        if(txt_contrato.getText().isEmpty()||txt_contrato.getText().startsWith(" ")){
             
-            txt_contrato.requestFocus();
+            txt_contrato.setFocusable(rootPaneCheckingEnabled);
            
             return;
         }
+       contr2 = parseInt(contr);
+    
+       
+       
+       
         String sql="INSERT INTO trabajadores(run_trabajador,dv_trabajador,nombre_trabajador,ape_pat_trabajador,ape_mat_trabajador,cargo_trabajador,fecha_nac_trabajador,direccion,fono,correo_trabajador,cod_contrato,tipo_contrato)"
-                + "VALUES('" + rut + "','" + dv + "','" + nom + "','" + apepar + "','" + apemat + "','" + cargo + "','" + fechanac + "','" + fono + "','" + dir + "','" + correo +  "','" + contr + "','" + tipo + "')";
-        msj=sql;
-           JOptionPane.showMessageDialog(null, msj, "Datos Guardados", JOptionPane.INFORMATION_MESSAGE);
+                + "VALUES('" + rut + "','" + dv + "','" + nom + "','" + apepar + "','" + apemat + "','" + cargo + "','" + fecha2 + "','" + fono + "','" + dir + "','" + correo +  "'," + contr2 + ",'" + tipo + "')";
+        /*msj=sql;
+           JOptionPane.showMessageDialog(null, msj, "Datos Guardados", JOptionPane.INFORMATION_MESSAGE);*/
         insertar(sql);
-        llenarlst();
+       
+     
     }//GEN-LAST:event_btn_agregarActionPerformed
 
     private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
-        String rut,dv,nom,apepar,apemat, cargo, fechanac, dir, fono, correo, contr, tipo="";
-        int index=cmb_tipo.getSelectedIndex();
+        String rut,dv,nom,apepar,apemat, cargo, fecha2, dir, fono, correo, contr, tipo="";
+        Date fecha;
+        
      if(lsttrab.getSelectedRowCount()>0){
          
         rut=txt_rut.getText();
@@ -933,12 +1028,14 @@ public class MantTrabajadores extends javax.swing.JFrame {
             txt_cargo.requestFocus();
             return;
         }
-        fechanac=txt_fechanac.getText();
-        if(txt_fechanac.getText().isEmpty()||txt_fechanac.getText().startsWith(" ")){
-            lb_err6.setText("Ingrese la fecha de nacimiento");
-            txt_fechanac.requestFocus();
-            return;
-        }
+       
+        dc_fecha.setDateFormatString("yyyy-MM-dd");
+        fecha2 = dc_fecha.getDateFormatString();
+        fecha = dc_fecha.getDate();
+        SimpleDateFormat sdf = new SimpleDateFormat(fecha2);
+        fecha2 = String.valueOf(sdf.format(fecha));
+        
+        
         fono=txt_telefono.getText();
         if(txt_telefono.getText().isEmpty()||txt_telefono.getText().startsWith(" ")){
             lb_err7.setText("Ingrese el telefono");
@@ -962,9 +1059,12 @@ public class MantTrabajadores extends javax.swing.JFrame {
         contr=txt_contrato.getText();
         if(txt_contrato.getText().isEmpty()||txt_contrato.getText().startsWith(" ")){
             
-            txt_contrato.requestFocus();
+            txt_contrato.setFocusable(rootPaneCheckingEnabled);
             return;
         } 
+        int contr2 = parseInt(contr);
+        
+        int index=cmb_tipo.getSelectedIndex();
         switch(index){
             case 1: tipo="PF";
                 break;
@@ -982,16 +1082,22 @@ public class MantTrabajadores extends javax.swing.JFrame {
         
        limpiarlbl();
         
-        actualizar(rut,dv,nom,apepar,apemat,cargo,fechanac,dir,fono,correo,contr,tipo);
+        actualizar(rut,dv,nom,apepar,apemat,cargo,fecha2,dir,fono,correo,contr2,tipo);
+        
+        formatearfecha();
+        
+        
      }else{
          msj="Seleccione una fila para modificar";
             JOptionPane.showMessageDialog(null, msj, "MODIFICACIÓN DE DATOS",JOptionPane.INFORMATION_MESSAGE);
      }
-     llenarlst();
+
+     
     }//GEN-LAST:event_btn_modificarActionPerformed
 
     private void lsttrabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lsttrabMouseClicked
-       String rut,dv,nom,apepar,apemat, cargo, fechanac, dir, fono, correo, contr, tipo;
+       String rut,dv,nom,apepar,apemat, cargo, fecha, dir, fono, correo, contr, tipo;
+         java.text.SimpleDateFormat formato = new java.text.SimpleDateFormat("dd-MM-yyyy");
     
     if(lsttrab.getSelectedRowCount()>0){
         rut=lsttrab.getValueAt(lsttrab.getSelectedRow(), 0).toString();
@@ -1006,18 +1112,47 @@ public class MantTrabajadores extends javax.swing.JFrame {
         txt_paterno.setText(lsttrab.getValueAt(lsttrab.getSelectedRow(), 2).toString());
         txt_materno.setText(lsttrab.getValueAt(lsttrab.getSelectedRow(), 3).toString());
         txt_cargo.setText(lsttrab.getValueAt(lsttrab.getSelectedRow(), 4).toString());
-        txt_fechanac.setText(lsttrab.getValueAt(lsttrab.getSelectedRow(), 5).toString());
+        fecha = lsttrab.getValueAt(lsttrab.getSelectedRow(),5).toString();
+            try {
+                java.util.Date fechDate = formato.parse(fecha);
+                dc_fecha.setDate(fechDate);
+            } catch (ParseException ex) {
+                Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        
         txt_direccion.setText(lsttrab.getValueAt(lsttrab.getSelectedRow(), 6).toString());
         txt_telefono.setText(lsttrab.getValueAt(lsttrab.getSelectedRow(), 7).toString());
         txt_correo.setText(lsttrab.getValueAt(lsttrab.getSelectedRow(), 8).toString());
         txt_contrato.setText(lsttrab.getValueAt(lsttrab.getSelectedRow(), 9).toString());
-        cmb_tipo.setSelectedItem(lsttrab.getValueAt(lsttrab.getSelectedRow(), 10).toString());
+        tipo=lsttrab.getValueAt(lsttrab.getSelectedRow(), 10).toString();
+            /*msj=tipo;
+            JOptionPane.showMessageDialog(null, msj, "ELIMINACIÓN DE DATOS", JOptionPane.INFORMATION_MESSAGE);*/
+            switch (tipo) {
+                case "Plazo Fijo":
+                    cmb_tipo.setSelectedItem("Plazo Fijo");
+                    break;
+                case "Plazo Indefinido":
+                    cmb_tipo.setSelectedItem("Plazo Indefinido");
+                    break;
+                case "Por Obra":
+                    cmb_tipo.setSelectedItem("Por Obra");
+                    break;
+                case "Trabajo Atípico":
+                    cmb_tipo.setSelectedItem("Trabajo Atípico");
+                    break;
+                 case "Trabajos Especiales":
+                    cmb_tipo.setSelectedItem("Trabajos Especiales");
+                    break;   
+
+            }
         limpiarlbl();
         } 
     }//GEN-LAST:event_lsttrabMouseClicked
 
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
-        String rut,dv,nom,apepar,apemat, cargo, fechanac, dir, fono, correo, contr, tipo="";
+        String rut,dv,nom,apepar,apemat, cargo, dir, fono, correo, contr, tipo="";
+        Date fecha;
         int index=cmb_tipo.getSelectedIndex();
         if(lsttrab.getSelectedRowCount()>0){
             rut=txt_rut.getText();
@@ -1026,7 +1161,7 @@ public class MantTrabajadores extends javax.swing.JFrame {
             apepar=txt_paterno.getText();
             apemat=txt_materno.getText();
             cargo=txt_cargo.getText();
-            fechanac=txt_fechanac.getText();
+            fecha=dc_fecha.getDate();
             dir=txt_direccion.getText();
             fono=txt_telefono.getText();
             correo=txt_correo.getText();
@@ -1047,7 +1182,7 @@ public class MantTrabajadores extends javax.swing.JFrame {
         if(JOptionPane.showConfirmDialog(rootPane, "Se eliminará el registro",
                 "Eliminar", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION)== JOptionPane.YES_OPTION){
         
-                eliminar(rut,dv,nom,apepar,apemat, cargo, fechanac, dir, fono, correo, contr, tipo);
+                eliminar(rut,dv,nom,apepar,apemat, cargo, fecha, dir, fono, correo, contr, tipo);
             }
         }else{
             msj="NO SE PUEDEN ELIMINAR DATOS";
@@ -1104,6 +1239,54 @@ public class MantTrabajadores extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_contratoActionPerformed
 
+    private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
+        modelolista.setNumRows(0);
+        llenarlst();
+        txt_consulta.setText("");
+        dc_fecha.setDate(null);
+   
+        txt_dv.setText("");
+
+        txt_materno.setText("");
+        txt_nombre.setText("");
+        txt_paterno.setText("");
+        txt_rut.setText("");
+   
+        txt_rut.enable();
+        txt_dv.enable();
+        lsttrab.clearSelection();
+        limpiarlbl();
+        
+    }//GEN-LAST:event_jPanel1MouseClicked
+
+    private void txt_dvFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_dvFocusLost
+        String codigo;
+        int multiplo = 2;
+        int cont = 0;
+        //módulo 11 para cálculo de DV
+        for (int x = 0; x < txt_rut.getText().length(); x++) {
+            cont = cont + (Integer.parseInt(txt_rut.getText().substring(txt_rut.getText().length() - x - 1, txt_rut.getText().length() - x)) * multiplo);
+            multiplo++;
+            if (multiplo == 8) {
+                multiplo = 2;
+            }
+        }
+        cont = 11 - (cont % 11);
+        if (cont <= 9) {
+            codigo = "" + cont;
+        } else if (cont == 11) {
+            codigo = "0";
+        } else {
+            codigo = "K";
+        }
+        if (!txt_dv.getText().equals(codigo)) {
+            lb_err1.setText("Run inválido, ingrese nuevamente!");
+            txt_rut.setText("");
+            txt_dv.setText("");
+            txt_rut.requestFocus();
+        }
+    }//GEN-LAST:event_txt_dvFocusLost
+
     /**
      * @param args the command line arguments
      */
@@ -1145,6 +1328,7 @@ public class MantTrabajadores extends javax.swing.JFrame {
     private javax.swing.JButton btn_eliminar;
     private javax.swing.JButton btn_modificar;
     private javax.swing.JComboBox<String> cmb_tipo;
+    private com.toedter.calendar.JDateChooser dc_fecha;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -1184,7 +1368,6 @@ public class MantTrabajadores extends javax.swing.JFrame {
     private javax.swing.JTextField txt_correo;
     private javax.swing.JTextField txt_direccion;
     private javax.swing.JTextField txt_dv;
-    private javax.swing.JTextField txt_fechanac;
     private javax.swing.JTextField txt_materno;
     private javax.swing.JTextField txt_nombre;
     private javax.swing.JTextField txt_paterno;

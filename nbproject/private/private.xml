@@ -2,6 +2,13 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/mrjmn/Documents/TT%20sistema%20parroquial/SistemaParroquia/src/Mantenedores/MantClientes.java</file>
+            <file>file:/C:/Users/mrjmn/Documents/TT%20sistema%20parroquial/SistemaParroquia/src/Mantenedores/MantPagosAbonos.java</file>
+            <file>file:/C:/Users/mrjmn/Documents/TT%20sistema%20parroquial/SistemaParroquia/src/Mantenedores/MantAnexosContr.java</file>
+            <file>file:/C:/Users/mrjmn/Documents/TT%20sistema%20parroquial/SistemaParroquia/src/Mantenedores/MantFacturas.java</file>
+            <file>file:/C:/Users/mrjmn/Documents/TT%20sistema%20parroquial/SistemaParroquia/src/Mantenedores/MantSepultados.java</file>
+            <file>file:/C:/Users/mrjmn/Documents/TT%20sistema%20parroquial/SistemaParroquia/src/Mantenedores/MantGastos.java</file>
+        </group>
     </open-files>
 </project-private>
