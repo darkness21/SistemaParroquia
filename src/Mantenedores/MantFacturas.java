@@ -23,7 +23,9 @@ import java.util.regex.Pattern;
 import javax.swing.RowSorter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
 public class MantFacturas extends javax.swing.JFrame {
+
     private Statement sentencia;
     private Connection conexion;
     private String nomBD = "cementerio";
@@ -31,15 +33,15 @@ public class MantFacturas extends javax.swing.JFrame {
     private String password = "";
     private String msj;
     Object[][] data = {};
-    String[] columnNames = {"Numero factura", "Rut empresa", "Fecha emisión", "Forma pago", "Fecha vencimiento", "Valor IVA" , "Estado", "Valor neto"};
+    String[] columnNames = {"Numero factura", "Rut empresa", "Fecha emisión", "Forma pago", "Fecha vencimiento", "Valor IVA", "Estado", "Valor neto"};
     DefaultTableModel modelolista = new DefaultTableModel(data, columnNames) {
         public boolean isCellEditable(int rowIndex, int vColIndex) {
             return false;
         }
     };
-   
+
     public MantFacturas() {
-       initComponents();
+        initComponents();
         this.setLocationRelativeTo(null);
         conectar();
         lbl_estado.setVisible(false);
@@ -60,8 +62,7 @@ public class MantFacturas extends javax.swing.JFrame {
 
         }
     }
-    
-    
+
     public void transparenciaButton() {
         btn_agregar.setOpaque(false);
         btn_agregar.setContentAreaFilled(false);
@@ -72,18 +73,16 @@ public class MantFacturas extends javax.swing.JFrame {
         btn_eliminar.setOpaque(false);
         btn_eliminar.setContentAreaFilled(false);
         btn_eliminar.setBorderPainted(false);
-       
+
     }
-    
+
     public void limpiarlbl() {
         lb_err1.setText("");
-        
+
     }
-    
-    
-    
+
     public void llenarlst() {
-        String nro, run, dv, fechaemi, pago, tipo2 = "", fechaven, iva, valor, estado, estado2 ="";
+        String nro, run, dv, fechaemi, pago, tipo2 = "", fechaven, iva, valor, estado, estado2 = "";
         Date fech = null;
         lstfact.setPreferredScrollableViewportSize(new Dimension(500, 70));
         RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(modelolista);
@@ -92,11 +91,11 @@ public class MantFacturas extends javax.swing.JFrame {
             sentencia = (Statement) conexion.createStatement();//permite ejecutar sentencias SQL
             ResultSet lista = sentencia.executeQuery("SELECT * FROM facturas");
             while (lista.next()) {
-                
+
                 nro = (lista.getString("nro_factura"));
-                run = (lista.getString("run_empresa"));
+                run = (lista.getString("rut_empresa"));
                 dv = (lista.getString("dv_empresa"));
-                
+
                 fechaemi = lista.getString("fecha_emision");
                 SimpleDateFormat parseador = new SimpleDateFormat("yyyy-MM-dd");
                 SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
@@ -106,7 +105,7 @@ public class MantFacturas extends javax.swing.JFrame {
                     Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 fechaemi = String.format(format.format(fech));
-                
+
                 pago = (lista.getString("forma_pago"));
                 switch (pago) {
                     case "Efectivo":
@@ -115,25 +114,25 @@ public class MantFacturas extends javax.swing.JFrame {
                     case "Tarjeta":
                         tipo2 = "Tarjeta";
                         break;
-                     case "Cheque":
+                    case "Cheque":
                         tipo2 = "Cheque";
-                        break;   
-                        
+                        break;
+
                 }
-                
+
                 fechaven = lista.getString("fecha_vencimiento");
-                 parseador = new SimpleDateFormat("yyyy-MM-dd");
-                 format = new SimpleDateFormat("dd-MM-yyyy");
+                parseador = new SimpleDateFormat("yyyy-MM-dd");
+                format = new SimpleDateFormat("dd-MM-yyyy");
                 try {
                     fech = parseador.parse(fechaven);
                 } catch (ParseException ex) {
                     Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 fechaven = String.format(format.format(fech));
-                
+
                 iva = (lista.getString("valor_iva"));
                 valor = (lista.getString("valor_neto_factura"));
-                
+
                 estado = (lista.getString("estado"));
                 switch (estado) {
                     case "V":
@@ -142,13 +141,10 @@ public class MantFacturas extends javax.swing.JFrame {
                     case "A":
                         estado2 = "Anulada";
                         break;
-                      
-                        
+
                 }
-                
-                
-                
-                Object[] newRow = {nro, run + "-" + dv, fechaemi, tipo2, fechaven, iva, estado2,  valor};
+
+                Object[] newRow = {nro, run + "-" + dv, fechaemi, tipo2, fechaven, iva, estado2, valor};
                 modelolista.addRow(newRow);
             }
             lstfact.getRowSorter().toggleSortOrder(0);
@@ -156,13 +152,12 @@ public class MantFacturas extends javax.swing.JFrame {
             limpiarlbl();
         } catch (SQLException e) {
             msj = "no tiene elementos";
+            JOptionPane.showMessageDialog(null, msj, "Datos Guardados", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    
-    
-    
+
     public void llenarlst_consu(String consu) {
-        String nro, run, dv, pago, tipo2 = "",valor, estado, iva,  estado2 ="";
+        String nro, run, dv, pago, tipo2 = "", valor, estado, iva, estado2 = "";
         Date fechaemi, fechaven;
         lstfact.setPreferredScrollableViewportSize(new Dimension(500, 70));
         RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(modelolista);
@@ -172,13 +167,12 @@ public class MantFacturas extends javax.swing.JFrame {
             ResultSet lista = sentencia.executeQuery("SELECT * FROM facturas WHERE run_empresa like '%" + consu + "%'or fecha_emision like '%" + consu + "%'"
                     + "or estado like '%" + consu + "%' or forma_pago like '%" + consu + "%'");
             while (lista.next()) {
-               nro = (lista.getString("nro_factura"));
+                nro = (lista.getString("nro_factura"));
                 run = (lista.getString("run_empresa"));
                 dv = (lista.getString("dv_empresa"));
-                
+
                 fechaemi = lista.getDate("fecha_emision");
-                
-                
+
                 pago = (lista.getString("forma_pago"));
                 switch (pago) {
                     case "Efectivo":
@@ -187,17 +181,17 @@ public class MantFacturas extends javax.swing.JFrame {
                     case "Tarjeta":
                         tipo2 = "Tarjeta";
                         break;
-                     case "Cheque":
+                    case "Cheque":
                         tipo2 = "Cheque";
-                        break;   
-                        
+                        break;
+
                 }
-                
+
                 fechaven = lista.getDate("fecha_vencimiento");
-                 
+
                 iva = (lista.getString("valor_iva"));
                 valor = (lista.getString("valor_neto_factura"));
-                
+
                 estado = (lista.getString("estado"));
                 switch (estado) {
                     case "V":
@@ -206,10 +200,8 @@ public class MantFacturas extends javax.swing.JFrame {
                     case "A":
                         estado2 = "Anulada";
                         break;
-                      
-                        
+
                 }
-                
 
                 Object[] newRow = {nro, run + "-" + dv, fechaemi, tipo2, fechaven, iva, estado2, valor};
                 modelolista.addRow(newRow);
@@ -243,18 +235,15 @@ public class MantFacturas extends javax.swing.JFrame {
         dc_fechaven.setDate(null);
         txt_valor.setText("");
         cmb_estado.setSelectedIndex(0);
-        
-        
 
         lstfact.clearSelection();
     }
-    
+
     public void formatearfecha() {
         dc_fechaemi.setDateFormatString("dd-MM-yyyy");
         dc_fechaven.setDateFormatString("dd-MM-yyyy");
     }
-    
-    
+
     public void insertar(String sql) {
         try {
             sentencia.executeUpdate(sql);
@@ -271,13 +260,12 @@ public class MantFacturas extends javax.swing.JFrame {
         llenarlst();
         limpiar();
     }
-    
-    
+
     public void actualizar(String nro, String rut, String dv, String fechaemi, String pago, String fechaven, int iva, String estado, int valor) {
         String upSQL = "";
 
         try {
-            upSQL = "UPDATE facturas SET fecha_emision='" + fechaemi + "',forma_pago='" + pago + "',fecha_vencimiento='" + fechaven + "',valor_iva=" + iva + ",estado='" + estado + "',valor_neto_factura="+ valor  + " WHERE nro_factura=" + nro + "";
+            upSQL = "UPDATE facturas SET fecha_emision='" + fechaemi + "',forma_pago='" + pago + "',fecha_vencimiento='" + fechaven + "',valor_iva=" + iva + ",estado='" + estado + "',valor_neto_factura=" + valor + " WHERE nro_factura=" + nro + "";
             sentencia.executeUpdate(upSQL);
             msj = "Datos actualizados";
             JOptionPane.showMessageDialog(null, msj, "Datos actualizados", JOptionPane.INFORMATION_MESSAGE);
@@ -291,9 +279,8 @@ public class MantFacturas extends javax.swing.JFrame {
         llenarlst();
         limpiar();
     }
-    
-    
-    public void eliminar(String nro, String rut, String dv, Date fechaemi, String pago, Date fechaven, String iva , String estado, String valor) {
+
+    public void eliminar(String nro, String rut, String dv, Date fechaemi, String pago, Date fechaven, String iva, String estado, String valor) {
         String upSQL = "";
         /*Mensaje message=new Mensaje();
         message.windowClosed(e);*/
@@ -313,6 +300,7 @@ public class MantFacturas extends javax.swing.JFrame {
         llenarlst();
         limpiar();
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -522,9 +510,7 @@ public class MantFacturas extends javax.swing.JFrame {
                                                     .addComponent(jLabel9)
                                                     .addComponent(dc_fechaven, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGap(48, 48, 48))
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(cmb_estado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addGap(0, 0, 0)))
+                                            .addComponent(cmb_estado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGap(98, 98, 98)
@@ -643,10 +629,10 @@ public class MantFacturas extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel9))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -688,7 +674,7 @@ public class MantFacturas extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_valorActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       System.exit(0);
+        System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -740,11 +726,10 @@ public class MantFacturas extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_ivaActionPerformed
 
     private void btn_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarActionPerformed
-         String nro, rut, dv, fechaemi2, pago = "", fechaven2, iva , estado = "", valor ;
+        String nro, rut, dv, fechaemi2, pago = "", fechaven2, iva, estado = "", valor;
         int nro2, iva2, valor2;
         Date fechaemi, fechaven;
 
-        
         nro = txt_nro.getText();
         if (txt_nro.getText().isEmpty() || txt_nro.getText().startsWith(" ")) {
             lb_err1.setText("Ingrese un n° de factura");
@@ -754,22 +739,22 @@ public class MantFacturas extends javax.swing.JFrame {
 
         nro2 = parseInt(nro);
         //
-        
+
         rut = txt_rut.getText().toUpperCase();
         if (txt_rut.getText().isEmpty() || txt_rut.getText().startsWith(" ")) {
             lb_err1.setText("Ingrese un rut");
             txt_rut.requestFocus();
             return;
         }
-         //
-        dv = txt_dv.getText().toUpperCase(); 
+        //
+        dv = txt_dv.getText().toUpperCase();
         //
         dc_fechaemi.setDateFormatString("yyyy-MM-dd");
         fechaemi2 = dc_fechaemi.getDateFormatString();
         fechaemi = dc_fechaemi.getDate();
         SimpleDateFormat sdf = new SimpleDateFormat(fechaemi2);
-        fechaemi2 = String.valueOf(sdf.format(fechaemi)); 
-        
+        fechaemi2 = String.valueOf(sdf.format(fechaemi));
+
         // 
         int index = cmb_pago.getSelectedIndex();
 
@@ -782,7 +767,7 @@ public class MantFacturas extends javax.swing.JFrame {
                 break;
             case 3:
                 pago = "Cheque";
-                break;       
+                break;
             default:
                 lb_err1.setText("Debe seleccionar un tipo de pago");
                 break;
@@ -792,9 +777,9 @@ public class MantFacturas extends javax.swing.JFrame {
         fechaven2 = dc_fechaven.getDateFormatString();
         fechaven = dc_fechaven.getDate();
         sdf = new SimpleDateFormat(fechaven2);
-        fechaven2 = String.valueOf(sdf.format(fechaven)); 
+        fechaven2 = String.valueOf(sdf.format(fechaven));
         //
-         iva = txt_iva.getText();
+        iva = txt_iva.getText();
         if (txt_iva.getText().isEmpty() || txt_iva.getText().startsWith(" ")) {
             lb_err1.setText("Ingrese un iva");
             txt_iva.setFocusable(rootPaneCheckingEnabled);
@@ -811,13 +796,13 @@ public class MantFacturas extends javax.swing.JFrame {
             case 2:
                 estado = "A";
                 break;
-                  
+
             default:
                 lb_err1.setText("Debe seleccionar un estado");
                 break;
         }
         //
-        
+
         valor = txt_valor.getText();
         if (txt_valor.getText().isEmpty() || txt_valor.getText().startsWith(" ")) {
             lb_err1.setText("Ingrese un valor");
@@ -826,36 +811,30 @@ public class MantFacturas extends javax.swing.JFrame {
         }
         valor2 = parseInt(valor);
 
-        
-
-       
         /*if(txt_fechnac.getDate().equals("")){
             lb_err5.setText("Ingrese la fecha de nacimiento");
             txt_fechnac.requestFocus();
             return;
         }*/
-
-        
-        String sql = "INSERT INTO facturas(nro_factura,rut_empresa,dv_empresa,fecha_emision,forma_pago,fecha_vencimiento,valor_iva,estado,valor_neto_factura) "
-                + "VALUES("+ nro + ",'" + rut + "','" + dv + "','" + fechaemi2 + "','" + pago + "','" + fechaven2 + "', " + iva2 + ", '"+ estado + "', " + valor2 +")";
-        //msj = sql;
-        //JOptionPane.showMessageDialog(null, msj, "Datos Guardados", JOptionPane.INFORMATION_MESSAGE);
+        String sql = "INSERT INTO facturas(nro_factura,rut_empresa,dv_empresa,fecha_emision,forma_pago,fecha_vencimiento,valor_iva,estado,valor_neto_factura)"
+                + "VALUES(" + nro2 + ",'" + rut + "','" + dv + "','" + fechaemi2 + "','" + pago + "','" + fechaven2 + "', " + iva2 + ", '" + estado + "', " + valor2 + ")";
+        /*msj = sql;
+        JOptionPane.showMessageDialog(null, msj, "Datos Guardados", JOptionPane.INFORMATION_MESSAGE);*/
         insertar(sql);
     }//GEN-LAST:event_btn_agregarActionPerformed
 
     private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
-        String nro, rut, dv, fechaemi2, pago = "", fechaven2, iva , estado = "", valor ;
+        String nro, rut, dv, fechaemi2, pago = "", fechaven2, iva, estado = "", valor;
         Date fechaemi, fechaven;
         int nro2, iva2, valor2;
         if (lstfact.getSelectedRowCount() > 0) {
-            
+
             nro = txt_nro.getText();
             nro2 = parseInt(nro);
-            
+
             rut = txt_rut.getText();
             dv = txt_dv.getText().toUpperCase();
-            
-            
+
             dc_fechaemi.setDateFormatString("yyyy-MM-dd");
             fechaemi2 = dc_fechaemi.getDateFormatString();
             fechaemi = dc_fechaemi.getDate();
@@ -883,40 +862,39 @@ public class MantFacturas extends javax.swing.JFrame {
             fechaven2 = dc_fechaven.getDateFormatString();
             fechaven = dc_fechaven.getDate();
             sdf = new SimpleDateFormat(fechaven2);
-            fechaven2 = String.valueOf(sdf.format(fechaven)); 
+            fechaven2 = String.valueOf(sdf.format(fechaven));
             //
             iva = txt_iva.getText();
             if (txt_iva.getText().isEmpty() || txt_iva.getText().startsWith(" ")) {
-            lb_err1.setText("Ingrese un iva");
-            txt_iva.setFocusable(rootPaneCheckingEnabled);
-            return;
-        }
+                lb_err1.setText("Ingrese un iva");
+                txt_iva.setFocusable(rootPaneCheckingEnabled);
+                return;
+            }
             iva2 = parseInt(iva);
             //
             int index2 = cmb_estado.getSelectedIndex();
 
             switch (index2) {
-            case 1:
-                estado = "V";
-                break;
-            case 2:
-                estado = "A";
-                break;
-                  
-            default:
-                lb_err1.setText("Debe seleccionar un estado");
-                break;
-        }
+                case 1:
+                    estado = "V";
+                    break;
+                case 2:
+                    estado = "A";
+                    break;
+
+                default:
+                    lb_err1.setText("Debe seleccionar un estado");
+                    break;
+            }
             //
             valor = txt_valor.getText();
-             if (txt_valor.getText().isEmpty() || txt_valor.getText().startsWith(" ")) {
-            lb_err1.setText("Ingrese un valor");
-            txt_valor.setFocusable(rootPaneCheckingEnabled);
-            return;
-        }
+            if (txt_valor.getText().isEmpty() || txt_valor.getText().startsWith(" ")) {
+                lb_err1.setText("Ingrese un valor");
+                txt_valor.setFocusable(rootPaneCheckingEnabled);
+                return;
+            }
             valor2 = parseInt(valor);
-            
-            
+
             limpiarlbl();
 
             actualizar(nro, rut, dv, fechaemi2, pago, fechaven2, iva2, estado, valor2);
@@ -927,10 +905,9 @@ public class MantFacturas extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_modificarActionPerformed
 
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
-        String nro, rut, dv, fechaemi2, pago = "", fechaven2, iva , estado = "", valor ;
+        String nro, rut, dv, fechaemi2, pago = "", fechaven2, iva, estado = "", valor;
         Date fechaemi, fechaven;
-        
-        
+
         if (lstfact.getSelectedRowCount() > 0) {
             nro = txt_nro.getText();
             rut = txt_rut.getText();
@@ -946,7 +923,7 @@ public class MantFacturas extends javax.swing.JFrame {
                     break;
                 case 3:
                     pago = "Cheque";
-                    break;   
+                    break;
             }
             fechaven = dc_fechaven.getDate();
             iva = txt_iva.getText();
@@ -958,10 +935,9 @@ public class MantFacturas extends javax.swing.JFrame {
                 case 2:
                     estado = "A";
                     break;
-                   
+
             }
             valor = txt_valor.getText();
-            
 
             if (JOptionPane.showConfirmDialog(rootPane, "Se eliminará el registro",
                     "Eliminar", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
@@ -976,14 +952,14 @@ public class MantFacturas extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_eliminarActionPerformed
 
     private void lstfactMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstfactMouseClicked
-        String nro, rut, dv, fechaemi, pago = "", fechaven, iva , estado = "", valor ;
+        String nro, rut, dv, fechaemi, pago = "", fechaven, iva, estado = "", valor;
         java.text.SimpleDateFormat formato = new java.text.SimpleDateFormat("dd-MM-yyyy");
 
         if (lstfact.getSelectedRowCount() > 0) {
             nro = lstfact.getValueAt(lstfact.getSelectedRow(), 0).toString();
             jLabel6.enable();
             txt_nro.setText(nro);
-            
+
             rut = lstfact.getValueAt(lstfact.getSelectedRow(), 1).toString();
             rut = rut.substring(0, rut.length() - 2);
             txt_rut.setText(rut);
@@ -992,6 +968,7 @@ public class MantFacturas extends javax.swing.JFrame {
             dv = dv.substring(dv.length() - 1, dv.length());
             txt_dv.setText(dv);
             txt_dv.disable();
+            txt_nro.disable();
             fechaemi = lstfact.getValueAt(lstfact.getSelectedRow(), 2).toString();
             try {
                 java.util.Date fechDate = formato.parse(fechaemi);
@@ -999,8 +976,8 @@ public class MantFacturas extends javax.swing.JFrame {
             } catch (ParseException ex) {
                 Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            pago=lstfact.getValueAt(lstfact.getSelectedRow(), 3).toString();
+
+            pago = lstfact.getValueAt(lstfact.getSelectedRow(), 3).toString();
             switch (pago) {
                 case "Efectivo":
                     cmb_pago.setSelectedItem("Efectivo");
@@ -1010,7 +987,7 @@ public class MantFacturas extends javax.swing.JFrame {
                     break;
                 case "Cheque":
                     cmb_pago.setSelectedItem("Cheque");
-                    break;    
+                    break;
             }
             fechaven = lstfact.getValueAt(lstfact.getSelectedRow(), 4).toString();
             try {
@@ -1019,23 +996,21 @@ public class MantFacturas extends javax.swing.JFrame {
             } catch (ParseException ex) {
                 Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             txt_iva.setText(lstfact.getValueAt(lstfact.getSelectedRow(), 5).toString());
-            
-            estado=lstfact.getValueAt(lstfact.getSelectedRow(), 6).toString();
+
+            estado = lstfact.getValueAt(lstfact.getSelectedRow(), 6).toString();
             switch (estado) {
-                case "V":
-                    cmb_pago.setSelectedItem("Vigente");
+                case "Vigente":
+                    cmb_estado.setSelectedItem("Vigente");
                     break;
-                case "A":
-                    cmb_pago.setSelectedItem("Anulada");
+                case "Anulada":
+                    cmb_estado.setSelectedItem("Anulada");
                     break;
-                    
+
             }
-            
-            
+
             txt_valor.setText(lstfact.getValueAt(lstfact.getSelectedRow(), 7).toString());
-            
 
             limpiarlbl();
         }

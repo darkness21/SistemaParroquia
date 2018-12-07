@@ -154,6 +154,7 @@ public class MantAnexosContr extends javax.swing.JFrame {
         lb_cod.setText("");
         txt_rut.setText("");
         txt_dv.setText("");
+        txt_cod.setText("");
         txt_descripcion.setText("");
         txt_rut.enable();
         txt_dv.enable();
@@ -245,7 +246,7 @@ public class MantAnexosContr extends javax.swing.JFrame {
         txt_rut = new javax.swing.JTextField();
         lb_cod = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        txt_descripcion = new javax.swing.JTextField();
+        txt_cod = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         jButton8 = new javax.swing.JButton();
@@ -260,6 +261,7 @@ public class MantAnexosContr extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         lb_err1 = new javax.swing.JLabel();
+        txt_descripcion = new javax.swing.JTextField();
 
         jButton5.setBackground(new java.awt.Color(102, 204, 0));
         jButton5.setFont(new java.awt.Font("Franklin Gothic Medium", 3, 13)); // NOI18N
@@ -351,10 +353,10 @@ public class MantAnexosContr extends javax.swing.JFrame {
 
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
 
-        txt_descripcion.setBackground(new java.awt.Color(255, 255, 204));
-        txt_descripcion.addActionListener(new java.awt.event.ActionListener() {
+        txt_cod.setBackground(new java.awt.Color(255, 255, 204));
+        txt_cod.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_descripcionActionPerformed(evt);
+                txt_codActionPerformed(evt);
             }
         });
 
@@ -442,6 +444,13 @@ public class MantAnexosContr extends javax.swing.JFrame {
         lb_err1.setForeground(new java.awt.Color(255, 0, 51));
         lb_err1.setText("jLabel4");
 
+        txt_descripcion.setBackground(new java.awt.Color(255, 255, 204));
+        txt_descripcion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_descripcionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -494,7 +503,6 @@ public class MantAnexosContr extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txt_descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel19)
                                     .addComponent(jLabel6)
                                     .addComponent(lb_cod)
@@ -502,7 +510,9 @@ public class MantAnexosContr extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(txt_rut, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txt_dv, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(txt_dv, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txt_cod, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txt_descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -562,7 +572,9 @@ public class MantAnexosContr extends javax.swing.JFrame {
                         .addContainerGap(76, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel6)
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_cod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lb_cod)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel8)
@@ -570,14 +582,14 @@ public class MantAnexosContr extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txt_rut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txt_dv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(64, 64, 64)
                                 .addComponent(jLabel17))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel19)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(txt_descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lb_err1)
@@ -604,9 +616,9 @@ public class MantAnexosContr extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_rutActionPerformed
 
-    private void txt_descripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_descripcionActionPerformed
+    private void txt_codActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_codActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_descripcionActionPerformed
+    }//GEN-LAST:event_txt_codActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
@@ -654,6 +666,14 @@ public class MantAnexosContr extends javax.swing.JFrame {
 
     private void btn_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarActionPerformed
          String cod, rut, dv, desc;
+         
+        cod = txt_cod.getText();
+        if (txt_cod.getText().isEmpty() || txt_cod.getText().startsWith(" ")) {
+            lb_err1.setText("Ingrese un Codigo de anexo");
+            txt_cod.setFocusable(rootPaneCheckingEnabled);
+            return;
+        }
+        
         rut = txt_rut.getText();
         if (txt_rut.getText().isEmpty() || txt_rut.getText().startsWith(" ")) {
             lb_err1.setText("Ingrese un rut");
@@ -671,8 +691,8 @@ public class MantAnexosContr extends javax.swing.JFrame {
         
         
 
-        String sql = "INSERT INTO anexo_contrato(run_trabajador,dv_trabajador,descripcion) "
-                + "VALUES('" + rut + "','" + dv + "','" + desc +  "')";
+        String sql = "INSERT INTO anexo_contrato(cod_contrato,run_trabajador,dv_trabajador,descripcion) "
+                + "VALUES('" + cod + "', '" + rut + "','" + dv + "','" + desc +  "')";
         //msj = sql;
         //JOptionPane.showMessageDialog(null, msj, "Datos Guardados", JOptionPane.INFORMATION_MESSAGE);
         insertar(sql);
@@ -682,8 +702,10 @@ public class MantAnexosContr extends javax.swing.JFrame {
       String cod, rut, dv, desc;
       int codigo;
         if (lstcontra.getSelectedRowCount() > 0) {
-            cod = lstcontra.getValueAt(lstcontra.getSelectedRow(), 0).toString();
-            codigo=parseInt(cod); 
+//            cod = lstcontra.getValueAt(lstcontra.getSelectedRow(), 0).toString();
+//            codigo=parseInt(cod); 
+            cod = txt_cod.getText();
+            codigo = parseInt (cod);
             
             rut = txt_rut.getText();
             
@@ -705,7 +727,8 @@ public class MantAnexosContr extends javax.swing.JFrame {
         
     
         if (lstcontra.getSelectedRowCount() > 0) {
-            cod = lstcontra.getValueAt(lstcontra.getSelectedRow(), 0).toString();
+//            cod = lstcontra.getValueAt(lstcontra.getSelectedRow(), 0).toString();
+            cod = txt_cod.getText();
             rut = txt_rut.getText();
             dv = txt_dv.getText();
             desc = txt_descripcion.getText();
@@ -742,8 +765,10 @@ public class MantAnexosContr extends javax.swing.JFrame {
             dv = dv.substring(dv.length() - 1, dv.length());
             txt_dv.setText(dv);
             txt_dv.disable();
-            txt_descripcion.setText("");
+            txt_cod.setText("");
             lb_cod.setText("");
+            txt_descripcion.setText("");
+            txt_cod.enable();
             btn_eliminar.setVisible(false);
             btn_modificar.setVisible(false);
             
@@ -758,7 +783,8 @@ public class MantAnexosContr extends javax.swing.JFrame {
             
             
             cod = lstcontra.getValueAt(lstcontra.getSelectedRow(), 0).toString();   
-            lb_cod.setText(cod);
+            //lb_cod.setText(cod);
+            txt_cod.setText(cod);
             rut = lstcontra.getValueAt(lstcontra.getSelectedRow(), 1).toString();
             rut = rut.substring(0, rut.length() - 2);
             txt_rut.setText(rut);
@@ -769,6 +795,7 @@ public class MantAnexosContr extends javax.swing.JFrame {
             txt_dv.disable();
             desc = lstcontra.getValueAt(lstcontra.getSelectedRow(), 2).toString();
             txt_descripcion.setText(desc);
+            txt_cod.disable();
              btn_eliminar.setVisible(true);
             btn_modificar.setVisible(true);
             limpiarlbl();
@@ -805,9 +832,11 @@ public class MantAnexosContr extends javax.swing.JFrame {
         llenarlst2();
         lb_cod.setText("");
         txt_rut.setText("");
+        txt_cod.enable();
         txt_rut.enable();
         txt_dv.setText("");
         txt_dv.enable();
+        txt_cod.setText("");
         txt_descripcion.setText("");
         lsttrab.clearSelection();
         lstcontra.clearSelection();
@@ -824,6 +853,10 @@ public class MantAnexosContr extends javax.swing.JFrame {
         //txt_dv.enable();
        
     }//GEN-LAST:event_jPanel1MouseClicked
+
+    private void txt_descripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_descripcionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_descripcionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -887,6 +920,7 @@ public class MantAnexosContr extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_estado;
     private javax.swing.JTable lstcontra;
     private javax.swing.JTable lsttrab;
+    private javax.swing.JTextField txt_cod;
     private javax.swing.JTextField txt_consultar;
     private javax.swing.JTextField txt_descripcion;
     private javax.swing.JTextField txt_dv;

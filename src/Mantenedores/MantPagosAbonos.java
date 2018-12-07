@@ -22,6 +22,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+
 public class MantPagosAbonos extends javax.swing.JFrame {
     private Statement sentencia;
     private Connection conexion;
@@ -36,6 +38,14 @@ public class MantPagosAbonos extends javax.swing.JFrame {
             return false;
         }
     };
+    
+    Object[][] data2 = {};
+    String[] columnNames2 = {"Rut cliente", "Codigo venta"};
+    DefaultTableModel modelolista2 = new DefaultTableModel(data2, columnNames2) {
+        public boolean isCellEditable(int rowIndex, int vColIndex) {
+            return false;
+        }
+    };
    
     public MantPagosAbonos() {
         initComponents();
@@ -43,7 +53,9 @@ public class MantPagosAbonos extends javax.swing.JFrame {
         conectar();
         lbl_estado.setVisible(false);
         lstpago.setModel(modelolista);
-        llenarlst();
+        lstventa.setModel(modelolista2);
+        llenarlst1();
+        llenarlst2();
         transparenciaButton();
         
         
@@ -79,7 +91,7 @@ public class MantPagosAbonos extends javax.swing.JFrame {
        
 
     }
-  public void llenarlst() {
+  public void llenarlst2() {
         String cod, fecha, tipo, tipo2 = "", monto, codventa;
         Date fech = null;
 
@@ -128,7 +140,36 @@ public class MantPagosAbonos extends javax.swing.JFrame {
 
     ;
      
-       
+    
+  
+  public void llenarlst1() {
+        String rut, cod;
+        
+
+        lstventa.setPreferredScrollableViewportSize(new Dimension(500, 70));
+        RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(modelolista2);
+        lstventa.setRowSorter(sorter);
+        try {
+            sentencia = (Statement) conexion.createStatement();//permite ejecutar sentencias SQL
+            ResultSet lista = sentencia.executeQuery("SELECT * FROM  venta");
+            while (lista.next()) {
+                
+                rut = (lista.getString("run_cliente"));
+                cod = (lista.getString("cod_venta"));//nombre del campo de la BD
+                
+                Object[] newRow = {rut, cod};
+                modelolista2.addRow(newRow);
+            }
+            lstventa.getRowSorter().toggleSortOrder(0);
+            lstventa.getRowSorter().toggleSortOrder(0);
+            limpiarlbl();
+        } catch (SQLException e) {
+            msj = "no tiene elementos";
+        }
+
+    }
+
+    ;
     
     public void llenarlst_consu(String consu) {
         String cod, tipo, tipo2="", valor, nrofac;
@@ -164,7 +205,7 @@ public class MantPagosAbonos extends javax.swing.JFrame {
                 msj = "No se encontró lo solicitado";
                 JOptionPane.showMessageDialog(null, msj, "CONSULTA SIN DATOS", JOptionPane.INFORMATION_MESSAGE);
                 modelolista.setNumRows(0);
-                llenarlst();
+                llenarlst1();
                 txt_consulta.setText("");
                 txt_consulta.requestFocus();
             }
@@ -189,7 +230,7 @@ public class MantPagosAbonos extends javax.swing.JFrame {
         txt_monto.setText("");
         cmb_tipo.setSelectedIndex(0);
 
-        lstpago.clearSelection();
+        lstventa.clearSelection();
     }
 
     public void formatearfecha() {
@@ -210,7 +251,7 @@ public class MantPagosAbonos extends javax.swing.JFrame {
         }
         modelolista.setNumRows(0);
         //lstClie.remove();
-        llenarlst();
+        llenarlst2();
         limpiar();
     }
     
@@ -230,7 +271,7 @@ public class MantPagosAbonos extends javax.swing.JFrame {
         }
         modelolista.setNumRows(0);
         //lstClie.remove();
-        llenarlst();
+        llenarlst2();
         limpiar();
     }
     
@@ -251,7 +292,7 @@ public class MantPagosAbonos extends javax.swing.JFrame {
         }
         modelolista.setNumRows(0);
         //lstClie.remove();
-        llenarlst();
+        llenarlst2();
         limpiar();
     }
 
@@ -268,14 +309,13 @@ public class MantPagosAbonos extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        lstpago = new javax.swing.JTable();
+        lstventa = new javax.swing.JTable();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         txt_monto = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         cmb_tipo = new javax.swing.JComboBox<>();
-        jLabel15 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         txt_consulta = new javax.swing.JTextField();
         dc_fecha = new com.toedter.calendar.JDateChooser();
@@ -286,6 +326,8 @@ public class MantPagosAbonos extends javax.swing.JFrame {
         lb_err1 = new javax.swing.JLabel();
         txt_venta = new javax.swing.JTextField();
         lb_cod = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        lstpago = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -310,26 +352,26 @@ public class MantPagosAbonos extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Fecha pago");
 
-        lstpago.setModel(new javax.swing.table.DefaultTableModel(
+        lstventa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"032", "02/05/2018", "Abono", "100.000", "001"},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {"02/05/2018", "032"},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "Cod Pago", "Fecha pago", "Tipo Transacción", "Monto Pago", "Cod venta"
+                "Run cliente", "Cod Pago"
             }
         ));
-        lstpago.addMouseListener(new java.awt.event.MouseAdapter() {
+        lstventa.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lstpagoMouseClicked(evt);
+                lstventaMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(lstpago);
+        jScrollPane1.setViewportView(lstventa);
 
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("Tipo transacción");
@@ -348,9 +390,6 @@ public class MantPagosAbonos extends javax.swing.JFrame {
         jLabel16.setText("Monto Pago");
 
         cmb_tipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<Seleccione una opción>", "Pago", "Abono" }));
-
-        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel15.setText("#002");
 
         jButton4.setBackground(new java.awt.Color(102, 0, 0));
         jButton4.setFont(new java.awt.Font("Franklin Gothic Medium", 3, 13)); // NOI18N
@@ -402,6 +441,32 @@ public class MantPagosAbonos extends javax.swing.JFrame {
 
         lb_cod.setForeground(new java.awt.Color(255, 255, 255));
 
+        lstpago.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"032", "02/05/2018", "Abono", "100.000", "001"},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Cod Pago", "Fecha pago", "Tipo Transacción", "Monto Pago", "Cod venta"
+            }
+        ));
+        lstpago.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lstpagoMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(lstpago);
+        if (lstpago.getColumnModel().getColumnCount() > 0) {
+            lstpago.getColumnModel().getColumn(2).setHeaderValue("Tipo Transacción");
+            lstpago.getColumnModel().getColumn(3).setHeaderValue("Monto Pago");
+            lstpago.getColumnModel().getColumn(4).setHeaderValue("Cod venta");
+        }
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -413,23 +478,26 @@ public class MantPagosAbonos extends javax.swing.JFrame {
                     .addComponent(jLabel8)
                     .addComponent(jLabel13)
                     .addComponent(dc_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txt_venta, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel6)
                     .addComponent(jLabel16)
                     .addComponent(jLabel14)
                     .addComponent(cmb_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lb_err1)
-                    .addComponent(lb_cod))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                    .addComponent(lb_cod)
+                    .addComponent(txt_venta, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(405, 405, 405)
-                        .addComponent(jButton4))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 563, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39))
+                        .addGap(29, 29, 29)
+                        .addComponent(jButton4)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 563, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -446,7 +514,7 @@ public class MantPagosAbonos extends javax.swing.JFrame {
                                 .addComponent(btn_modificar)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 231, Short.MAX_VALUE)
                                         .addComponent(txt_consulta, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -468,61 +536,63 @@ public class MantPagosAbonos extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(23, 23, 23))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(lbl_estado)
-                                .addGap(18, 18, 18)))
-                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(16, 16, 16)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(txt_consulta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(7, 7, 7)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btn_eliminar)
-                                    .addComponent(btn_modificar)))))
-                    .addComponent(btn_agregar, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(26, 26, 26)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39)
-                .addComponent(jLabel6)
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel5)
+                                        .addGap(23, 23, 23))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(lbl_estado)
+                                        .addGap(18, 18, 18)))
+                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(16, 16, 16)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel4)
+                                            .addComponent(txt_consulta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(7, 7, 7)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(btn_eliminar)
+                                            .addComponent(btn_modificar)))))
+                            .addComponent(btn_agregar, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(26, 26, 26)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
+                        .addComponent(jLabel6)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(lb_cod)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(dc_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(1, 1, 1)
-                        .addComponent(jLabel13))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(dc_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(1, 1, 1)
+                .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmb_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel16)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_monto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel14)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton4)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel15)
-                            .addComponent(txt_venta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(32, 32, 32)
-                        .addComponent(lb_err1)))
-                .addContainerGap(74, Short.MAX_VALUE))
+                        .addComponent(jLabel16)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_monto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_venta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lb_err1)
+                    .addComponent(jButton4))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -616,9 +686,9 @@ public class MantPagosAbonos extends javax.swing.JFrame {
        String cod, tipo = "", valor, nrofac, fecha2;
         Date fecha;
          int codigo;
-        if (lstpago.getSelectedRowCount() > 0) {
+        if (lstventa.getSelectedRowCount() > 0) {
 
-            cod = lstpago.getValueAt(lstpago.getSelectedRow(), 0).toString();
+            cod = lstventa.getValueAt(lstventa.getSelectedRow(), 0).toString();
             codigo=parseInt(cod);
 
             nrofac = txt_venta.getText();
@@ -673,8 +743,8 @@ public class MantPagosAbonos extends javax.swing.JFrame {
          String cod, tipo = "", valor, nrofac;
         Date fecha;
         int index = cmb_tipo.getSelectedIndex();
-        if (lstpago.getSelectedRowCount() > 0) {
-            cod = lstpago.getValueAt(lstpago.getSelectedRow(), 0).toString();
+        if (lstventa.getSelectedRowCount() > 0) {
+            cod = lstventa.getValueAt(lstventa.getSelectedRow(), 0).toString();
             valor = txt_monto.getText();
             nrofac = txt_venta.getText();
 
@@ -698,8 +768,43 @@ public class MantPagosAbonos extends javax.swing.JFrame {
             msj = "NO SE PUEDEN ELIMINAR DATOS";
             JOptionPane.showMessageDialog(null, msj, "ELIMINACIÓN DE DATOS", JOptionPane.INFORMATION_MESSAGE);
         }
-        llenarlst();
+        llenarlst2();
     }//GEN-LAST:event_btn_eliminarActionPerformed
+
+    private void lstventaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstventaMouseClicked
+           String cod;
+        java.text.SimpleDateFormat formato = new java.text.SimpleDateFormat("dd-MM-yyyy");
+
+        if (lstventa.getSelectedRowCount() > 0) {
+            
+            cod = lstventa.getValueAt(lstventa.getSelectedRow(), 1).toString();
+            //String msj = cod;
+            //JOptionPane.showMessageDialog(null, msj, "ELIMINACIÓN DE DATOS", JOptionPane.INFORMATION_MESSAGE);
+            jLabel6.enable();
+            txt_venta.setText(cod);
+            txt_venta.disable();
+            
+
+            limpiarlbl();
+        }
+    }//GEN-LAST:event_lstventaMouseClicked
+
+    private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
+      modelolista.setNumRows(0);
+        llenarlst1();
+        llenarlst2();
+        txt_consulta.setText("");
+        dc_fecha.setDate(null);
+        txt_monto.setText("");
+        txt_venta.setText("");
+        cmb_tipo.setSelectedIndex(0);
+        lb_cod.setText("");
+       
+        
+        txt_venta.enable();
+        
+        lstventa.clearSelection();
+    }//GEN-LAST:event_jPanel1MouseClicked
 
     private void lstpagoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstpagoMouseClicked
         String cod, fecha, tipo = "", valor, nrofac, descripcion;
@@ -736,22 +841,6 @@ public class MantPagosAbonos extends javax.swing.JFrame {
             limpiarlbl();
         }
     }//GEN-LAST:event_lstpagoMouseClicked
-
-    private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
-      modelolista.setNumRows(0);
-        llenarlst();
-        txt_consulta.setText("");
-        dc_fecha.setDate(null);
-        txt_monto.setText("");
-        txt_venta.setText("");
-        cmb_tipo.setSelectedIndex(0);
-        lb_cod.setText("");
-       
-        
-        txt_venta.enable();
-        
-        lstpago.clearSelection();
-    }//GEN-LAST:event_jPanel1MouseClicked
 
     
     
@@ -801,7 +890,6 @@ public class MantPagosAbonos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -809,12 +897,14 @@ public class MantPagosAbonos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel lb_cod;
     private javax.swing.JLabel lb_err1;
     private javax.swing.JLabel lbl_estado;
     private javax.swing.JTable lstpago;
+    private javax.swing.JTable lstventa;
     private javax.swing.JTextField txt_consulta;
     private javax.swing.JTextField txt_monto;
     private javax.swing.JTextField txt_venta;
