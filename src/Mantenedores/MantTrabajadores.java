@@ -17,6 +17,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.RowSorter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -167,7 +169,7 @@ public class MantTrabajadores extends javax.swing.JFrame {
         lsttrab.setRowSorter(sorter);
         try{
             sentencia=(Statement)conexion.createStatement();//permite ejecutar sentencias SQL
-            ResultSet lista=sentencia.executeQuery("SELECT * FROM trabajadores WHERE nom_trabajador like '%"+consu+"%'or run_trabajador like '%"+consu+"%'"
+            ResultSet lista=sentencia.executeQuery("SELECT * FROM trabajadores WHERE nombre_trabajador like '%"+consu+"%'or run_trabajador like '%"+consu+"%'"
                     + "or ape_pat_trabajador like '%"+consu+"%' or ape_mat_trabajador like '%"+consu+"%' or cargo_trabajador like '%"+consu+"%' or direccion like '%"+consu+"%' or tipo_contrato like '%"+consu+"%'");
            
             while(lista.next()){
@@ -255,6 +257,21 @@ public class MantTrabajadores extends javax.swing.JFrame {
         cmb_tipo.setSelectedIndex(0);
         lsttrab.clearSelection();
         
+    }
+     
+     
+      public boolean valida_mail(String inputmail) {
+        Boolean valida = false;
+
+        Pattern p = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+        Matcher m = p.matcher(inputmail);
+        if (!m.find()) {
+            valida = m.find();
+            lb_err8.setText("Formato no válido, debe ser: correo@dominio.com");
+            txt_correo.requestFocus();
+        }
+        return valida;
     }
      
       public void formatearfecha() {
@@ -366,12 +383,27 @@ public class MantTrabajadores extends javax.swing.JFrame {
                 lsttrabMouseClicked(evt);
             }
         });
+        lsttrab.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                lsttrabKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(lsttrab);
 
         txt_correo.setBackground(new java.awt.Color(255, 255, 204));
+        txt_correo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_correoFocusLost(evt);
+            }
+        });
         txt_correo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_correoActionPerformed(evt);
+            }
+        });
+        txt_correo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_correoKeyTyped(evt);
             }
         });
 
@@ -389,6 +421,11 @@ public class MantTrabajadores extends javax.swing.JFrame {
                 txt_dvActionPerformed(evt);
             }
         });
+        txt_dv.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_dvKeyTyped(evt);
+            }
+        });
 
         txt_rut.setBackground(new java.awt.Color(255, 255, 204));
         txt_rut.addActionListener(new java.awt.event.ActionListener() {
@@ -397,6 +434,9 @@ public class MantTrabajadores extends javax.swing.JFrame {
             }
         });
         txt_rut.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_rutKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_rutKeyTyped(evt);
             }
@@ -408,11 +448,21 @@ public class MantTrabajadores extends javax.swing.JFrame {
                 txt_paternoActionPerformed(evt);
             }
         });
+        txt_paterno.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_paternoKeyTyped(evt);
+            }
+        });
 
         txt_nombre.setBackground(new java.awt.Color(255, 255, 204));
         txt_nombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_nombreActionPerformed(evt);
+            }
+        });
+        txt_nombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_nombreKeyTyped(evt);
             }
         });
 
@@ -425,6 +475,11 @@ public class MantTrabajadores extends javax.swing.JFrame {
                 txt_maternoActionPerformed(evt);
             }
         });
+        txt_materno.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_maternoKeyTyped(evt);
+            }
+        });
 
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("Apellido Materno ");
@@ -433,6 +488,11 @@ public class MantTrabajadores extends javax.swing.JFrame {
         txt_telefono.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_telefonoActionPerformed(evt);
+            }
+        });
+        txt_telefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_telefonoKeyTyped(evt);
             }
         });
 
@@ -445,6 +505,11 @@ public class MantTrabajadores extends javax.swing.JFrame {
                 txt_cargoActionPerformed(evt);
             }
         });
+        txt_cargo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_cargoKeyTyped(evt);
+            }
+        });
 
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setText("Fecha Nacimiento");
@@ -453,6 +518,11 @@ public class MantTrabajadores extends javax.swing.JFrame {
         txt_direccion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_direccionActionPerformed(evt);
+            }
+        });
+        txt_direccion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_direccionKeyTyped(evt);
             }
         });
 
@@ -480,9 +550,25 @@ public class MantTrabajadores extends javax.swing.JFrame {
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/contratos.png"))); // NOI18N
 
         txt_consulta.setBackground(new java.awt.Color(255, 255, 204));
+        txt_consulta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txt_consultaMouseClicked(evt);
+            }
+        });
         txt_consulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_consultaActionPerformed(evt);
+            }
+        });
+        txt_consulta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_consultaKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_consultaKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_consultaKeyTyped(evt);
             }
         });
 
@@ -550,6 +636,11 @@ public class MantTrabajadores extends javax.swing.JFrame {
         txt_contrato.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_contratoActionPerformed(evt);
+            }
+        });
+        txt_contrato.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_contratoKeyTyped(evt);
             }
         });
 
@@ -823,7 +914,7 @@ public class MantTrabajadores extends javax.swing.JFrame {
        }   
         modelolista.setNumRows(0);
             //lstClie.remove();
-        llenarlst();
+            llenarlst();
         limpiar();
         
     }
@@ -1188,7 +1279,7 @@ public class MantTrabajadores extends javax.swing.JFrame {
             msj="NO SE PUEDEN ELIMINAR DATOS";
             JOptionPane.showMessageDialog(null, msj, "ELIMINACIÓN DE DATOS",JOptionPane.INFORMATION_MESSAGE);
         }
-        llenarlst();
+        //llenarlst();
     }//GEN-LAST:event_btn_eliminarActionPerformed
 
     private void btn_consultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_consultarActionPerformed
@@ -1204,12 +1295,9 @@ public class MantTrabajadores extends javax.swing.JFrame {
         modelolista.setNumRows(0);
             //lstClie.remove();
         llenarlst_consu(consu);
-    }                                             
+                                               
 
-    private void txt_consultaKeyPressed(java.awt.event.KeyEvent evt) {                                        
-        if (evt.VK_ENTER==evt.getKeyCode()){ 
-        btn_consultar.doClick();
-    }
+   
     }//GEN-LAST:event_btn_consultarActionPerformed
 
     private void txt_rutKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_rutKeyTyped
@@ -1244,14 +1332,19 @@ public class MantTrabajadores extends javax.swing.JFrame {
         llenarlst();
         txt_consulta.setText("");
         dc_fecha.setDate(null);
-   
+        
         txt_dv.setText("");
 
         txt_materno.setText("");
         txt_nombre.setText("");
         txt_paterno.setText("");
         txt_rut.setText("");
-   
+        txt_cargo.setText("");
+        txt_contrato.setText("");
+        txt_correo.setText("");
+        txt_direccion.setText("");
+        txt_telefono.setText("");
+        cmb_tipo.setSelectedIndex(0);
         txt_rut.enable();
         txt_dv.enable();
         lsttrab.clearSelection();
@@ -1287,6 +1380,287 @@ public class MantTrabajadores extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txt_dvFocusLost
 
+    private void txt_correoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_correoFocusLost
+       if (txt_correo.getText().equals("")) {
+            lb_err8.setText("");
+        } else {
+
+            valida_mail(txt_correo.getText());
+        }
+    }//GEN-LAST:event_txt_correoFocusLost
+
+    private void txt_consultaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyPressed
+         if (evt.VK_ENTER==evt.getKeyCode()){ 
+        btn_consultar.doClick();
+    }
+    }//GEN-LAST:event_txt_consultaKeyPressed
+
+    private void txt_consultaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyTyped
+        char TipoTecla = evt.getKeyChar();
+
+        /*if(Character.isSpace(TipoTecla)){
+            txt_consulta.setText("");
+            txt_consulta.requestFocus();
+        }*/
+        if (Character.isDigit(TipoTecla)) {
+            if (txt_consulta.getText().length() >= 8) {
+                evt.consume();
+            }
+        } else {
+            //evt.consume();
+        }
+
+        String consu;
+        consu = txt_consulta.getText();
+        //if(txt_consulta.getText()>='0' && txt_consulta.getText()<='30000000' ){
+
+        //}
+        if (txt_consulta.getText().startsWith(" ")) {
+            txt_consulta.setText("");
+            txt_consulta.requestFocus();
+        }
+        modelolista.setNumRows(0);
+        //lstClie.remove();
+        llenarlst_consu(consu);
+    }//GEN-LAST:event_txt_consultaKeyTyped
+
+    private void lsttrabKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lsttrabKeyReleased
+         String rut,dv,nom,apepar,apemat, cargo, fecha, dir, fono, correo, contr, tipo;
+         java.text.SimpleDateFormat formato = new java.text.SimpleDateFormat("dd-MM-yyyy");
+    
+    if(lsttrab.getSelectedRowCount()>0){
+        
+     if (evt.VK_DOWN == evt.getKeyCode() || evt.VK_UP == evt.getKeyCode()){
+        rut=lsttrab.getValueAt(lsttrab.getSelectedRow(), 0).toString();
+        rut=rut.substring(0, rut.length()-2);
+        txt_rut.setText(rut);
+        txt_rut.disable();
+        dv=lsttrab.getValueAt(lsttrab.getSelectedRow(), 0).toString();
+        dv=dv.substring(dv.length()-1, dv.length());
+        txt_dv.setText(dv);
+        //txt_dv.disable();
+        txt_nombre.setText(lsttrab.getValueAt(lsttrab.getSelectedRow(), 1).toString());
+        txt_paterno.setText(lsttrab.getValueAt(lsttrab.getSelectedRow(), 2).toString());
+        txt_materno.setText(lsttrab.getValueAt(lsttrab.getSelectedRow(), 3).toString());
+        txt_cargo.setText(lsttrab.getValueAt(lsttrab.getSelectedRow(), 4).toString());
+        fecha = lsttrab.getValueAt(lsttrab.getSelectedRow(),5).toString();
+            try {
+                java.util.Date fechDate = formato.parse(fecha);
+                dc_fecha.setDate(fechDate);
+            } catch (ParseException ex) {
+                Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        
+        txt_direccion.setText(lsttrab.getValueAt(lsttrab.getSelectedRow(), 6).toString());
+        txt_telefono.setText(lsttrab.getValueAt(lsttrab.getSelectedRow(), 7).toString());
+        txt_correo.setText(lsttrab.getValueAt(lsttrab.getSelectedRow(), 8).toString());
+        txt_contrato.setText(lsttrab.getValueAt(lsttrab.getSelectedRow(), 9).toString());
+        tipo=lsttrab.getValueAt(lsttrab.getSelectedRow(), 10).toString();
+            /*msj=tipo;
+            JOptionPane.showMessageDialog(null, msj, "ELIMINACIÓN DE DATOS", JOptionPane.INFORMATION_MESSAGE);*/
+            switch (tipo) {
+                case "Plazo Fijo":
+                    cmb_tipo.setSelectedItem("Plazo Fijo");
+                    break;
+                case "Plazo Indefinido":
+                    cmb_tipo.setSelectedItem("Plazo Indefinido");
+                    break;
+                case "Por Obra":
+                    cmb_tipo.setSelectedItem("Por Obra");
+                    break;
+                case "Trabajo Atípico":
+                    cmb_tipo.setSelectedItem("Trabajo Atípico");
+                    break;
+                 case "Trabajos Especiales":
+                    cmb_tipo.setSelectedItem("Trabajos Especiales");
+                    break;   
+
+            }
+        limpiarlbl();
+        } 
+     if (evt.VK_DELETE == evt.getKeyCode()){
+         btn_eliminar.doClick();
+     }
+      }
+    }//GEN-LAST:event_lsttrabKeyReleased
+
+    private void txt_consultaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyReleased
+        if ((evt.VK_BACK_SPACE == evt.getKeyCode() || evt.VK_DELETE == evt.getKeyCode()) && (txt_consulta.getText().isEmpty())) {
+            modelolista.setNumRows(0);
+            llenarlst();
+        }
+    }//GEN-LAST:event_txt_consultaKeyReleased
+
+    private void txt_consultaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_consultaMouseClicked
+      
+        limpiarlbl();
+        txt_consulta.setText("");
+        dc_fecha.setDate(null);
+        
+        txt_dv.setText("");
+
+        txt_materno.setText("");
+        txt_nombre.setText("");
+        txt_paterno.setText("");
+        txt_rut.setText("");
+        txt_cargo.setText("");
+        txt_contrato.setText("");
+        txt_correo.setText("");
+        txt_direccion.setText("");
+        txt_telefono.setText("");
+        cmb_tipo.setSelectedIndex(0);
+        txt_rut.enable();
+        //txt_dv.enable();
+        lsttrab.clearSelection();
+        limpiarlbl();
+    }//GEN-LAST:event_txt_consultaMouseClicked
+
+    private void txt_dvKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_dvKeyTyped
+        char TipoTecla = evt.getKeyChar();
+        if (txt_dv.getText().length() >= 1) {
+            evt.consume();
+        }
+        if (Character.isDigit(TipoTecla) || evt.getKeyChar() == 'k' || evt.getKeyChar() == 'K') {
+
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_dvKeyTyped
+
+    private void txt_nombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nombreKeyTyped
+       char TipoTecla = evt.getKeyChar();
+        if (txt_nombre.getText().length() >= 45) {
+            evt.consume();
+        }
+        limpiarlbl();
+        if (txt_nombre.getText().startsWith(" ")) {
+            txt_nombre.setText("");
+            txt_nombre.requestFocus();
+        }
+        if (Character.isDigit(TipoTecla) || !Character.isLetter(TipoTecla) && !(TipoTecla == evt.VK_SPACE)
+                && !(TipoTecla == evt.VK_BACK_SPACE) && !(TipoTecla == evt.VK_MINUS) && !(evt.getKeyChar() == '\'')) {
+            evt.consume();
+        } else {
+
+        }
+    }//GEN-LAST:event_txt_nombreKeyTyped
+
+    private void txt_paternoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_paternoKeyTyped
+         char TipoTecla = evt.getKeyChar();
+        if (txt_paterno.getText().length() >= 45) {
+            evt.consume();
+        }
+        limpiarlbl();
+        if (txt_paterno.getText().startsWith(" ")) {
+            txt_paterno.setText("");
+            txt_paterno.requestFocus();
+        }
+        if (Character.isDigit(TipoTecla) || !Character.isLetter(TipoTecla) && !(TipoTecla == evt.VK_SPACE) && !(TipoTecla == evt.VK_BACK_SPACE)) {
+            evt.consume();
+        } else {
+
+        }
+    }//GEN-LAST:event_txt_paternoKeyTyped
+
+    private void txt_maternoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_maternoKeyTyped
+        if (txt_materno.getText().length() >= 45) {
+            evt.consume();
+        }
+        limpiarlbl();
+        if (txt_materno.getText().startsWith(" ")) {
+            txt_materno.setText("");
+            txt_materno.requestFocus();
+        }
+        char TipoTecla = evt.getKeyChar();
+        if (Character.isDigit(TipoTecla) || !Character.isLetter(TipoTecla) && !(TipoTecla == evt.VK_SPACE) && !(TipoTecla == evt.VK_BACK_SPACE)) {
+            evt.consume();
+        } else {
+
+        }
+    }//GEN-LAST:event_txt_maternoKeyTyped
+
+    private void txt_direccionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_direccionKeyTyped
+       limpiarlbl();
+        if (txt_direccion.getText().startsWith(" ")) {
+            txt_direccion.setText("");
+            txt_direccion.requestFocus();
+        }
+        if (txt_direccion.getText().length() >= 45) {
+            evt.consume();
+        } 
+    }//GEN-LAST:event_txt_direccionKeyTyped
+
+    private void txt_telefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_telefonoKeyTyped
+        char TipoTecla = evt.getKeyChar();
+        if (txt_telefono.getText().startsWith(" ")) {
+            txt_telefono.setText("");
+            txt_telefono.requestFocus();
+        }
+        if (txt_telefono.getText().length() >= 12) {
+            evt.consume();
+        }
+        limpiarlbl();
+        if (Character.isDigit(TipoTecla)) {
+
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_telefonoKeyTyped
+
+    private void txt_correoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_correoKeyTyped
+       if (txt_correo.getText().startsWith(" ")) {
+            txt_correo.setText("");
+            txt_correo.requestFocus();
+        }
+        limpiarlbl();
+        if (txt_correo.getText().length() >= 45) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_correoKeyTyped
+
+    private void txt_rutKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_rutKeyReleased
+       if ((evt.VK_BACK_SPACE == evt.getKeyCode() || evt.VK_DELETE == evt.getKeyCode()) && (txt_consulta.getText().isEmpty())) {
+            txt_dv.setText("");
+       }
+    }//GEN-LAST:event_txt_rutKeyReleased
+
+    private void txt_cargoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cargoKeyTyped
+        if (txt_cargo.getText().length() >= 45) {
+            evt.consume();
+        }
+        limpiarlbl();
+        if (txt_cargo.getText().startsWith(" ")) {
+            txt_cargo.setText("");
+            txt_cargo.requestFocus();
+        }
+        char TipoTecla = evt.getKeyChar();
+        if (Character.isDigit(TipoTecla) || !Character.isLetter(TipoTecla) && !(TipoTecla == evt.VK_SPACE) && !(TipoTecla == evt.VK_BACK_SPACE)) {
+            evt.consume();
+        } else {
+
+        }
+    }//GEN-LAST:event_txt_cargoKeyTyped
+
+    private void txt_contratoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_contratoKeyTyped
+        char TipoTecla = evt.getKeyChar();
+        if (txt_contrato.getText().startsWith(" ")) {
+            txt_contrato.setText("");
+            txt_contrato.requestFocus();
+        }
+        if (txt_contrato.getText().length() >= 5) {
+            evt.consume();
+        }
+        limpiarlbl();
+        if (Character.isDigit(TipoTecla)) {
+
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_contratoKeyTyped
+
+    
+    
     /**
      * @param args the command line arguments
      */

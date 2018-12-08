@@ -132,7 +132,7 @@ public class MantVentas extends javax.swing.JFrame {
         lstventa.setRowSorter(sorter);
         try {
             sentencia = (Statement) conexion.createStatement();//permite ejecutar sentencias SQL
-            ResultSet lista = sentencia.executeQuery("SELECT * FROM venta WHERE rut_cliente like '%" + consu + "%'or fecha_venta like '%" + consu + "%'"
+            ResultSet lista = sentencia.executeQuery("SELECT * FROM venta WHERE run_cliente like '%" + consu + "%'or fecha_venta like '%" + consu + "%'"
                     + "or monto_total like '%" + consu + "%' or cod_venta like '%" + consu + "%'");
             while (lista.next()) {
                 cod = (lista.getString("cod_venta"));
@@ -141,7 +141,7 @@ public class MantVentas extends javax.swing.JFrame {
                 
                 monto = (lista.getString("monto_total"));
                 
-                rut = (lista.getString("rut_cliente"));
+                rut = (lista.getString("run_cliente"));
                 dv = (lista.getString("dv_cliente"));
 
                 
@@ -319,6 +319,11 @@ public class MantVentas extends javax.swing.JFrame {
                 lstventaMouseClicked(evt);
             }
         });
+        lstventa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                lstventaKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(lstventa);
 
         lb_cod.setForeground(new java.awt.Color(255, 255, 255));
@@ -329,6 +334,14 @@ public class MantVentas extends javax.swing.JFrame {
                 txt_rutActionPerformed(evt);
             }
         });
+        txt_rut.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_rutKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_rutKeyTyped(evt);
+            }
+        });
 
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Rut cliente");
@@ -337,6 +350,11 @@ public class MantVentas extends javax.swing.JFrame {
         txt_monto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_montoActionPerformed(evt);
+            }
+        });
+        txt_monto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_montoKeyTyped(evt);
             }
         });
 
@@ -351,9 +369,22 @@ public class MantVentas extends javax.swing.JFrame {
         });
 
         txt_consulta.setBackground(new java.awt.Color(255, 255, 204));
+        txt_consulta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txt_consultaMouseClicked(evt);
+            }
+        });
         txt_consulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_consultaActionPerformed(evt);
+            }
+        });
+        txt_consulta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_consultaKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_consultaKeyTyped(evt);
             }
         });
 
@@ -387,6 +418,11 @@ public class MantVentas extends javax.swing.JFrame {
         txt_dv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_dvActionPerformed(evt);
+            }
+        });
+        txt_dv.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_dvKeyTyped(evt);
             }
         });
 
@@ -682,7 +718,7 @@ public class MantVentas extends javax.swing.JFrame {
             codigo = "K";
         }
         if (!txt_dv.getText().equals(codigo)) {
-            //lb_err1.setText("Run inválido, ingrese nuevamente!");
+            lb_err1.setText("Run inválido, ingrese nuevamente!");
             txt_rut.setText("");
             txt_dv.setText("");
             txt_rut.requestFocus();
@@ -747,6 +783,159 @@ public class MantVentas extends javax.swing.JFrame {
         
         lstventa.clearSelection();
     }//GEN-LAST:event_jPanel1MouseClicked
+
+    private void txt_montoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_montoKeyTyped
+        char TipoTecla = evt.getKeyChar();
+        if (txt_monto.getText().startsWith(" ")) {
+            txt_monto.setText("");
+            txt_monto.requestFocus();
+        }
+        if (txt_monto.getText().length() >= 7) {
+            evt.consume();
+        }
+        limpiarlbl();
+        if (Character.isDigit(TipoTecla)) {
+
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_montoKeyTyped
+
+    private void txt_rutKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_rutKeyReleased
+         if ((evt.VK_BACK_SPACE == evt.getKeyCode() || evt.VK_DELETE == evt.getKeyCode()) && (txt_consulta.getText().isEmpty())) {
+            txt_dv.setText("");
+         }
+    }//GEN-LAST:event_txt_rutKeyReleased
+
+    private void txt_rutKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_rutKeyTyped
+        char TipoTecla = evt.getKeyChar();
+        if (txt_rut.getText().length() >= 8) {
+            evt.consume();
+        }
+        if (Character.isDigit(TipoTecla)) {
+
+        } else {
+            evt.consume();
+        }
+        if (txt_rut.getText().startsWith("0")) {
+            lb_err1.setText("CERO NO ES PRIMER DIGITO!");
+            txt_rut.setText("");
+            evt.consume();
+            txt_rut.requestFocus();
+            return;
+        } else {
+            lb_err1.setText("");
+        }
+
+        lb_err1.setText("");
+    }//GEN-LAST:event_txt_rutKeyTyped
+
+    private void txt_dvKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_dvKeyTyped
+       char TipoTecla = evt.getKeyChar();
+        if (txt_dv.getText().length() >= 1) {
+            evt.consume();
+        }
+        if (Character.isDigit(TipoTecla) || evt.getKeyChar() == 'k' || evt.getKeyChar() == 'K') {
+
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_dvKeyTyped
+
+    private void lstventaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lstventaKeyReleased
+        String cod, fecha, monto, rut, dv;
+        java.text.SimpleDateFormat formato = new java.text.SimpleDateFormat("dd-MM-yyyy");
+        if (lstventa.getSelectedRowCount() > 0) {
+            
+          if (evt.VK_DOWN == evt.getKeyCode() || evt.VK_UP == evt.getKeyCode()) {  
+            cod = lstventa.getValueAt(lstventa.getSelectedRow(), 0).toString();
+            jLabel6.enable();
+            lb_cod.setText(cod);
+            
+            txt_monto.setText(lstventa.getValueAt(lstventa.getSelectedRow(), 2).toString());
+            
+            rut = lstventa.getValueAt(lstventa.getSelectedRow(), 3).toString();
+            rut = rut.substring(0, rut.length() - 2);
+            txt_rut.setText(rut);
+            txt_rut.disable();
+            dv = lstventa.getValueAt(lstventa.getSelectedRow(), 3).toString();
+            dv = dv.substring(dv.length() - 1, dv.length());
+            txt_dv.setText(dv);
+            txt_dv.disable();
+            
+            fecha = lstventa.getValueAt(lstventa.getSelectedRow(), 1).toString();
+            try {
+                java.util.Date fechDate = formato.parse(fecha);
+                dc_fecha.setDate(fechDate);
+            } catch (ParseException ex) {
+                Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+
+            limpiarlbl();
+          }
+          if (evt.VK_DELETE == evt.getKeyCode()) {
+                btn_eliminar.doClick();
+          }
+        }
+    }//GEN-LAST:event_lstventaKeyReleased
+
+    private void txt_consultaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_consultaMouseClicked
+     
+        limpiarlbl();
+        txt_consulta.setText("");
+        lb_cod.setText("");
+        dc_fecha.setDate(null);
+        txt_monto.setText("");
+        txt_rut.setText("");
+        txt_dv.setText("");
+        txt_rut.enable();
+        //txt_dv.enable();
+        lstventa.clearSelection();
+        
+        
+       
+        
+        
+        
+        
+    }//GEN-LAST:event_txt_consultaMouseClicked
+
+    private void txt_consultaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyReleased
+    if ((evt.VK_BACK_SPACE == evt.getKeyCode() || evt.VK_DELETE == evt.getKeyCode()) && (txt_consulta.getText().isEmpty())) {
+            modelolista.setNumRows(0);
+            llenarlst();
+        }
+    }//GEN-LAST:event_txt_consultaKeyReleased
+
+    private void txt_consultaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyTyped
+          char TipoTecla = evt.getKeyChar();
+
+        /*if(Character.isSpace(TipoTecla)){
+            txt_consulta.setText("");
+            txt_consulta.requestFocus();
+        }*/
+        if (Character.isDigit(TipoTecla)) {
+            if (txt_consulta.getText().length() >= 8) {
+                evt.consume();
+            }
+        } else {
+            //evt.consume();
+        }
+
+        String consu;
+        consu = txt_consulta.getText();
+        //if(txt_consulta.getText()>='0' && txt_consulta.getText()<='30000000' ){
+
+        //}
+        if (txt_consulta.getText().startsWith(" ")) {
+            txt_consulta.setText("");
+            txt_consulta.requestFocus();
+        }
+        modelolista.setNumRows(0);
+        //lstClie.remove();
+        llenarlst_consu(consu);
+    }//GEN-LAST:event_txt_consultaKeyTyped
 
     /**
      * @param args the command line arguments

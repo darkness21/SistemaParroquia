@@ -147,7 +147,44 @@ public class MantAnexosContr extends javax.swing.JFrame {
 
     }
 
-   
+    public void llenarlst_consu(String consu) {
+        String run, dv, cod, desc;
+       
+        lstcontra.setPreferredScrollableViewportSize(new Dimension(500, 70));
+        RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(modelolista2);
+        lstcontra.setRowSorter(sorter);
+        try {
+            sentencia = (Statement) conexion.createStatement();//permite ejecutar sentencias SQL
+            ResultSet lista = sentencia.executeQuery("SELECT * FROM anexo_contrato WHERE run_trabajador like '%" + consu + "%'or descripcion like '%" + consu + "%'");
+            while (lista.next()) {
+                cod = (lista.getString("cod_contrato"));
+                run = (lista.getString("run_trabajador"));
+                dv = (lista.getString("dv_trabajador"));
+                
+                desc = (lista.getString("descripcion"));
+                
+
+                Object[] newRow = {cod, run + "-" + dv, desc};
+                modelolista2.addRow(newRow);
+            }
+            if (modelolista2.getRowCount() == 0 || (txt_consulta.getText().startsWith(" "))) {
+                msj = "No se encontró lo solicitado";
+                JOptionPane.showMessageDialog(null, msj, "CONSULTA SIN DATOS", JOptionPane.INFORMATION_MESSAGE);
+                modelolista2.setNumRows(0);
+                llenarlst2();
+                txt_consulta.setText("");
+                txt_consulta.requestFocus();
+            }
+            lstcontra.getRowSorter().toggleSortOrder(0);
+            lstcontra.getRowSorter().toggleSortOrder(0);
+        } catch (SQLException e) {
+            msj = "consulta errónea";
+            JOptionPane.showMessageDialog(null, msj, "Falla Consulta", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+    }
+
+    ;
    
     public void limpiar() {
         
@@ -250,7 +287,7 @@ public class MantAnexosContr extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         jButton8 = new javax.swing.JButton();
-        txt_consultar = new javax.swing.JTextField();
+        txt_consulta = new javax.swing.JTextField();
         btn_agregar = new javax.swing.JButton();
         btn_modificar = new javax.swing.JButton();
         btn_eliminar = new javax.swing.JButton();
@@ -344,6 +381,9 @@ public class MantAnexosContr extends javax.swing.JFrame {
             }
         });
         txt_rut.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_rutKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_rutKeyTyped(evt);
             }
@@ -357,6 +397,11 @@ public class MantAnexosContr extends javax.swing.JFrame {
         txt_cod.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_codActionPerformed(evt);
+            }
+        });
+        txt_cod.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_codKeyTyped(evt);
             }
         });
 
@@ -375,7 +420,20 @@ public class MantAnexosContr extends javax.swing.JFrame {
             }
         });
 
-        txt_consultar.setBackground(new java.awt.Color(255, 255, 204));
+        txt_consulta.setBackground(new java.awt.Color(255, 255, 204));
+        txt_consulta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txt_consultaMouseClicked(evt);
+            }
+        });
+        txt_consulta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_consultaKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_consultaKeyTyped(evt);
+            }
+        });
 
         btn_agregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
         btn_agregar.addActionListener(new java.awt.event.ActionListener() {
@@ -428,6 +486,11 @@ public class MantAnexosContr extends javax.swing.JFrame {
                 lstcontraMouseClicked(evt);
             }
         });
+        lstcontra.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                lstcontraKeyReleased(evt);
+            }
+        });
         jScrollPane2.setViewportView(lstcontra);
         if (lstcontra.getColumnModel().getColumnCount() > 0) {
             lstcontra.getColumnModel().getColumn(0).setResizable(false);
@@ -448,6 +511,11 @@ public class MantAnexosContr extends javax.swing.JFrame {
         txt_descripcion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_descripcionActionPerformed(evt);
+            }
+        });
+        txt_descripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_descripcionKeyTyped(evt);
             }
         });
 
@@ -481,7 +549,7 @@ public class MantAnexosContr extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btn_eliminar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                                .addComponent(txt_consultar, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txt_consulta, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel9)
                                 .addGap(10, 10, 10)))))
@@ -541,7 +609,7 @@ public class MantAnexosContr extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_consultar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txt_consulta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(28, 28, 28))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -653,7 +721,7 @@ public class MantAnexosContr extends javax.swing.JFrame {
             codigo = "K";
         }
         if (!txt_dv.getText().equals(codigo)) {
-            //lb_err1.setText("Run inválido, ingrese nuevamente!");
+            lb_err1.setText("Run inválido, ingrese nuevamente!");
             txt_rut.setText("");
             txt_dv.setText("");
             txt_rut.requestFocus();
@@ -858,6 +926,128 @@ public class MantAnexosContr extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_descripcionActionPerformed
 
+    private void txt_codKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_codKeyTyped
+        char TipoTecla = evt.getKeyChar();
+        if (txt_cod.getText().startsWith(" ")) {
+            txt_cod.setText("");
+            txt_cod.requestFocus();
+        }
+        if (txt_cod.getText().length() >= 5) {
+            evt.consume();
+        }
+        limpiarlbl();
+        if (Character.isDigit(TipoTecla)) {
+
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_codKeyTyped
+
+    private void txt_descripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_descripcionKeyTyped
+          if (txt_descripcion.getText().startsWith(" ")) {
+            txt_descripcion.setText("");
+            txt_descripcion.requestFocus();
+        }
+        limpiarlbl();
+        if (txt_descripcion.getText().length() >= 20) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_descripcionKeyTyped
+
+    private void txt_rutKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_rutKeyReleased
+         if ((evt.VK_BACK_SPACE == evt.getKeyCode() || evt.VK_DELETE == evt.getKeyCode()) && (txt_consulta.getText().isEmpty())) {
+            txt_dv.setText("");
+            //txt_rut.setForeground(Color.GRAY);
+            //txt_rut.setText("12345678");
+        }
+    }//GEN-LAST:event_txt_rutKeyReleased
+
+    private void lstcontraKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lstcontraKeyReleased
+        
+            
+        String cod, rut, dv, desc;
+
+        if (lstcontra.getSelectedRowCount() > 0) {
+            
+          if (evt.VK_DOWN == evt.getKeyCode() || evt.VK_UP == evt.getKeyCode()) {
+            cod = lstcontra.getValueAt(lstcontra.getSelectedRow(), 0).toString();   
+            //lb_cod.setText(cod);
+            txt_cod.setText(cod);
+            rut = lstcontra.getValueAt(lstcontra.getSelectedRow(), 1).toString();
+            rut = rut.substring(0, rut.length() - 2);
+            txt_rut.setText(rut);
+            txt_rut.disable();
+            dv = lstcontra.getValueAt(lstcontra.getSelectedRow(), 1).toString();
+            dv = dv.substring(dv.length() - 1, dv.length());
+            txt_dv.setText(dv);
+            txt_dv.disable();
+            desc = lstcontra.getValueAt(lstcontra.getSelectedRow(), 2).toString();
+            txt_descripcion.setText(desc);
+            txt_cod.disable();
+             btn_eliminar.setVisible(true);
+            btn_modificar.setVisible(true);
+            limpiarlbl();
+          }
+           if (evt.VK_DELETE == evt.getKeyCode()) {
+                btn_eliminar.doClick();
+           }
+        }
+    }//GEN-LAST:event_lstcontraKeyReleased
+
+    private void txt_consultaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_consultaMouseClicked
+        limpiarlbl();
+        
+        
+        lb_cod.setText("");
+        txt_rut.setText("");
+        txt_cod.enable();
+        txt_rut.enable();
+        txt_dv.setText("");
+        txt_dv.enable();
+        txt_cod.setText("");
+        txt_descripcion.setText("");
+        lsttrab.clearSelection();
+        lstcontra.clearSelection();
+        btn_eliminar.setVisible(true);
+        btn_modificar.setVisible(true);
+    }//GEN-LAST:event_txt_consultaMouseClicked
+
+    private void txt_consultaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyReleased
+         if ((evt.VK_BACK_SPACE == evt.getKeyCode() || evt.VK_DELETE == evt.getKeyCode()) && (txt_consulta.getText().isEmpty())) {
+            modelolista2.setNumRows(0);
+            llenarlst2();
+        }
+    }//GEN-LAST:event_txt_consultaKeyReleased
+
+    private void txt_consultaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyTyped
+         char TipoTecla = evt.getKeyChar();
+
+        /*if(Character.isSpace(TipoTecla)){
+            txt_consulta.setText("");
+            txt_consulta.requestFocus();
+        }*/
+        if (Character.isDigit(TipoTecla)) {
+            if (txt_consulta.getText().length() >= 8) {
+                evt.consume();
+            }
+        } else {
+            //evt.consume();
+        }
+
+        String consu;
+        consu = txt_consulta.getText();
+        //if(txt_consulta.getText()>='0' && txt_consulta.getText()<='30000000' ){
+
+        //}
+        if (txt_consulta.getText().startsWith(" ")) {
+            txt_consulta.setText("");
+            txt_consulta.requestFocus();
+        }
+        modelolista2.setNumRows(0);
+        //lstClie.remove();
+        llenarlst_consu(consu);
+    }//GEN-LAST:event_txt_consultaKeyTyped
+
     /**
      * @param args the command line arguments
      */
@@ -921,7 +1111,7 @@ public class MantAnexosContr extends javax.swing.JFrame {
     private javax.swing.JTable lstcontra;
     private javax.swing.JTable lsttrab;
     private javax.swing.JTextField txt_cod;
-    private javax.swing.JTextField txt_consultar;
+    private javax.swing.JTextField txt_consulta;
     private javax.swing.JTextField txt_descripcion;
     private javax.swing.JTextField txt_dv;
     private javax.swing.JTextField txt_rut;

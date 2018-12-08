@@ -270,6 +270,11 @@ public class MantGastos extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel1MouseClicked(evt);
+            }
+        });
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/cruzmini.png"))); // NOI18N
 
@@ -303,6 +308,11 @@ public class MantGastos extends javax.swing.JFrame {
                 lstgastMouseClicked(evt);
             }
         });
+        lstgast.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                lstgastKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(lstgast);
 
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
@@ -317,6 +327,11 @@ public class MantGastos extends javax.swing.JFrame {
                 txt_facturaActionPerformed(evt);
             }
         });
+        txt_factura.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_facturaKeyTyped(evt);
+            }
+        });
 
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("Valor Total");
@@ -329,6 +344,11 @@ public class MantGastos extends javax.swing.JFrame {
         txt_descripcion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_descripcionActionPerformed(evt);
+            }
+        });
+        txt_descripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_descripcionKeyTyped(evt);
             }
         });
 
@@ -348,9 +368,22 @@ public class MantGastos extends javax.swing.JFrame {
         });
 
         txt_consulta.setBackground(new java.awt.Color(255, 255, 204));
+        txt_consulta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txt_consultaMouseClicked(evt);
+            }
+        });
         txt_consulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_consultaActionPerformed(evt);
+            }
+        });
+        txt_consulta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_consultaKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_consultaKeyTyped(evt);
             }
         });
 
@@ -398,6 +431,11 @@ public class MantGastos extends javax.swing.JFrame {
         txt_valor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_valorActionPerformed(evt);
+            }
+        });
+        txt_valor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_valorKeyTyped(evt);
             }
         });
 
@@ -807,7 +845,7 @@ public class MantGastos extends javax.swing.JFrame {
             msj = "NO SE PUEDEN ELIMINAR DATOS";
             JOptionPane.showMessageDialog(null, msj, "ELIMINACIÓN DE DATOS", JOptionPane.INFORMATION_MESSAGE);
         }
-        llenarlst();
+        //llenarlst();
     }//GEN-LAST:event_btn_eliminarActionPerformed
 
     private void btn_consultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_consultarActionPerformed
@@ -863,6 +901,156 @@ public class MantGastos extends javax.swing.JFrame {
             limpiarlbl();
         }
     }//GEN-LAST:event_lstgastMouseClicked
+
+    private void txt_valorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_valorKeyTyped
+       char TipoTecla = evt.getKeyChar();
+        if (txt_valor.getText().startsWith(" ")) {
+            txt_valor.setText("");
+            txt_valor.requestFocus();
+        }
+        if (txt_valor.getText().length() >= 7) {
+            evt.consume();
+        }
+        limpiarlbl();
+        if (Character.isDigit(TipoTecla)) {
+
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_valorKeyTyped
+
+    private void txt_facturaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_facturaKeyTyped
+         char TipoTecla = evt.getKeyChar();
+        if (txt_factura.getText().startsWith(" ")) {
+            txt_factura.setText("");
+            txt_factura.requestFocus();
+        }
+        if (txt_factura.getText().length() >= 10) {
+            evt.consume();
+        }
+        limpiarlbl();
+        if (Character.isDigit(TipoTecla)) {
+
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_facturaKeyTyped
+
+    private void txt_descripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_descripcionKeyTyped
+        if (txt_descripcion.getText().startsWith(" ")) {
+            txt_descripcion.setText("");
+            txt_descripcion.requestFocus();
+        }
+        limpiarlbl();
+        if (txt_descripcion.getText().length() >= 45) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_descripcionKeyTyped
+
+    private void lstgastKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lstgastKeyReleased
+        String cod, fecha, tipo = "", valor, nrofac, descripcion;
+        java.text.SimpleDateFormat formato = new java.text.SimpleDateFormat("dd-MM-yyyy");
+        if (lstgast.getSelectedRowCount() > 0) {
+
+            if (evt.VK_DOWN == evt.getKeyCode() || evt.VK_UP == evt.getKeyCode()) {
+
+                cod = lstgast.getValueAt(lstgast.getSelectedRow(), 0).toString();
+            jLabel6.enable();
+            lb_cod.setText(cod);
+            txt_valor.setText(lstgast.getValueAt(lstgast.getSelectedRow(), 3).toString());
+            txt_factura.setText(lstgast.getValueAt(lstgast.getSelectedRow(), 4).toString());
+            txt_descripcion.setText(lstgast.getValueAt(lstgast.getSelectedRow(), 5).toString());
+            fecha = lstgast.getValueAt(lstgast.getSelectedRow(), 1).toString();
+            try {
+                java.util.Date fechDate = formato.parse(fecha);
+                dc_fecha.setDate(fechDate);
+            } catch (ParseException ex) {
+                Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            tipo=lstgast.getValueAt(lstgast.getSelectedRow(), 2).toString();
+            /*msj=tipo;
+            JOptionPane.showMessageDialog(null, msj, "ELIMINACIÓN DE DATOS", JOptionPane.INFORMATION_MESSAGE);*/
+            switch (tipo) {
+                case "Boleta":
+                    cmb_tipo.setSelectedItem("Boleta");
+                    break;
+                case "Factura":
+                    cmb_tipo.setSelectedItem("Factura");
+                    break;
+
+            }
+                limpiarlbl();
+            }
+            if (evt.VK_DELETE == evt.getKeyCode()) {
+                btn_eliminar.doClick();
+            }
+        }    
+    }//GEN-LAST:event_lstgastKeyReleased
+
+    private void txt_consultaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_consultaMouseClicked
+        limpiarlbl();
+        txt_consulta.setText("");
+        lb_cod.setText("");
+        dc_fecha.setDate(null);
+        cmb_tipo.setSelectedIndex(0);
+        txt_valor.setText("");
+        txt_factura.setText("");
+        txt_descripcion.setText("");
+        
+        
+        lstgast.clearSelection();
+    }//GEN-LAST:event_txt_consultaMouseClicked
+
+    private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
+        modelolista.setNumRows(0);
+        llenarlst();
+        txt_consulta.setText("");
+        lb_cod.setText("");
+        dc_fecha.setDate(null);
+        cmb_tipo.setSelectedIndex(0);
+        txt_valor.setText("");
+        txt_factura.setText("");
+        txt_descripcion.setText("");
+        
+        
+        lstgast.clearSelection();
+    }//GEN-LAST:event_jPanel1MouseClicked
+
+    private void txt_consultaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyReleased
+         if ((evt.VK_BACK_SPACE == evt.getKeyCode() || evt.VK_DELETE == evt.getKeyCode()) && (txt_consulta.getText().isEmpty())) {
+            modelolista.setNumRows(0);
+            llenarlst();
+        }
+    }//GEN-LAST:event_txt_consultaKeyReleased
+
+    private void txt_consultaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyTyped
+         char TipoTecla = evt.getKeyChar();
+
+        /*if(Character.isSpace(TipoTecla)){
+            txt_consulta.setText("");
+            txt_consulta.requestFocus();
+        }*/
+        if (Character.isDigit(TipoTecla)) {
+            if (txt_consulta.getText().length() >= 8) {
+                evt.consume();
+            }
+        } else {
+            //evt.consume();
+        }
+
+        String consu;
+        consu = txt_consulta.getText();
+        //if(txt_consulta.getText()>='0' && txt_consulta.getText()<='30000000' ){
+
+        //}
+        if (txt_consulta.getText().startsWith(" ")) {
+            txt_consulta.setText("");
+            txt_consulta.requestFocus();
+        }
+        modelolista.setNumRows(0);
+        //lstClie.remove();
+        llenarlst_consu(consu);
+    }//GEN-LAST:event_txt_consultaKeyTyped
 
     /**
      * @param args the command line arguments

@@ -164,11 +164,11 @@ public class MantFacturas extends javax.swing.JFrame {
         lstfact.setRowSorter(sorter);
         try {
             sentencia = (Statement) conexion.createStatement();//permite ejecutar sentencias SQL
-            ResultSet lista = sentencia.executeQuery("SELECT * FROM facturas WHERE run_empresa like '%" + consu + "%'or fecha_emision like '%" + consu + "%'"
+            ResultSet lista = sentencia.executeQuery("SELECT * FROM facturas WHERE rut_empresa like '%" + consu + "%'or fecha_emision like '%" + consu + "%'"
                     + "or estado like '%" + consu + "%' or forma_pago like '%" + consu + "%'");
             while (lista.next()) {
                 nro = (lista.getString("nro_factura"));
-                run = (lista.getString("run_empresa"));
+                run = (lista.getString("rut_empresa"));
                 dv = (lista.getString("dv_empresa"));
 
                 fechaemi = lista.getDate("fecha_emision");
@@ -342,6 +342,11 @@ public class MantFacturas extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel1MouseClicked(evt);
+            }
+        });
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/cruzmini.png"))); // NOI18N
 
@@ -379,6 +384,11 @@ public class MantFacturas extends javax.swing.JFrame {
                 lstfactMouseClicked(evt);
             }
         });
+        lstfact.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                lstfactKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(lstfact);
 
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
@@ -390,6 +400,11 @@ public class MantFacturas extends javax.swing.JFrame {
                 txt_rutActionPerformed(evt);
             }
         });
+        txt_rut.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_rutKeyTyped(evt);
+            }
+        });
 
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("Fecha emisión");
@@ -398,6 +413,11 @@ public class MantFacturas extends javax.swing.JFrame {
         txt_valor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_valorActionPerformed(evt);
+            }
+        });
+        txt_valor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_valorKeyTyped(evt);
             }
         });
 
@@ -434,11 +454,32 @@ public class MantFacturas extends javax.swing.JFrame {
                 txt_nroActionPerformed(evt);
             }
         });
+        txt_nro.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_nroKeyTyped(evt);
+            }
+        });
 
         txt_consulta.setBackground(new java.awt.Color(255, 255, 204));
+        txt_consulta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txt_consultaMouseClicked(evt);
+            }
+        });
         txt_consulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_consultaActionPerformed(evt);
+            }
+        });
+        txt_consulta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_consultaKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_consultaKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_consultaKeyTyped(evt);
             }
         });
 
@@ -486,6 +527,11 @@ public class MantFacturas extends javax.swing.JFrame {
                 txt_ivaActionPerformed(evt);
             }
         });
+        txt_iva.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_ivaKeyTyped(evt);
+            }
+        });
 
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Valor Iva");
@@ -504,13 +550,13 @@ public class MantFacturas extends javax.swing.JFrame {
                                     .addComponent(jLabel6)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(cmb_estado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addComponent(jLabel14)
                                                     .addComponent(jLabel9)
-                                                    .addComponent(dc_fechaven, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(48, 48, 48))
-                                            .addComponent(cmb_estado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                    .addComponent(dc_fechaven, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(19, 19, 19)))
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGap(98, 98, 98)
@@ -533,7 +579,7 @@ public class MantFacturas extends javax.swing.JFrame {
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 563, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(17, 17, 17))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(txt_rut, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -542,8 +588,8 @@ public class MantFacturas extends javax.swing.JFrame {
                                         .addComponent(txt_dv, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jLabel13)
                                     .addComponent(jLabel11)
-                                    .addComponent(dc_fechaemi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(cmb_pago, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(cmb_pago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(dc_fechaemi, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
@@ -710,7 +756,7 @@ public class MantFacturas extends javax.swing.JFrame {
             codigo = "K";
         }
         if (!txt_dv.getText().equals(codigo)) {
-            //lb_err1.setText("Run inválido, ingrese nuevamente!");
+            lb_err1.setText("Run inválido, ingrese nuevamente!");
             txt_rut.setText("");
             txt_dv.setText("");
             txt_rut.requestFocus();
@@ -1015,6 +1061,238 @@ public class MantFacturas extends javax.swing.JFrame {
             limpiarlbl();
         }
     }//GEN-LAST:event_lstfactMouseClicked
+
+    private void txt_nroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nroKeyTyped
+         char TipoTecla = evt.getKeyChar();
+        if (txt_nro.getText().startsWith(" ")) {
+            txt_nro.setText("");
+            txt_nro.requestFocus();
+        }
+        if (txt_nro.getText().length() >= 10) {
+            evt.consume();
+        }
+        limpiarlbl();
+        if (Character.isDigit(TipoTecla)) {
+
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_nroKeyTyped
+
+    private void txt_rutKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_rutKeyTyped
+       char TipoTecla = evt.getKeyChar();
+        if (txt_rut.getText().length() >= 8) {
+            evt.consume();
+        }
+        if (Character.isDigit(TipoTecla)) {
+
+        } else {
+            evt.consume();
+        }
+        if (txt_rut.getText().startsWith("0")) {
+            lb_err1.setText("CERO NO ES PRIMER DIGITO!");
+            txt_rut.setText("");
+            evt.consume();
+            txt_rut.requestFocus();
+            return;
+        } else {
+            lb_err1.setText("");
+        }
+
+        lb_err1.setText("");
+    }//GEN-LAST:event_txt_rutKeyTyped
+
+    private void txt_ivaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_ivaKeyTyped
+       char TipoTecla = evt.getKeyChar();
+        if (txt_iva.getText().startsWith(" ")) {
+            txt_iva.setText("");
+            txt_iva.requestFocus();
+        }
+        if (txt_iva.getText().length() >= 6) {
+            evt.consume();
+        }
+        limpiarlbl();
+        if (Character.isDigit(TipoTecla)) {
+
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_ivaKeyTyped
+
+    private void txt_valorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_valorKeyTyped
+        char TipoTecla = evt.getKeyChar();
+        if (txt_valor.getText().startsWith(" ")) {
+            txt_valor.setText("");
+            txt_valor.requestFocus();
+        }
+        if (txt_valor.getText().length() >= 8) {
+            evt.consume();
+        }
+        limpiarlbl();
+        if (Character.isDigit(TipoTecla)) {
+
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_valorKeyTyped
+
+    private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
+      modelolista.setNumRows(0);
+        llenarlst();
+        txt_consulta.setText("");
+        txt_nro.setText("");
+        txt_rut.setText("");
+        txt_dv.setText("");
+        dc_fechaemi.setDate(null);
+        cmb_pago.setSelectedIndex(0);
+        txt_valor.setText("");
+        dc_fechaven.setDate(null);
+        txt_iva.setText("");
+        cmb_estado.setSelectedIndex(0);
+        txt_rut.enable();
+        txt_dv.enable();
+       
+        
+        
+        lstfact.clearSelection();
+    }//GEN-LAST:event_jPanel1MouseClicked
+
+    private void lstfactKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lstfactKeyReleased
+      String nro, rut, dv, fechaemi, pago = "", fechaven, iva, estado = "", valor;
+        java.text.SimpleDateFormat formato = new java.text.SimpleDateFormat("dd-MM-yyyy");
+
+        if (lstfact.getSelectedRowCount() > 0) {
+          if (evt.VK_DOWN == evt.getKeyCode() || evt.VK_UP == evt.getKeyCode()) {  
+            nro = lstfact.getValueAt(lstfact.getSelectedRow(), 0).toString();
+            jLabel6.enable();
+            txt_nro.setText(nro);
+
+            rut = lstfact.getValueAt(lstfact.getSelectedRow(), 1).toString();
+            rut = rut.substring(0, rut.length() - 2);
+            txt_rut.setText(rut);
+            txt_rut.disable();
+            dv = lstfact.getValueAt(lstfact.getSelectedRow(), 1).toString();
+            dv = dv.substring(dv.length() - 1, dv.length());
+            txt_dv.setText(dv);
+            txt_dv.disable();
+            txt_nro.disable();
+            fechaemi = lstfact.getValueAt(lstfact.getSelectedRow(), 2).toString();
+            try {
+                java.util.Date fechDate = formato.parse(fechaemi);
+                dc_fechaemi.setDate(fechDate);
+            } catch (ParseException ex) {
+                Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            pago = lstfact.getValueAt(lstfact.getSelectedRow(), 3).toString();
+            switch (pago) {
+                case "Efectivo":
+                    cmb_pago.setSelectedItem("Efectivo");
+                    break;
+                case "Tarjeta":
+                    cmb_pago.setSelectedItem("Tarjeta");
+                    break;
+                case "Cheque":
+                    cmb_pago.setSelectedItem("Cheque");
+                    break;
+            }
+            fechaven = lstfact.getValueAt(lstfact.getSelectedRow(), 4).toString();
+            try {
+                java.util.Date fechDate = formato.parse(fechaven);
+                dc_fechaven.setDate(fechDate);
+            } catch (ParseException ex) {
+                Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            txt_iva.setText(lstfact.getValueAt(lstfact.getSelectedRow(), 5).toString());
+
+            estado = lstfact.getValueAt(lstfact.getSelectedRow(), 6).toString();
+            switch (estado) {
+                case "Vigente":
+                    cmb_estado.setSelectedItem("Vigente");
+                    break;
+                case "Anulada":
+                    cmb_estado.setSelectedItem("Anulada");
+                    break;
+
+            }
+
+            txt_valor.setText(lstfact.getValueAt(lstfact.getSelectedRow(), 7).toString());
+
+            limpiarlbl();
+            
+          } 
+          if (evt.VK_DELETE == evt.getKeyCode()) {
+                btn_eliminar.doClick();
+          }
+        }
+    }//GEN-LAST:event_lstfactKeyReleased
+
+    private void txt_consultaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyPressed
+      
+    }//GEN-LAST:event_txt_consultaKeyPressed
+
+    private void txt_consultaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyReleased
+         if ((evt.VK_BACK_SPACE == evt.getKeyCode() || evt.VK_DELETE == evt.getKeyCode()) && (txt_consulta.getText().isEmpty())) {
+            modelolista.setNumRows(0);
+            llenarlst();
+        }
+    }//GEN-LAST:event_txt_consultaKeyReleased
+
+    private void txt_consultaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyTyped
+        char TipoTecla = evt.getKeyChar();
+
+        /*if(Character.isSpace(TipoTecla)){
+            txt_consulta.setText("");
+            txt_consulta.requestFocus();
+        }*/
+        if (Character.isDigit(TipoTecla)) {
+            if (txt_consulta.getText().length() >= 8) {
+                evt.consume();
+            }
+        } else {
+            //evt.consume();
+        }
+
+        String consu;
+        consu = txt_consulta.getText();
+        //if(txt_consulta.getText()>='0' && txt_consulta.getText()<='30000000' ){
+
+        //}
+        if (txt_consulta.getText().startsWith(" ")) {
+            txt_consulta.setText("");
+            txt_consulta.requestFocus();
+        }
+        modelolista.setNumRows(0);
+        //lstClie.remove();
+        llenarlst_consu(consu);
+
+    }//GEN-LAST:event_txt_consultaKeyTyped
+
+    private void txt_consultaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_consultaMouseClicked
+        limpiarlbl();
+         txt_consulta.setText("");
+        txt_nro.setText("");
+        txt_rut.setText("");
+        txt_dv.setText("");
+        dc_fechaemi.setDate(null);
+        cmb_pago.setSelectedIndex(0);
+        txt_valor.setText("");
+        dc_fechaven.setDate(null);
+        txt_iva.setText("");
+        cmb_estado.setSelectedIndex(0);
+        txt_rut.enable();
+        //txt_dv.enable();
+       lstfact.clearSelection();
+    
+        
+        
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_txt_consultaMouseClicked
 
     /**
      * @param args the command line arguments

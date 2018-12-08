@@ -1000,13 +1000,11 @@ public class MantSepultados extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_consultarActionPerformed
 
     private void txt_consultaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyPressed
-        if (evt.VK_ENTER == evt.getKeyCode()) {
-            btn_consultar.doClick();
-        }
+        
     }//GEN-LAST:event_txt_consultaKeyPressed
 
     private void txt_consultaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyTyped
-        char TipoTecla = evt.getKeyChar();
+         char TipoTecla = evt.getKeyChar();
 
         /*if(Character.isSpace(TipoTecla)){
             txt_consulta.setText("");
@@ -1019,6 +1017,19 @@ public class MantSepultados extends javax.swing.JFrame {
         } else {
             //evt.consume();
         }
+
+        String consu;
+        consu = txt_consulta.getText();
+        //if(txt_consulta.getText()>='0' && txt_consulta.getText()<='30000000' ){
+
+        //}
+        if (txt_consulta.getText().startsWith(" ")) {
+            txt_consulta.setText("");
+            txt_consulta.requestFocus();
+        }
+        modelolista.setNumRows(0);
+        //lstClie.remove();
+        llenarlst_consu(consu);
     }//GEN-LAST:event_txt_consultaKeyTyped
 
     private void mainMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainMouseClicked

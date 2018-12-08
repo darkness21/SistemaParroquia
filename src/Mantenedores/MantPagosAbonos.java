@@ -371,6 +371,11 @@ public class MantPagosAbonos extends javax.swing.JFrame {
                 lstventaMouseClicked(evt);
             }
         });
+        lstventa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                lstventaKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(lstventa);
 
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
@@ -383,6 +388,11 @@ public class MantPagosAbonos extends javax.swing.JFrame {
         txt_monto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_montoActionPerformed(evt);
+            }
+        });
+        txt_monto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_montoKeyTyped(evt);
             }
         });
 
@@ -402,9 +412,22 @@ public class MantPagosAbonos extends javax.swing.JFrame {
         });
 
         txt_consulta.setBackground(new java.awt.Color(255, 255, 204));
+        txt_consulta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txt_consultaMouseClicked(evt);
+            }
+        });
         txt_consulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_consultaActionPerformed(evt);
+            }
+        });
+        txt_consulta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_consultaKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_consultaKeyTyped(evt);
             }
         });
 
@@ -438,6 +461,11 @@ public class MantPagosAbonos extends javax.swing.JFrame {
                 txt_ventaActionPerformed(evt);
             }
         });
+        txt_venta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_ventaKeyTyped(evt);
+            }
+        });
 
         lb_cod.setForeground(new java.awt.Color(255, 255, 255));
 
@@ -458,6 +486,11 @@ public class MantPagosAbonos extends javax.swing.JFrame {
         lstpago.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lstpagoMouseClicked(evt);
+            }
+        });
+        lstpago.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                lstpagoKeyReleased(evt);
             }
         });
         jScrollPane3.setViewportView(lstpago);
@@ -677,8 +710,8 @@ public class MantPagosAbonos extends javax.swing.JFrame {
         }
         String sql = "INSERT INTO pagos_y_abonos(fecha_pago,tipo_transaccion,monto_pago,cod_venta) "
                 + "VALUES('" + fecha2 + "','" + tipo + "'," + valor2 + "," + nrofact2 + ")";
-        msj = sql;
-        JOptionPane.showMessageDialog(null, msj, "Datos Guardados", JOptionPane.INFORMATION_MESSAGE);
+//        msj = sql;
+//        JOptionPane.showMessageDialog(null, msj, "Datos Guardados", JOptionPane.INFORMATION_MESSAGE);
         insertar(sql);
     }//GEN-LAST:event_btn_agregarActionPerformed
 
@@ -791,7 +824,7 @@ public class MantPagosAbonos extends javax.swing.JFrame {
 
     private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
       modelolista.setNumRows(0);
-        llenarlst1();
+        limpiarlbl();
         llenarlst2();
         txt_consulta.setText("");
         dc_fecha.setDate(null);
@@ -841,6 +874,158 @@ public class MantPagosAbonos extends javax.swing.JFrame {
             limpiarlbl();
         }
     }//GEN-LAST:event_lstpagoMouseClicked
+
+    private void txt_montoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_montoKeyTyped
+        char TipoTecla = evt.getKeyChar();
+        if (txt_monto.getText().startsWith(" ")) {
+            txt_monto.setText("");
+            txt_monto.requestFocus();
+        }
+        if (txt_monto.getText().length() >= 7) {
+            evt.consume();
+        }
+        limpiarlbl();
+        if (Character.isDigit(TipoTecla)) {
+
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_montoKeyTyped
+
+    private void txt_ventaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_ventaKeyTyped
+        char TipoTecla = evt.getKeyChar();
+        if (txt_venta.getText().startsWith(" ")) {
+            txt_venta.setText("");
+            txt_venta.requestFocus();
+        }
+        if (txt_venta.getText().length() >= 5) {
+            evt.consume();
+        }
+        limpiarlbl();
+        if (Character.isDigit(TipoTecla)) {
+
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_ventaKeyTyped
+
+    private void lstpagoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lstpagoKeyReleased
+        String cod, fecha, tipo = "", valor, nrofac, descripcion;
+        java.text.SimpleDateFormat formato = new java.text.SimpleDateFormat("dd-MM-yyyy");
+
+        if (lstpago.getSelectedRowCount() > 0) {
+            
+          if (evt.VK_DOWN == evt.getKeyCode() || evt.VK_UP == evt.getKeyCode()) {   
+            cod = lstpago.getValueAt(lstpago.getSelectedRow(), 0).toString();
+            jLabel6.enable();
+            lb_cod.setText(cod);
+            txt_monto.setText(lstpago.getValueAt(lstpago.getSelectedRow(), 3).toString());
+            txt_venta.setText(lstpago.getValueAt(lstpago.getSelectedRow(), 4).toString());
+            txt_venta.disable();
+            
+            fecha = lstpago.getValueAt(lstpago.getSelectedRow(), 1).toString();
+            try {
+                java.util.Date fechDate = formato.parse(fecha);
+                dc_fecha.setDate(fechDate);
+            } catch (ParseException ex) {
+                Logger.getLogger(MantSepultados.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            tipo=lstpago.getValueAt(lstpago.getSelectedRow(), 2).toString();
+            /*msj=tipo;
+            JOptionPane.showMessageDialog(null, msj, "ELIMINACIÓN DE DATOS", JOptionPane.INFORMATION_MESSAGE);*/
+            switch (tipo) {
+                case "Pago":
+                    cmb_tipo.setSelectedItem("Pago");
+                    break;
+                case "Abono":
+                    cmb_tipo.setSelectedItem("Abono");
+                    break;
+
+            }
+
+            limpiarlbl();
+            
+          }
+          
+           if (evt.VK_DELETE == evt.getKeyCode()) {
+                btn_eliminar.doClick();
+        }
+        }   
+    }//GEN-LAST:event_lstpagoKeyReleased
+
+    private void lstventaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lstventaKeyReleased
+           String cod, fecha, tipo = "", valor, nrofac, descripcion;
+        
+
+        if (lstventa.getSelectedRowCount() > 0) {
+            
+          if (evt.VK_DOWN == evt.getKeyCode() || evt.VK_UP == evt.getKeyCode()) {   
+            
+            txt_venta.setText(lstventa.getValueAt(lstventa.getSelectedRow(), 4).toString());
+            txt_venta.disable();
+            
+            
+
+            limpiarlbl();
+            
+          }
+          
+          
+        } 
+    }//GEN-LAST:event_lstventaKeyReleased
+
+    private void txt_consultaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_consultaMouseClicked
+        limpiarlbl();
+        
+        txt_consulta.setText("");
+        dc_fecha.setDate(null);
+        txt_monto.setText("");
+        txt_venta.setText("");
+        cmb_tipo.setSelectedIndex(0);
+        lb_cod.setText("");
+       
+        
+        txt_venta.enable();
+        
+        lstventa.clearSelection();
+    
+    }//GEN-LAST:event_txt_consultaMouseClicked
+
+    private void txt_consultaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyReleased
+        if ((evt.VK_BACK_SPACE == evt.getKeyCode() || evt.VK_DELETE == evt.getKeyCode()) && (txt_consulta.getText().isEmpty())) {
+            modelolista.setNumRows(0);
+            llenarlst2();
+        }
+    }//GEN-LAST:event_txt_consultaKeyReleased
+
+    private void txt_consultaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_consultaKeyTyped
+            char TipoTecla = evt.getKeyChar();
+
+        /*if(Character.isSpace(TipoTecla)){
+            txt_consulta.setText("");
+            txt_consulta.requestFocus();
+        }*/
+        if (Character.isDigit(TipoTecla)) {
+            if (txt_consulta.getText().length() >= 8) {
+                evt.consume();
+            }
+        } else {
+            //evt.consume();
+        }
+
+        String consu;
+        consu = txt_consulta.getText();
+        //if(txt_consulta.getText()>='0' && txt_consulta.getText()<='30000000' ){
+
+        //}
+        if (txt_consulta.getText().startsWith(" ")) {
+            txt_consulta.setText("");
+            txt_consulta.requestFocus();
+        }
+        modelolista.setNumRows(0);
+        //lstClie.remove();
+        llenarlst_consu(consu);
+    }//GEN-LAST:event_txt_consultaKeyTyped
 
     
     
