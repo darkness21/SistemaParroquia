@@ -719,9 +719,9 @@ public class MantPagosAbonos extends javax.swing.JFrame {
        String cod, tipo = "", valor, nrofac, fecha2;
         Date fecha;
          int codigo;
-        if (lstventa.getSelectedRowCount() > 0) {
+        if (lstpago.getSelectedRowCount() > 0) {
 
-            cod = lstventa.getValueAt(lstventa.getSelectedRow(), 0).toString();
+            cod = lstpago.getValueAt(lstpago.getSelectedRow(), 0).toString();
             codigo=parseInt(cod);
 
             nrofac = txt_venta.getText();
