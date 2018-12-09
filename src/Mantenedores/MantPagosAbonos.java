@@ -88,8 +88,9 @@ public class MantPagosAbonos extends javax.swing.JFrame {
     
      public void limpiarlbl() {
         lb_err1.setText("");
-       
-
+        lb_err2.setText("");
+       lb_err3.setText("");
+       lb_err4.setText("");
     }
   public void llenarlst2() {
         String cod, fecha, tipo, tipo2 = "", monto, codventa;
@@ -328,6 +329,9 @@ public class MantPagosAbonos extends javax.swing.JFrame {
         lb_cod = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         lstpago = new javax.swing.JTable();
+        lb_err2 = new javax.swing.JLabel();
+        lb_err3 = new javax.swing.JLabel();
+        lb_err4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -500,6 +504,15 @@ public class MantPagosAbonos extends javax.swing.JFrame {
             lstpago.getColumnModel().getColumn(4).setHeaderValue("Cod venta");
         }
 
+        lb_err2.setForeground(new java.awt.Color(255, 0, 51));
+        lb_err2.setText("jLabel2");
+
+        lb_err3.setForeground(new java.awt.Color(255, 0, 51));
+        lb_err3.setText("jLabel2");
+
+        lb_err4.setForeground(new java.awt.Color(255, 0, 51));
+        lb_err4.setText("jLabel2");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -510,27 +523,30 @@ public class MantPagosAbonos extends javax.swing.JFrame {
                     .addComponent(txt_monto, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
                     .addComponent(jLabel13)
-                    .addComponent(dc_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(dc_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lb_err1))
                     .addComponent(jLabel6)
                     .addComponent(jLabel16)
                     .addComponent(jLabel14)
                     .addComponent(cmb_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lb_err1)
                     .addComponent(lb_cod)
-                    .addComponent(txt_venta, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_venta, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lb_err2)
+                    .addComponent(lb_err3)
+                    .addComponent(lb_err4))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(jButton4)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 563, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton4)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 563, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(32, 32, 32))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -547,7 +563,7 @@ public class MantPagosAbonos extends javax.swing.JFrame {
                                 .addComponent(btn_modificar)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 231, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(txt_consulta, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -595,37 +611,46 @@ public class MantPagosAbonos extends javax.swing.JFrame {
                             .addComponent(btn_agregar, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(26, 26, 26)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39)
-                        .addComponent(jLabel6)
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(lb_cod)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(dc_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(39, 39, 39)
+                                .addComponent(jLabel6)
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(lb_cod)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(dc_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lb_err1))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(1, 1, 1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmb_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(1, 1, 1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lb_err2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel16)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txt_monto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lb_err3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel14)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txt_venta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lb_err1)
-                    .addComponent(jButton4))
-                .addContainerGap(31, Short.MAX_VALUE))
+                    .addComponent(jButton4)
+                    .addComponent(lb_err4))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -666,7 +691,7 @@ public class MantPagosAbonos extends javax.swing.JFrame {
         //cod=lb_cod.getText();
         nrofac = txt_venta.getText();
         if (txt_venta.getText().isEmpty() || txt_venta.getText().startsWith(" ")) {
-            lb_err1.setText("");
+            lb_err4.setText("");
             txt_venta.setFocusable(rootPaneCheckingEnabled);
             return;
         }
@@ -675,7 +700,7 @@ public class MantPagosAbonos extends javax.swing.JFrame {
         
         valor = txt_monto.getText();
         if (txt_monto.getText().isEmpty() || txt_monto.getText().startsWith(" ")) {
-            lb_err1.setText("Ingrese un monto");
+            lb_err3.setText("Ingrese un monto");
             txt_monto.setFocusable(rootPaneCheckingEnabled);
             return;
         }
@@ -705,7 +730,7 @@ public class MantPagosAbonos extends javax.swing.JFrame {
                 break;
 
             default:
-                lb_err1.setText("Debe seleccionar un tipo de venta!");
+                lb_err2.setText("Debe seleccionar un tipo de venta!");
                 break;
         }
         String sql = "INSERT INTO pagos_y_abonos(fecha_pago,tipo_transaccion,monto_pago,cod_venta) "
@@ -726,7 +751,7 @@ public class MantPagosAbonos extends javax.swing.JFrame {
 
             nrofac = txt_venta.getText();
             if (txt_venta.getText().isEmpty() || txt_venta.getText().startsWith(" ")) {
-                lb_err1.setText("");
+                lb_err4.setText("");
                 txt_venta.setFocusable(rootPaneCheckingEnabled);
                 return;
             }
@@ -734,7 +759,7 @@ public class MantPagosAbonos extends javax.swing.JFrame {
 
             valor = txt_monto.getText();
             if (txt_monto.getText().isEmpty() || txt_monto.getText().startsWith(" ")) {
-                lb_err1.setText("Ingrese un monto");
+                lb_err3.setText("Ingrese un monto");
                 txt_monto.setFocusable(rootPaneCheckingEnabled);
                 return;
             }
@@ -759,7 +784,7 @@ public class MantPagosAbonos extends javax.swing.JFrame {
                     break;
 
                 default:
-                    lb_err1.setText("Debe seleccionar un tipo de venta!");
+                    lb_err2.setText("Debe seleccionar un tipo de venta!");
                     break;
             }
 
@@ -776,8 +801,8 @@ public class MantPagosAbonos extends javax.swing.JFrame {
          String cod, tipo = "", valor, nrofac;
         Date fecha;
         int index = cmb_tipo.getSelectedIndex();
-        if (lstventa.getSelectedRowCount() > 0) {
-            cod = lstventa.getValueAt(lstventa.getSelectedRow(), 0).toString();
+        if (lstpago.getSelectedRowCount() > 0) {
+            cod = lstpago.getValueAt(lstpago.getSelectedRow(), 0).toString();
             valor = txt_monto.getText();
             nrofac = txt_venta.getText();
 
@@ -801,7 +826,7 @@ public class MantPagosAbonos extends javax.swing.JFrame {
             msj = "NO SE PUEDEN ELIMINAR DATOS";
             JOptionPane.showMessageDialog(null, msj, "ELIMINACIÓN DE DATOS", JOptionPane.INFORMATION_MESSAGE);
         }
-        llenarlst2();
+        //llenarlst2();
     }//GEN-LAST:event_btn_eliminarActionPerformed
 
     private void lstventaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstventaMouseClicked
@@ -1087,6 +1112,9 @@ public class MantPagosAbonos extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel lb_cod;
     private javax.swing.JLabel lb_err1;
+    private javax.swing.JLabel lb_err2;
+    private javax.swing.JLabel lb_err3;
+    private javax.swing.JLabel lb_err4;
     private javax.swing.JLabel lbl_estado;
     private javax.swing.JTable lstpago;
     private javax.swing.JTable lstventa;

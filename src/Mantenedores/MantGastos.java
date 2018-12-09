@@ -520,7 +520,7 @@ public class MantGastos extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel17))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(56, 56, 56)
+                                .addGap(82, 82, 82)
                                 .addComponent(lb_err1)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
@@ -752,6 +752,7 @@ public class MantGastos extends javax.swing.JFrame {
         //msj = sql;
         //JOptionPane.showMessageDialog(null, msj, "Datos Guardados", JOptionPane.INFORMATION_MESSAGE);
         insertar(sql);
+        formatearfecha();
     }//GEN-LAST:event_btn_agregarActionPerformed
 
     private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
@@ -810,6 +811,7 @@ public class MantGastos extends javax.swing.JFrame {
             limpiarlbl();
 
             actualizar(codigo, fecha2, tipo, valor2, nrofact2, descripcion);
+            formatearfecha();
         } else {
             msj = "Seleccione una fila para modificar";
             JOptionPane.showMessageDialog(null, msj, "MODIFICACIÓN DE DATOS", JOptionPane.INFORMATION_MESSAGE);
@@ -840,6 +842,7 @@ public class MantGastos extends javax.swing.JFrame {
                     "Eliminar", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 
                 eliminar(cod, fecha, tipo, valor, nrofac, descripcion);
+                formatearfecha();
             }
         } else {
             msj = "NO SE PUEDEN ELIMINAR DATOS";

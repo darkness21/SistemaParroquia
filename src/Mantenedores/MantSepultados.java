@@ -822,6 +822,7 @@ public class MantSepultados extends javax.swing.JFrame {
         //msj = sql;
         //JOptionPane.showMessageDialog(null, msj, "Datos Guardados", JOptionPane.INFORMATION_MESSAGE);
         insertar(sql);
+        formatearfecha();
     }//GEN-LAST:event_btn_agregarActionPerformed
 
     private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
@@ -857,7 +858,7 @@ public class MantSepultados extends javax.swing.JFrame {
             SimpleDateFormat sdf = new SimpleDateFormat(fechanac2);
             fechanac2 = String.valueOf(sdf.format(fechanac));
 
-            if (dc_fechnac.getDate().equals(null)) {
+            if (dc_fechnac.getDate().toString().isEmpty()) {
                 lb_err5.setText("Ingrese la fecha de nacimiento");
 
                 return;
@@ -954,6 +955,7 @@ public class MantSepultados extends javax.swing.JFrame {
                     "Eliminar", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 
                 eliminar(rut, dv, nom, apepar, apemat, fechanac, fechadef, fechasep);
+                formatearfecha();
             }
         } else {
             msj = "NO SE PUEDEN ELIMINAR DATOS";
