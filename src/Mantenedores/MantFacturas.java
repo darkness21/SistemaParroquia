@@ -1,5 +1,6 @@
 package Mantenedores;
 
+import Menúes.MenuPrincipal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -784,7 +785,11 @@ public class MantFacturas extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_valorActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        System.exit(0);
+         MenuPrincipal mp = new MenuPrincipal();
+        mp.setVisible(true);
+        this.setVisible(false);
+        
+       // System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

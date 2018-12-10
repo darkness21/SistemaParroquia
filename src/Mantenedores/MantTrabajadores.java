@@ -1,5 +1,6 @@
 package Mantenedores;
 
+import Menúes.MenuPrincipal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -15,6 +16,8 @@ import static java.lang.Integer.parseInt;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -75,7 +78,9 @@ public class MantTrabajadores extends javax.swing.JFrame {
         btn_consultar.setOpaque(false);
         btn_consultar.setContentAreaFilled(false);
         btn_consultar.setBorderPainted(false);
-        
+        btn_contrato.setOpaque(false);
+        btn_contrato.setContentAreaFilled(false);
+        btn_contrato.setBorderPainted(false);
     }
     public void limpiarlbl(){
         lb_err1.setText("");
@@ -314,7 +319,6 @@ public class MantTrabajadores extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         cmb_tipo = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
         txt_consulta = new javax.swing.JTextField();
         btn_agregar = new javax.swing.JButton();
         btn_modificar = new javax.swing.JButton();
@@ -333,6 +337,7 @@ public class MantTrabajadores extends javax.swing.JFrame {
         lb_err9 = new javax.swing.JLabel();
         lb_err10 = new javax.swing.JLabel();
         dc_fecha = new com.toedter.calendar.JDateChooser();
+        btn_contrato = new javax.swing.JButton();
 
         jButton1.setText("jButton1");
 
@@ -547,8 +552,6 @@ public class MantTrabajadores extends javax.swing.JFrame {
             }
         });
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/contratos.png"))); // NOI18N
-
         txt_consulta.setBackground(new java.awt.Color(255, 255, 204));
         txt_consulta.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -652,6 +655,15 @@ public class MantTrabajadores extends javax.swing.JFrame {
         lb_err10.setForeground(new java.awt.Color(255, 0, 51));
         lb_err10.setText("jLabel2");
 
+        dc_fecha.setForeground(new java.awt.Color(255, 255, 204));
+
+        btn_contrato.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/contratos.png"))); // NOI18N
+        btn_contrato.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_contratoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -666,15 +678,11 @@ public class MantTrabajadores extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jSeparator2)
-                                .addGap(54, 54, 54)
-                                .addComponent(lbl_estado)
-                                .addGap(62, 62, 62))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(176, 176, 176)
-                                        .addComponent(jLabel5))
+                                .addGap(176, 176, 176)
+                                .addComponent(jLabel5)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(10, 10, 10)
                                         .addComponent(btn_agregar)
@@ -682,13 +690,16 @@ public class MantTrabajadores extends javax.swing.JFrame {
                                         .addComponent(btn_modificar)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btn_eliminar)
-                                        .addGap(48, 48, 48)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(txt_consulta, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btn_consultar)
-                                        .addGap(60, 60, 60)
-                                        .addComponent(jLabel7)))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                        .addGap(101, 101, 101)
+                                        .addComponent(btn_contrato, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jSeparator2))
+                                .addGap(54, 54, 54)
+                                .addComponent(lbl_estado)
+                                .addGap(62, 62, 62)))))
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
@@ -706,7 +717,7 @@ public class MantTrabajadores extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txt_paterno, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel10))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 163, Short.MAX_VALUE)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 646, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -772,25 +783,22 @@ public class MantTrabajadores extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
-                                        .addComponent(jLabel7))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(17, 17, 17)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(lbl_estado)
-                                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(40, 40, 40)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(btn_modificar)
-                                            .addComponent(btn_eliminar)
-                                            .addComponent(btn_agregar)))))
-                            .addComponent(txt_consulta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_consultar, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(txt_consulta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btn_consultar)
+                                .addComponent(btn_contrato, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel5)
+                                    .addGap(17, 17, 17)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(lbl_estado)
+                                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(40, 40, 40)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(btn_modificar)
+                                        .addComponent(btn_eliminar)
+                                        .addComponent(btn_agregar)))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(39, 39, 39)
                         .addComponent(jLabel6)
@@ -814,7 +822,7 @@ public class MantTrabajadores extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lb_err2)
                     .addComponent(lb_err3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel13)
                 .addGap(5, 5, 5)
                 .addComponent(txt_materno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -980,7 +988,10 @@ public class MantTrabajadores extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_direccionActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        System.exit(0);
+         MenuPrincipal mp = new MenuPrincipal();
+        mp.setVisible(true);
+        this.setVisible(false);
+        //System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void txt_consultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_consultaActionPerformed
@@ -1659,6 +1670,13 @@ public class MantTrabajadores extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txt_contratoKeyTyped
 
+    private void btn_contratoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_contratoActionPerformed
+        MantAnexosContr v1 = new MantAnexosContr();
+        v1.setVisible(true);
+        this.setVisible(false);
+        
+    }//GEN-LAST:event_btn_contratoActionPerformed
+
     
     
     /**
@@ -1699,6 +1717,7 @@ public class MantTrabajadores extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_agregar;
     private javax.swing.JButton btn_consultar;
+    private javax.swing.JButton btn_contrato;
     private javax.swing.JButton btn_eliminar;
     private javax.swing.JButton btn_modificar;
     private javax.swing.JComboBox<String> cmb_tipo;
@@ -1717,7 +1736,6 @@ public class MantTrabajadores extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;

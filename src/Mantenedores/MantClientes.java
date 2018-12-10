@@ -1,5 +1,6 @@
 package Mantenedores;
 
+import Menúes.MenuPrincipal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -712,7 +713,12 @@ public class MantClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_direccionActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        System.exit(0);
+        MenuPrincipal mp = new MenuPrincipal();
+        mp.setVisible(true);
+        this.setVisible(false);
+        
+        
+        //System.exit(0);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void btn_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarActionPerformed

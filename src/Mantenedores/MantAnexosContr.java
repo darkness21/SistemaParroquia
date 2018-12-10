@@ -1,5 +1,6 @@
 package Mantenedores;
 
+import Menúes.MenuPrincipal;
 import com.toedter.calendar.JDateChooser;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -707,7 +708,10 @@ public class MantAnexosContr extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-       System.exit(0);
+        MantTrabajadores mp = new MantTrabajadores();
+        mp.setVisible(true);
+        this.setVisible(false);
+        //System.exit(0);
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void txt_dvFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_dvFocusLost
