@@ -361,7 +361,7 @@ public class MantGastos extends javax.swing.JFrame {
         jButton6.setBackground(new java.awt.Color(102, 0, 0));
         jButton6.setFont(new java.awt.Font("Franklin Gothic Medium", 3, 13)); // NOI18N
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/cancelar.png"))); // NOI18N
-        jButton6.setText("Cancelar");
+        jButton6.setText("Cerrar");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);

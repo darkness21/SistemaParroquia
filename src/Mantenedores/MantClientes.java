@@ -494,7 +494,7 @@ public class MantClientes extends javax.swing.JFrame {
         jButton4.setBackground(new java.awt.Color(102, 0, 0));
         jButton4.setFont(new java.awt.Font("Franklin Gothic Medium", 3, 13)); // NOI18N
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/cancelar.png"))); // NOI18N
-        jButton4.setText("Cancelar");
+        jButton4.setText("Cerrar");
         jButton4.setNextFocusableComponent(txt_rut);
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

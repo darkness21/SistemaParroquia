@@ -417,7 +417,7 @@ public class MantAnexosContr extends javax.swing.JFrame {
         jButton8.setBackground(new java.awt.Color(102, 0, 0));
         jButton8.setFont(new java.awt.Font("Franklin Gothic Medium", 3, 13)); // NOI18N
         jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/cancelar.png"))); // NOI18N
-        jButton8.setText("Cancelar");
+        jButton8.setText("Cerrar");
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton8ActionPerformed(evt);
